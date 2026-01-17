@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Loader2, Search, MapPin, Briefcase, Building2, ExternalLink, Download, AlertCircle, CheckCircle2 } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 interface Job {
   title: string;
@@ -37,34 +35,21 @@ interface ScraperResult {
 export default function Home() {
   const [location, setLocation] = useState("Los Angeles");
   const [role, setRole] = useState("Sales Engineer");
-  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ScraperResult | null>(null);
 
-  const handleScrape = async () => {
-    setLoading(true);
+  const scrapeMutation = trpc.scraper.runScraper.useMutation({
+    onSuccess: (data) => {
+      setResult(data);
+      toast.success(`Found ${data.stats.filtered} jobs!`);
+    },
+    onError: (error) => {
+      toast.error("Scraping failed: " + error.message);
+    },
+  });
+
+  const handleScrape = () => {
     setResult(null);
-    
-    try {
-      const response = await fetch("/api/scrape", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ location, role }),
-      });
-      
-      const data = await response.json();
-      
-      if (data.status === "error") {
-        toast.error("Scraping failed: " + data.message);
-      } else {
-        setResult(data);
-        toast.success(`Found ${data.stats.filtered} jobs!`);
-      }
-    } catch (error) {
-      toast.error("Failed to connect to server");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+    scrapeMutation.mutate({ location, role });
   };
 
   const handleExport = () => {
@@ -87,8 +72,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
-      <Toaster />
-      
       {/* Hero Section */}
       <div className="relative border-b border-border bg-card">
         <div className="absolute inset-0 bg-[url('/images/hero-background.png')] opacity-10 bg-cover bg-center mix-blend-overlay pointer-events-none" />
@@ -140,10 +123,10 @@ export default function Home() {
                 </div>
                 <Button 
                   onClick={handleScrape} 
-                  disabled={loading}
+                  disabled={scrapeMutation.isPending}
                   className="w-full font-mono uppercase tracking-wider font-bold h-12 text-base shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all border-2 border-black dark:border-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
                 >
-                  {loading ? (
+                  {scrapeMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Scraping...

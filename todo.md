@@ -1,0 +1,17 @@
+# Project TODO
+
+- [x] Upgrade project to full-stack (web-db-user)
+- [x] Fix Home.tsx conflict from template merge
+- [x] Create backend API to run Python scraper
+- [x] Fix Python 3.11 environment variable conflicts
+- [x] Test scraper execution from web interface
+- [x] Verify 335+ jobs scraped from 4 sources
+- [x] Verify 30 quality matches displayed
+- [x] Verify match scores and filtering working
+- [x] Verify Apply Now links working
+- [x] Verify Export CSV button present
+- [x] Research additional job sources from Reddit
+- [x] Document expansion strategy for future sources
+- [x] Test complete end-to-end flow
+- [x] Create comprehensive documentation
+- [x] Save checkpoint
