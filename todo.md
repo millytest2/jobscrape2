@@ -15,3 +15,4 @@
 - [x] Test complete end-to-end flow
 - [x] Create comprehensive documentation
 - [x] Save checkpoint
+- [x] Fix "can't cd to /home/ubuntu/job_pipeline" error in scraper execution

@@ -34,10 +34,11 @@ export const appRouter = router({
         try {
           // Run the Python scraper
           const { stdout } = await execAsync(
-            `cd /home/ubuntu/job_pipeline && env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 web_runner.py "${location}" "${role}"`,
+            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 /home/ubuntu/job_pipeline/web_runner.py "${location}" "${role}"`,
             { 
               maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
-              timeout: 180000 // 3 minutes timeout for scraping
+              timeout: 180000, // 3 minutes timeout for scraping
+              cwd: '/home/ubuntu/job_pipeline'
             }
           );
           
