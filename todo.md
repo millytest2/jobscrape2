@@ -16,3 +16,6 @@
 - [x] Create comprehensive documentation
 - [x] Save checkpoint
 - [x] Fix "can't cd to /home/ubuntu/job_pipeline" error in scraper execution
+- [x] Restore original job_pipeline directory with all scrapers and filters
+- [x] Revert server router to use /home/ubuntu/job_pipeline path
+- [x] Test original scraper works end-to-end
