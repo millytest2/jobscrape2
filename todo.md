@@ -16,3 +16,7 @@
 - [x] Create comprehensive documentation
 - [x] Save checkpoint
 - [x] Fix "can't cd to /home/ubuntu/job_pipeline" error in scraper execution
+- [x] Implement multi-term search strategy (Sales Engineer + Solutions Engineer + TAM + Customer Engineer)
+- [x] Fix SerpAPI "no results" issue by searching multiple role variations
+- [x] Verify scraper finds actual Sales Engineer roles (not generic software engineering)
+- [x] Test end-to-end: 51 jobs scraped → 5 quality Sales Engineer matches (46-43% scores)
