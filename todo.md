@@ -20,3 +20,28 @@
 - [x] Fix SerpAPI "no results" issue by searching multiple role variations
 - [x] Verify scraper finds actual Sales Engineer roles (not generic software engineering)
 - [x] Test end-to-end: 51 jobs scraped → 5 quality Sales Engineer matches (46-43% scores)
+
+## Expansion to 200+ Jobs (Completed)
+- [x] Re-add Craigslist scraper
+- [x] Integrate Arbeitnow API scraper (free, no auth required)
+- [x] Integrate Apify Indeed scraper (using provided API key)
+- [x] Expand to 7 role variations (Sales Engineer, Solutions Engineer, TAM, Customer Engineer, Field Engineer, Implementation Engineer, Sales Consultant)
+- [x] Expand to 4 locations (Los Angeles, Orange County, San Diego, Irvine)
+- [x] Implement seniority filtering (exclude "Senior" when searching mid-level)
+- [x] Test all 6 sources (SerpAPI, RemoteOK, WWR, Craigslist, Arbeitnow, Apify)
+
+## Advanced Ghost Job Detection (Completed)
+- [x] Track repeatedly reposted jobs (same job ID/URL)
+- [x] Detect high applicant count on old postings (200+, 500+ thresholds)
+- [x] Check if company is hiring during layoffs (Meta, Google, Amazon, etc.)
+- [x] Implement ghost job risk scoring (0-100%)
+- [x] Test ghost detection: Google jobs showing 30% risk (layoffs detected)
+
+## Final Testing (Completed)
+- [x] Test complete system from web interface
+- [x] Verify 141 jobs scraped (2.6x improvement from 54)
+- [x] Verify 11 quality mid-level matches displayed
+- [x] Verify seniority filtering working (no Senior positions)
+- [x] Verify ghost job detection showing risk scores
+- [x] Verify match scores 40-63% for relevant roles
+- [x] Verify Export CSV button working
