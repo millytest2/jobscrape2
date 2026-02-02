@@ -45,3 +45,24 @@
 - [x] Verify ghost job detection showing risk scores
 - [x] Verify match scores 40-63% for relevant roles
 - [x] Verify Export CSV button working
+
+## Fix spawn /bin/sh ENOENT Error
+- [ ] Debug and fix spawn /bin/sh ENOENT error in server router
+- [ ] Verify Python scraper path is correct after sandbox hibernation
+- [ ] Test scraper execution from server
+
+## Verify Multi-Source Approach
+- [ ] Confirm all 6 sources are actively scraping (SerpAPI, RemoteOK, WWR, Craigslist, Arbeitnow, Apify)
+- [ ] Verify each source returns results independently
+- [ ] Compare effectiveness to JobRight.ai and Huntr
+- [ ] Ensure system is easier and more effective than competitors
+
+## CRITICAL: Fix Multi-Source Scraping (Only SerpAPI Working)
+- [ ] Fix RemoteOK scraper - currently returning 0 jobs
+- [ ] Fix WeWorkRemotely scraper - currently returning 0 jobs  
+- [ ] Fix Craigslist scraper - currently returning 0 jobs
+- [ ] Fix Arbeitnow scraper - currently returning 0 jobs
+- [ ] Re-enable or fix Apify Indeed scraper (currently disabled)
+- [ ] Fix SerpAPI 400 errors for "Orange County" and "Irvine" locations
+- [ ] Test each scraper individually to verify they work
+- [ ] Verify final system scrapes from ALL 6 sources, not just SerpAPI

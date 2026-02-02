@@ -38,7 +38,8 @@ export const appRouter = router({
             { 
               maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
               timeout: 180000, // 3 minutes timeout for scraping
-              cwd: '/home/ubuntu/job_pipeline'
+              cwd: '/home/ubuntu/job_pipeline',
+              shell: '/bin/bash' // Explicitly specify shell
             }
           );
           
