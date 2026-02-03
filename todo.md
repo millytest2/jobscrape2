@@ -74,3 +74,27 @@
 - [x] Port landing probability calculator to TypeScript
 - [x] Update tRPC router to use TypeScript scraper
 - [x] Test on local dev server (150 jobs → 20 matches, 100-95% landing probability)
+
+## Bundle Python Scraper for Production
+- [ ] Copy Python scraper files into web app directory
+- [ ] Add Python dependencies to deployment configuration
+- [ ] Update server router to use bundled Python scraper
+- [ ] Test on local dev server
+- [ ] Test on published site
+
+## Separate Python Scraper Service (Option 2)
+- [ ] Create Flask API service that wraps Python scraper
+- [ ] Deploy Flask service and get public URL
+- [ ] Update web app to call Flask API instead of local Python
+- [ ] Test end-to-end on local dev server
+- [ ] Test on published site
+
+## Node.js Backend Scraper (Completed)
+- [x] Convert Python scraper to Node.js (server/routers.ts)
+- [x] Implement 6 working scrapers (SerpAPI, RemoteOK, WeWorkRemotely, Jooble, Arbeitnow, Remotive)
+- [x] Implement mission-driven filtering (35+ score threshold)
+- [x] Implement landing probability calculator (6 factors)
+- [x] Fix posted_date.includes error
+- [x] Test on dev server: 103 jobs scraped → 20 top matches (75-80% landing probability)
+- [x] Verify system works on backend (no CORS issues)
+- [x] Ready for production deployment (no external Flask API needed)
