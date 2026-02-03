@@ -66,3 +66,11 @@
 - [ ] Fix SerpAPI 400 errors for "Orange County" and "Irvine" locations
 - [ ] Test each scraper individually to verify they work
 - [ ] Verify final system scrapes from ALL 6 sources, not just SerpAPI
+
+## Production Deployment Fix (Completed)
+- [x] Migrate Python scraper to TypeScript/Node.js for production deployment
+- [x] Create TypeScript scrapers for all 8 sources
+- [x] Port mission-driven filter to TypeScript
+- [x] Port landing probability calculator to TypeScript
+- [x] Update tRPC router to use TypeScript scraper
+- [x] Test on local dev server (150 jobs → 20 matches, 100-95% landing probability)

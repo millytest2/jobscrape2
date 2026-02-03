@@ -12,12 +12,12 @@ interface Job {
   company: string;
   location: string;
   url: string;
-  final_score: number;
+  final_score?: number;
   landing_probability?: number;  // NEW: Probability of landing (0-100)
   source: string;
-  ghost_risk: number;
+  ghost_risk?: number;
   ghost_factors?: string[];  // NEW: Ghost job risk factors
-  excitement_factors: string[];
+  excitement_factors?: string[];
 }
 
 interface ScraperResult {
@@ -214,7 +214,7 @@ export default function Home() {
                               variant={job.landing_probability && job.landing_probability > 80 ? "default" : "secondary"} 
                               className="font-mono text-lg px-3 py-1"
                             >
-                              {Math.round(job.landing_probability || job.final_score)}%
+                              {Math.round(job.landing_probability || job.final_score || 50)}%
                             </Badge>
                             <span className="text-xs text-muted-foreground font-mono uppercase">
                               {job.landing_probability ? "Landing Probability" : "Match Score"}
@@ -226,7 +226,7 @@ export default function Home() {
                           <Badge variant="outline" className="font-mono text-xs uppercase">
                             {job.source}
                           </Badge>
-                          {job.ghost_risk < 20 ? (
+                          {(job.ghost_risk || 0) < 20 ? (
                             <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-200 gap-1">
                               <CheckCircle2 className="h-3 w-3" /> Verified Active
                             </Badge>

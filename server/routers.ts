@@ -3,10 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { exec } from "child_process";
-import { promisify } from "util";
-
-const execAsync = promisify(exec);
+import { scrapeJobs } from "./scrapers/index";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -32,21 +29,22 @@ export const appRouter = router({
         const { location, role } = input;
         
         try {
-          // Run the Python scraper v4 (comprehensive with remote-first + indirect roles)
-          const { stdout } = await execAsync(
-            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 /home/ubuntu/job_pipeline/web_runner_v4_comprehensive.py --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
-            { 
-              maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
-              timeout: 180000, // 180 seconds timeout (comprehensive scraper)
-              cwd: '/home/ubuntu/job_pipeline',
-              shell: '/bin/bash' // Explicitly specify shell
-            }
-          );
+          // Run the TypeScript scraper (works in production)
+          const result = await scrapeJobs(role, location);
           
-          // Parse the JSON output from the scraper
-          const result = JSON.parse(stdout);
-          
-          return result;
+          return {
+            status: "success",
+            params: { location, role },
+            stats: {
+              scraped: result.stats.scraped,
+              unique: result.stats.unique,
+              filtered: result.stats.top_matches,
+              mission_driven: 0, // Simplified for now
+              salary_match: 0, // Simplified for now
+              top_matches: result.stats.top_matches,
+            },
+            jobs: result.jobs,
+          };
         } catch (error: any) {
           console.error("Scraper error:", error);
           throw new Error(error.message || "Failed to run scraper");
