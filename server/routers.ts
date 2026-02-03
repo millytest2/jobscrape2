@@ -3,11 +3,13 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import { exec } from "child_process";
+import { promisify } from "util";
 
-// Flask API URL (Python scraper with all the intelligence)
-const SCRAPER_API_URL = process.env.SCRAPER_API_URL || "https://5000-id88howfpgmln0wzdtptt-8577bfd3.us1.manus.computer";
+const execAsync = promisify(exec);
 
 export const appRouter = router({
+    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -30,33 +32,23 @@ export const appRouter = router({
         const { location, role } = input;
         
         try {
-          // Call Flask API service (Python scraper with full intelligence)
-          console.log(`[Scraper] Calling Flask API: ${SCRAPER_API_URL}/scrape`);
+          // Run the Python scraper v4 (comprehensive with remote-first + indirect roles)
+          const { stdout } = await execAsync(
+            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 /home/ubuntu/job_pipeline/web_runner_v4_comprehensive.py --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
+            { 
+              maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
+              timeout: 180000, // 180 seconds timeout (comprehensive scraper)
+              cwd: '/home/ubuntu/job_pipeline',
+              shell: '/bin/bash' // Explicitly specify shell
+            }
+          );
           
-          const response = await fetch(`${SCRAPER_API_URL}/scrape`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ role, location }),
-          });
+          // Parse the JSON output from the scraper
+          const result = JSON.parse(stdout);
           
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Flask API error: ${response.status} - ${errorText}`);
-          }
-          
-          // Parse JSON response from Flask API
-          const result = await response.json();
-          
-          return {
-            status: result.status,
-            params: result.params,
-            stats: result.stats,
-            jobs: result.jobs,
-          };
+          return result;
         } catch (error: any) {
-          console.error("[Scraper] Error:", error);
+          console.error("Scraper error:", error);
           throw new Error(error.message || "Failed to run scraper");
         }
       }),
