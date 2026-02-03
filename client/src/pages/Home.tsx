@@ -22,14 +22,20 @@ interface Job {
 
 interface ScraperResult {
   status: string;
-  timestamp: string;
+  timestamp?: string;
   params: {
     location: string;
     role: string;
+    target_roles?: string[];
+    profile?: string;
   };
   stats: {
     scraped: number;
-    filtered: number;
+    unique: number;
+    mission_driven: number;
+    salary_match: number;
+    top_matches: number;
+    filtered?: number;  // For backward compatibility
   };
   jobs: Job[];
 }
@@ -42,7 +48,8 @@ export default function Home() {
   const scrapeMutation = trpc.scraper.runScraper.useMutation({
     onSuccess: (data) => {
       setResult(data);
-      toast.success(`Found ${data.stats.filtered} jobs!`);
+      const jobCount = data.stats.top_matches || data.stats.filtered || data.jobs.length;
+      toast.success(`Found ${jobCount} high-quality matches!`);
     },
     onError: (error) => {
       toast.error("Scraping failed: " + error.message);
@@ -228,7 +235,7 @@ export default function Home() {
                               <AlertCircle className="h-3 w-3" /> Ghost Risk: {job.ghost_risk}%
                             </Badge>
                           )}
-                          {job.excitement_factors.map((factor, j) => (
+                          {job.excitement_factors?.map((factor, j) => (
                             <Badge key={j} variant="secondary" className="bg-primary/5 text-primary border-primary/10">
                               {factor}
                             </Badge>

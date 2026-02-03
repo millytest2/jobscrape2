@@ -32,12 +32,12 @@ export const appRouter = router({
         const { location, role } = input;
         
         try {
-          // Run the Python scraper
+          // Run the Python scraper v4 (comprehensive with remote-first + indirect roles)
           const { stdout } = await execAsync(
-            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 /home/ubuntu/job_pipeline/web_runner_fast.py "${location}" "${role}"`,
+            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 /home/ubuntu/job_pipeline/web_runner_v4_comprehensive.py --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
             { 
               maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
-              timeout: 60000, // 60 seconds timeout (fast scraper)
+              timeout: 180000, // 180 seconds timeout (comprehensive scraper)
               cwd: '/home/ubuntu/job_pipeline',
               shell: '/bin/bash' // Explicitly specify shell
             }
