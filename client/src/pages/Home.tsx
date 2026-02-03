@@ -13,8 +13,10 @@ interface Job {
   location: string;
   url: string;
   final_score: number;
+  landing_probability?: number;  // NEW: Probability of landing (0-100)
   source: string;
   ghost_risk: number;
+  ghost_factors?: string[];  // NEW: Ghost job risk factors
   excitement_factors: string[];
 }
 
@@ -201,10 +203,15 @@ export default function Home() {
                             </div>
                           </div>
                           <div className="flex flex-col items-end gap-2">
-                            <Badge variant={job.final_score > 80 ? "default" : "secondary"} className="font-mono text-lg px-3 py-1">
-                              {Math.round(job.final_score)}%
+                            <Badge 
+                              variant={job.landing_probability && job.landing_probability > 80 ? "default" : "secondary"} 
+                              className="font-mono text-lg px-3 py-1"
+                            >
+                              {Math.round(job.landing_probability || job.final_score)}%
                             </Badge>
-                            <span className="text-xs text-muted-foreground font-mono uppercase">Match Score</span>
+                            <span className="text-xs text-muted-foreground font-mono uppercase">
+                              {job.landing_probability ? "Landing Probability" : "Match Score"}
+                            </span>
                           </div>
                         </div>
                         
