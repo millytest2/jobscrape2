@@ -98,3 +98,14 @@
 - [x] Test on dev server: 103 jobs scraped → 20 top matches (75-80% landing probability)
 - [x] Verify system works on backend (no CORS issues)
 - [x] Ready for production deployment (no external Flask API needed)
+
+## Revert to Python Flask API (Completed)
+- [x] Discovered Node.js scraper was returning irrelevant results (ML Engineer, QA Engineer for Sales Engineer search)
+- [x] Tested Python Flask API - still working perfectly (144 jobs → 20 relevant matches, 61-79% landing probability)
+- [x] Reverted server/routers.ts to call Flask API instead of Node.js scraper
+- [x] Exposed Flask API on port 5000 with public URL
+- [x] Tested end-to-end in browser: 144 jobs scraped → 20 top Sales Engineer/Solutions Engineer matches
+- [x] Verified results match Miles' profile (Sales Engineer, Solutions Engineer, Technical Sales roles)
+- [x] Verified landing probability is realistic (61-79% for relevant roles)
+- [x] Verified mission-driven filtering working (Cisco, Netflix, Adobe, SpaceX, Headspace)
+- [x] System now uses working Python scraper with full intelligence (multi-role search, salary filtering, ghost detection)
