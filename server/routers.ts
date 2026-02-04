@@ -5,6 +5,8 @@ import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const execAsync = promisify(exec);
 
@@ -33,12 +35,18 @@ export const appRouter = router({
         
         try {
           // Run the Python scraper v4 (comprehensive with remote-first + indirect roles)
+          // Use path relative to server directory (deployed with app)
+          const __filename = fileURLToPath(import.meta.url);
+          const __dirname = dirname(__filename);
+          const scraperPath = resolve(__dirname, '../python_scraper/web_runner_v4_comprehensive.py');
+          const scraperDir = resolve(__dirname, '../python_scraper');
+          
           const { stdout } = await execAsync(
-            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 /home/ubuntu/job_pipeline/web_runner_v4_comprehensive.py --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
+            `env -u PYTHONPATH -u PYTHONHOME /usr/bin/python3.11 "${scraperPath}" --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
             { 
               maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
               timeout: 180000, // 180 seconds timeout (comprehensive scraper)
-              cwd: '/home/ubuntu/job_pipeline',
+              cwd: scraperDir,
               shell: '/bin/bash' // Explicitly specify shell
             }
           );

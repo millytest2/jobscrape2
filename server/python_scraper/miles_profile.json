@@ -1,0 +1,177 @@
+{
+  "name": "Miles Tipton",
+  "email": "milestipton10@gmail.com",
+  "phone": "(310) 606-9788",
+  "github": "https://github.com/milestipton",
+  "location": "Los Angeles, CA",
+  
+  "target_roles": {
+    "direct": [
+      "Sales Engineer",
+      "Solutions Engineer",
+      "Demo Engineer",
+      "Technical Account Manager",
+      "Pre-Sales Engineer",
+      "Customer Engineer"
+    ],
+    "indirect": [
+      "Technical Sales Specialist",
+      "Technical Demo Engineer",
+      "Customer Success Engineer",
+      "Sales Development Engineer",
+      "Application Engineer",
+      "Field Engineer",
+      "Solutions Architect",
+      "Technical Consultant"
+    ]
+  },
+  
+  "skills": {
+    "technical": [
+      "React", "Django", "Redux", "Full Stack Development",
+      "Power BI", "Power Query", "Microsoft Azure", "DAX",
+      "SEO", "Marketing Funnels", "Lead Generation",
+      "AI Agents (AgentKit, Manus, n8n)",
+      "ChatGPT", "HubSpot", "Apollo.io",
+      "GPT-4", "Zapier", "Make",
+      "Google Sheets", "Airtable", "Google Maps",
+      "Web & Computer Science (Harvard CS50)"
+    ],
+    "sales": [
+      "Technical Sales", "Pre-Sales", "Solution Selling",
+      "Product Demos", "Tailored Presentations",
+      "Outbound Emails", "Cold Outreach",
+      "Lead Generation", "Copywriting",
+      "Customer Pain Point Analysis",
+      "Technical Documentation", "Training Materials",
+      "Cross-functional Collaboration",
+      "60% Open Rate Achievement",
+      "Closed $60k in 3 months"
+    ],
+    "soft": [
+      "Communication", "Presentation", "Problem-Solving",
+      "Customer-Facing", "Consultative Selling",
+      "Relationship Building", "Teamwork"
+    ]
+  },
+  
+  "experience_summary": {
+    "total_years": 3,
+    "relevant_sales_engineering_years": 2,
+    "industries": ["AI/ML", "SaaS", "Data Analytics", "IT Services"],
+    "achievements": [
+      "Generated 50+ inbound leads through SEO and LinkedIn",
+      "Built full-scale website using Manus and Framer",
+      "Created AI agents for sales and delivery automation",
+      "Reached 60% open rate in cold outreach",
+      "Presented demos to 20+ executives across diverse industries",
+      "Closed $60k in managed IT service contracts in 3 months",
+      "Built interactive dashboards (Power BI, Azure, DAX)"
+    ]
+  },
+  
+  "education": {
+    "degree": "Bachelor of Arts (BA) in Organizational Sciences",
+    "university": "The George Washington University",
+    "graduation": "May 2020",
+    "additional": [
+      "Harvard CS50 Web & Computer Science Course (October 2022)",
+      "Harvard Lifestyle & Wellness Certificate Program Coaching 2025",
+      "American's Bartending School - Bartender Certification"
+    ]
+  },
+  
+  "preferences": {
+    "salary_range": {
+      "min": 80000,
+      "max": 100000,
+      "ideal": 90000
+    },
+    "company_size": {
+      "preferred": ["startup", "small", "mid-size"],
+      "max_employees": 500,
+      "open_to_large": true,
+      "condition_for_large": "must be mission-driven, innovative, or unique"
+    },
+    "company_values": [
+      "mission-driven",
+      "innovative",
+      "unique",
+      "solving real problems",
+      "helping people",
+      "building something special",
+      "social impact",
+      "cutting-edge technology"
+    ],
+    "location": {
+      "primary": "Los Angeles, CA",
+      "remote": true,
+      "hybrid": true,
+      "willing_to_relocate": false
+    },
+    "work_style": {
+      "values": ["confident", "present", "curious", "goofy", "ambitious", "adventurous", "authentic"],
+      "ideal_role": "Technical sales role at mission-driven AI/tech company where I can demo products, build relationships, and help customers solve real problems"
+    }
+  },
+  
+  "red_flags_to_avoid": [
+    "Generic corporate roles with no clear mission",
+    "Companies with recent layoffs (unless exceptional)",
+    "Roles focused only on cold calling with no technical component",
+    "Companies with poor Glassdoor ratings (<3.5)",
+    "Roles requiring 5+ years experience (too senior)",
+    "Roles with no growth potential or learning opportunities"
+  ],
+  
+  "ideal_companies": [
+    "AI/ML startups (Series A-C)",
+    "B2B SaaS companies solving real problems",
+    "Data analytics/BI platforms",
+    "Developer tools and platforms",
+    "Healthcare tech (given research background)",
+    "EdTech (given teaching/coaching background)",
+    "Companies with strong engineering culture",
+    "Mission-driven tech companies (climate, social impact, etc.)"
+  ],
+  
+  "company_quality_criteria": {
+    "high_priority_industries": [
+      "AI/ML",
+      "SaaS",
+      "Developer Tools",
+      "Data Analytics",
+      "Healthcare Tech",
+      "EdTech",
+      "Climate Tech"
+    ],
+    "funding_stage": ["Series A", "Series B", "Series C", "Well-funded"],
+    "company_size_preference": "<500 employees (or large if mission-driven)",
+    "mission_driven_keywords": [
+      "AI", "ML", "machine learning", "artificial intelligence",
+      "SaaS", "cloud", "platform",
+      "social impact", "climate", "healthcare", "education",
+      "innovative", "cutting-edge", "transforming",
+      "developer", "open source", "community"
+    ],
+    "quality_signals": [
+      "Fast-growing",
+      "Well-funded",
+      "Strong engineering culture",
+      "Product-led growth",
+      "Innovative technology",
+      "Clear mission",
+      "Positive impact"
+    ]
+  },
+  
+  "match_criteria_weights": {
+    "company_mission_fit": 0.25,
+    "role_match": 0.20,
+    "salary_match": 0.15,
+    "company_size_fit": 0.15,
+    "location_fit": 0.10,
+    "growth_potential": 0.10,
+    "culture_fit": 0.05
+  }
+}

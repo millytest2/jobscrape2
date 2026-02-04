@@ -40,3 +40,20 @@
 - **Scraping time**: ~3 minutes
 - **Cost**: $0 (100% FREE)
 - **Architecture**: execAsync (Node.js → Python directly)
+
+## 🎯 Implement Tiered Search (In Progress)
+- [ ] Update Python scraper to search for EXACT role title first
+- [ ] Count exact matches found
+- [ ] If <10 exact matches, add alternative/related roles to reach 20 total
+- [ ] Always rank exact matches higher (100 points) than alternatives (80 points)
+- [ ] Make this work universally for ANY role (Sales Engineer, Product Manager, Data Scientist, etc.)
+- [ ] Test with "Sales Engineer" to verify exact matches appear first
+- [ ] Test with other roles to verify universal functionality
+
+
+## 📦 Deploy Python Scraper to Production (Completed)
+- [x] Copy entire Python scraper directory into web app (`/home/ubuntu/job-scraper-app/server/python_scraper/`)
+- [x] Update server/routers.ts to use new path (`server/python_scraper/web_runner_v4_comprehensive.py`)
+- [x] Verified Python scraper works from new location (manual test: 92+ jobs found)
+- [x] Save checkpoint with deployed Python scraper (ready for production)
+- [ ] Test on published site to verify Python scraper works

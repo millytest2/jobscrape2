@@ -1,0 +1,710 @@
+{
+  "98cbbcaaf273f9d3f4493960d767b868": {
+    "company": "Google",
+    "title": "Sales Engineer",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:27:42.085893",
+    "last_seen": "2026-02-03T14:27:42.086122",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://example.com/job1",
+      "https://example.com/job2"
+    ]
+  },
+  "ec01171b60f8918906388326c0038b4b": {
+    "company": "Netflix",
+    "title": "Solutions Software Engineer 5",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.362305",
+    "last_seen": "2026-02-03T14:35:04.920221",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Solutions+Engineer&htidocid=8YV2qx3Up9GCVnZjAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXMsQrCQAwAUFz7CZ0yi96J2EWnIiKIuPQDyrWk1ysxOZqI_Qt_WV3e-IrPqjg0Qi9LwgqNDPYOM8KFY2LEGSrYwk06UAxzP4IwXEUiYXkazbIevVclF9WCpd718vTC2MniJ-n0T6vjL8wUDNt9tVtc5rguH2gDpQUSw10Uao5IqBs411_aN5v6kgAAAA&shmds=v1_ATWGeeObveSJdTzdbuYBrhjtMAeJAzAdmY0SFPodBlva_hR1rg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Solutions+Engineer&htidocid=8YV2qx3Up9GCVnZjAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Solutions+Engineer&htidocid=8YV2qx3Up9GCVnZjAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXMsQrCQAwAUFz7CZ0yi96J2EWnIiKIuPQDyrWk1ysxOZqI_Qt_WV3e-IrPqjg0Qi9LwgqNDPYOM8KFY2LEGSrYwk06UAxzP4IwXEUiYXkazbIevVclF9WCpd718vTC2MniJ-n0T6vjL8wUDNt9tVtc5rguH2gDpQUSw10Uao5IqBs411_aN5v6kgAAAA&shmds=v1_ATWGeeObveSJdTzdbuYBrhjtMAeJAzAdmY0SFPodBlva_hR1rg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Solutions+Engineer&htidocid=8YV2qx3Up9GCVnZjAAAAAA%3D%3D"
+    ]
+  },
+  "3bbc956ab5c2246ef03db1d9b6b7f0eb": {
+    "company": "Salesforce",
+    "title": "AI Solutions Engineer: Forward-Deployed (Early Career)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.363111",
+    "last_seen": "2026-02-03T14:35:04.922229",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Solutions+Engineer&htidocid=R8EDas_pIyN2pZzGAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xWMQQrCMBAA8donCMIeVWwjgpd6KrWKoqc-oKTpmkZiNmQjtm_yk9bLHGZgku8suRcXqMm-oyHHUDltHGLI4UThI0OXHtFbGrGDZSWDHaGUYeorSOFKLTDKoHogB2cibXF-6GP0nAvBbDPNUUajMkUvQQ5bGsSTWv6j4X4aeSsjNrv9dsi80-tFLS3yg4JCMA5uxFA4jZPbQFn8AARYru2uAAAA&shmds=v1_ATWGeePoG5LtaEusG0AjOLHOI2OhVtk5VYVMUSTaY8PF2VketA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Solutions+Engineer&htidocid=R8EDas_pIyN2pZzGAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Solutions+Engineer&htidocid=R8EDas_pIyN2pZzGAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xWMQQrCMBAA8donCMIeVWwjgpd6KrWKoqc-oKTpmkZiNmQjtm_yk9bLHGZgku8suRcXqMm-oyHHUDltHGLI4UThI0OXHtFbGrGDZSWDHaGUYeorSOFKLTDKoHogB2cibXF-6GP0nAvBbDPNUUajMkUvQQ5bGsSTWv6j4X4aeSsjNrv9dsi80-tFLS3yg4JCMA5uxFA4jZPbQFn8AARYru2uAAAA&shmds=v1_ATWGeePoG5LtaEusG0AjOLHOI2OhVtk5VYVMUSTaY8PF2VketA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Solutions+Engineer&htidocid=R8EDas_pIyN2pZzGAAAAAA%3D%3D"
+    ]
+  },
+  "4cabf55603409baad7dc27d30115dfe1": {
+    "company": "Keywords Studios",
+    "title": "Enterprise Technical Account Manager",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.363714",
+    "last_seen": "2026-02-03T14:35:04.923663",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=SFzn3fdiRbnbOfNtAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXFvQrCMBAAYFz7CE4HbqKNCC46FRHBn0n3kqZHEol3IXfF-jS-qrp8X_WZVLsDKZZcoiDc0QWKziZonOOBFK6WrMcCSzhxB4K2uABMcGT2Cae7oJpla4xIqr2o1ehqx0_DhB2P5sGd_Gkl2II5WcV2vVmNdSY_n53x_eLSC9x06CMLRILLr4Y8JpQF7Jsv4ffkF6IAAAA&shmds=v1_ATWGeeOBlnOOgzgHgTTp7eGxMDpJBJ90L5juqwC6GGkM3oAiPg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=SFzn3fdiRbnbOfNtAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=SFzn3fdiRbnbOfNtAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXFvQrCMBAAYFz7CE4HbqKNCC46FRHBn0n3kqZHEol3IXfF-jS-qrp8X_WZVLsDKZZcoiDc0QWKziZonOOBFK6WrMcCSzhxB4K2uABMcGT2Cae7oJpla4xIqr2o1ehqx0_DhB2P5sGd_Gkl2II5WcV2vVmNdSY_n53x_eLSC9x06CMLRILLr4Y8JpQF7Jsv4ffkF6IAAAA&shmds=v1_ATWGeeOBlnOOgzgHgTTp7eGxMDpJBJ90L5juqwC6GGkM3oAiPg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=SFzn3fdiRbnbOfNtAAAAAA%3D%3D"
+    ]
+  },
+  "a614aebc3513ed09d68592c1a75564d6": {
+    "company": "TechBiz Global GmbH",
+    "title": "Senior Technical Account Manager",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.364437",
+    "last_seen": "2026-02-03T14:35:04.925543",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=ppWw_K6SJ_F-f2SPAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXNsQrCMBAAUFz7CU43OYg2IoigU3WoiE66l0s4kkh6V3IRih_jt2qXt77qO6v2D-IoGZ7kAkeHCRrn5M0F7sjoKcMarmJBCbMLIAytiE80P4ZSBj0Yo5pqrwVLdLWT3giTldG8xOpEpwEzDQkLddvdZqwH9svF1J3iB9ok9n-2vb1AZLiJQsOeEukKzs0PFHRQw6EAAAA&shmds=v1_ATWGeeO0gmZKqsB6GNSrKU2qiA_vtm2qNcqOi3htQ7AKUEe59A&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=ppWw_K6SJ_F-f2SPAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=ppWw_K6SJ_F-f2SPAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXNsQrCMBAAUFz7CU43OYg2IoigU3WoiE66l0s4kkh6V3IRih_jt2qXt77qO6v2D-IoGZ7kAkeHCRrn5M0F7sjoKcMarmJBCbMLIAytiE80P4ZSBj0Yo5pqrwVLdLWT3giTldG8xOpEpwEzDQkLddvdZqwH9svF1J3iB9ok9n-2vb1AZLiJQsOeEukKzs0PFHRQw6EAAAA&shmds=v1_ATWGeeO0gmZKqsB6GNSrKU2qiA_vtm2qNcqOi3htQ7AKUEe59A&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=ppWw_K6SJ_F-f2SPAAAAAA%3D%3D"
+    ]
+  },
+  "b50addde11f6ada9f70212db7d8e58c7": {
+    "company": "DataVisor",
+    "title": "Sr. Technical Account Manager - Japan",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.365168",
+    "last_seen": "2026-02-03T14:35:04.927334",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=_7nJw59HyLBVGwMeAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXFsQoCMQwAUFzvE8Qhs2grgou6FAVBdFJcj1wJbaUmpalwv-Lfyi3vdb9Zd3xUA0_ykZPHDM57-XKDOzIGqrCGKxbkaRlACauPIAwXkZBpfoitFd1bq5pN0IYteePlY4VpkNG-ZdCJXiNWKhkb9dvdZjSFw3JxxoavpFIhMdxEwXGgTLqCk_sDSovuHJwAAAA&shmds=v1_ATWGeeOMg0yW7xW9lGusT2IjYuPDfw_luBPL3zmGRQ7ibSiq1Q&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=_7nJw59HyLBVGwMeAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=_7nJw59HyLBVGwMeAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXFsQoCMQwAUFzvE8Qhs2grgou6FAVBdFJcj1wJbaUmpalwv-Lfyi3vdb9Zd3xUA0_ykZPHDM57-XKDOzIGqrCGKxbkaRlACauPIAwXkZBpfoitFd1bq5pN0IYteePlY4VpkNG-ZdCJXiNWKhkb9dvdZjSFw3JxxoavpFIhMdxEwXGgTLqCk_sDSovuHJwAAAA&shmds=v1_ATWGeeOMg0yW7xW9lGusT2IjYuPDfw_luBPL3zmGRQ7ibSiq1Q&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=_7nJw59HyLBVGwMeAAAAAA%3D%3D"
+    ]
+  },
+  "89a81bd45ffb5a36999f891761fda339": {
+    "company": "Northbeam",
+    "title": "Enterprise Technical Account Manager: Growth & Retention",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.365740",
+    "last_seen": "2026-02-03T14:35:04.928681",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=WNvCxjS5m9kolepVAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXHvQrCMBAAYFz7COJwk4NoI4KLTkWkIP6AuJc0HEkkvQu5E_tQPqS6fPBVn0l1O5JiySUKwgNdoOhsgsY5fpHCxZL1WHbQFn5rgDncUZE0MsEKTtyDoC0uwO8ts0843QfVLDtjRFLtRa1GVzseDBP2PJon9_Knk2AL5mQVu812PdaZ_GJ25aKhRztAJDizQEMeE8oSDs0X1PIbv68AAAA&shmds=v1_ATWGeePSTcSwTk0GjHZ8_k95CcpziEdMe9iRV4z7ohe7n7wgpg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=WNvCxjS5m9kolepVAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=WNvCxjS5m9kolepVAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXHvQrCMBAAYFz7COJwk4NoI4KLTkWkIP6AuJc0HEkkvQu5E_tQPqS6fPBVn0l1O5JiySUKwgNdoOhsgsY5fpHCxZL1WHbQFn5rgDncUZE0MsEKTtyDoC0uwO8ts0843QfVLDtjRFLtRa1GVzseDBP2PJon9_Knk2AL5mQVu812PdaZ_GJ25aKhRztAJDizQEMeE8oSDs0X1PIbv68AAAA&shmds=v1_ATWGeePSTcSwTk0GjHZ8_k95CcpziEdMe9iRV4z7ohe7n7wgpg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=WNvCxjS5m9kolepVAAAAAA%3D%3D"
+    ]
+  },
+  "83c71afb5815c3afe4c485d8334dd974": {
+    "company": "Leapfin",
+    "title": "Technical Account Manager, Accounting Solutions",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.366201",
+    "last_seen": "2026-02-03T14:35:04.930401",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=H-4pVbVprn5cU1rqAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_zXIsQrCMBCAYVz7COJws9RGBBedilBBdKp7uR4xicS7kEuh7-OLqoPw8w1_9V5U3d2S50AYoSWSiQvckNHZXP9HYAe9xKkEYYUNXGQEtZjJgzCcRVy0y6MvJenBGNXYOC1YAjUkLyNsR5nNU0b9MajHbFPEYofdfjs3id16dbWYHoHhW48MXUamoCQ1nNoP1G1gy6YAAAA&shmds=v1_ATWGeeM6LIG9epgznuCCa0als4afqAvATfZXwObqdBH-PDKRjA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=H-4pVbVprn5cU1rqAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Technical+Account+Manager&htidocid=H-4pVbVprn5cU1rqAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_zXIsQrCMBCAYVz7COJws9RGBBedilBBdKp7uR4xicS7kEuh7-OLqoPw8w1_9V5U3d2S50AYoSWSiQvckNHZXP9HYAe9xKkEYYUNXGQEtZjJgzCcRVy0y6MvJenBGNXYOC1YAjUkLyNsR5nNU0b9MajHbFPEYofdfjs3id16dbWYHoHhW48MXUamoCQ1nNoP1G1gy6YAAAA&shmds=v1_ATWGeeM6LIG9epgznuCCa0als4afqAvATfZXwObqdBH-PDKRjA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Technical+Account+Manager&htidocid=H-4pVbVprn5cU1rqAAAAAA%3D%3D"
+    ]
+  },
+  "b4aab107c3802d5694ba37e55568f683": {
+    "company": "Hubspot",
+    "title": "Manager, Solutions Engineering",
+    "times_seen": 4,
+    "first_seen": "2026-02-03T14:29:53.366706",
+    "last_seen": "2026-02-03T14:35:04.931939",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://weworkremotely.com/remote-jobs/hubspot-manager-solutions-engineering",
+      "https://weworkremotely.com/remote-jobs/hubspot-manager-solutions-engineering",
+      "https://weworkremotely.com/remote-jobs/hubspot-manager-solutions-engineering",
+      "https://weworkremotely.com/remote-jobs/hubspot-manager-solutions-engineering"
+    ]
+  },
+  "bbb3f2683a970597330258cb414286f0": {
+    "company": "Craigslist Posting",
+    "title": "\"WANTED:  Real Estate Investing Trainee $195k to $325k First Year\"",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.367083",
+    "last_seen": "2026-02-03T14:35:04.933308",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://losangeles.craigslist.org/wst/sls/d/los-angeles-wanted-real-estate/7912410195.html",
+      "https://losangeles.craigslist.org/wst/sls/d/los-angeles-wanted-real-estate/7912410195.html"
+    ]
+  },
+  "fbcc0f4055f5f6aead857db0f0aad794": {
+    "company": "Saint-Gobain",
+    "title": "District Sales Manager - Seals - Greater Phoenix, AZ, Indianapolis, Indiana or Cincinnati, OH Areas",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.367531",
+    "last_seen": "2026-02-03T14:35:04.934689",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/saintgobain/district-sales-manager-seals-greater-phoenix-az-indianapolis-indiana-or-cincinnati-oh-areas",
+      "https://www.themuse.com/jobs/saintgobain/district-sales-manager-seals-greater-phoenix-az-indianapolis-indiana-or-cincinnati-oh-areas"
+    ]
+  },
+  "105fa10dd20d1f3601c641e619d26389": {
+    "company": "Henry Schein",
+    "title": "Inbound Sales Representative, Oral Surgery",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.368110",
+    "last_seen": "2026-02-03T14:35:04.936142",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/henryschein/inbound-sales-representative-oral-surgery",
+      "https://www.themuse.com/jobs/henryschein/inbound-sales-representative-oral-surgery"
+    ]
+  },
+  "77c6704808d44c927cc0a7dc77d92468": {
+    "company": "Allstate",
+    "title": "Licensed Inside Sales Representative (Remote - Home Based Work)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.368879",
+    "last_seen": "2026-02-03T14:35:04.937742",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/allstate/licensed-inside-sales-representative-remote-home-based-work-310850",
+      "https://www.themuse.com/jobs/allstate/licensed-inside-sales-representative-remote-home-based-work-310850"
+    ]
+  },
+  "c9d732e41e349e7d35c7e5e9f25df5de": {
+    "company": "GANNETT",
+    "title": "Director, Sales - National Brands Professional Services",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.369786",
+    "last_seen": "2026-02-03T14:35:04.939433",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/gannett/director-sales-national-brands-professional-services",
+      "https://www.themuse.com/jobs/gannett/director-sales-national-brands-professional-services"
+    ]
+  },
+  "42d62cf0f12b85175c9f1c845f4333fb": {
+    "company": "Model N",
+    "title": "Regional Sales Manager - New Business Sales - Strategic Accounts",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.370527",
+    "last_seen": "2026-02-03T14:35:04.941267",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/modeln/regional-sales-manager-new-business-sales-strategic-accounts",
+      "https://www.themuse.com/jobs/modeln/regional-sales-manager-new-business-sales-strategic-accounts"
+    ]
+  },
+  "9ba4dc604e461d5b4ad6992967abbe4b": {
+    "company": "CSL",
+    "title": "Sales Representative (m/f/x) - Impfstoffe (Gebiet: Osnabr\u00fcck, Halle (Westf.), M\u00fcnster (Westf.))",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.371264",
+    "last_seen": "2026-02-03T14:35:04.943307",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/csl/sales-representative-mfx-impfstoffe-gebiet-osnabruck-halle-westf-munster-westf",
+      "https://www.themuse.com/jobs/csl/sales-representative-mfx-impfstoffe-gebiet-osnabruck-halle-westf-munster-westf"
+    ]
+  },
+  "bc0167e4e032e627626a1f6aa16a6e33": {
+    "company": "iRhythm Technologies",
+    "title": "Territory Sales Manager - Netherlands",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.372013",
+    "last_seen": "2026-02-03T14:35:04.945392",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/irhythmtechnologies/territory-sales-manager-netherlands",
+      "https://www.themuse.com/jobs/irhythmtechnologies/territory-sales-manager-netherlands"
+    ]
+  },
+  "de5d220d5c52e5a4625d4fcb2c54ad78": {
+    "company": "Atlassian",
+    "title": "Solutions Sales Executive, ITSM (Japanese Speaking)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.372708",
+    "last_seen": "2026-02-03T14:35:04.946910",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/atlassian/solutions-sales-executive-itsm-japanese-speaking-038227",
+      "https://www.themuse.com/jobs/atlassian/solutions-sales-executive-itsm-japanese-speaking-038227"
+    ]
+  },
+  "c8c011f696d89b6d0cfd32605d9815ca": {
+    "company": "Bluebeam",
+    "title": "Sales Director, Americas",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.373420",
+    "last_seen": "2026-02-03T14:35:04.948434",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/bluebeam/sales-director-americas",
+      "https://www.themuse.com/jobs/bluebeam/sales-director-americas"
+    ]
+  },
+  "a7477db0a2b83d791d17d2c50eddd155": {
+    "company": "J. J. Keller & Associates, Inc.",
+    "title": "Inside Sales Representative",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.374116",
+    "last_seen": "2026-02-03T14:35:04.949911",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-representative-32bca5",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-representative-32bca5"
+    ]
+  },
+  "f434c10364ff2e15057465e6c7c3c5ad": {
+    "company": "J. J. Keller & Associates, Inc.",
+    "title": "Inside Sales - Work from Home",
+    "times_seen": 6,
+    "first_seen": "2026-02-03T14:29:53.374815",
+    "last_seen": "2026-02-03T14:35:04.957240",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-work-from-home-b60ca1",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-work-from-home-dc8e8a",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-work-from-home-cc4fe4",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-work-from-home-b60ca1",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-work-from-home-dc8e8a",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/inside-sales-work-from-home-cc4fe4"
+    ]
+  },
+  "8df19a0adfaec1620d7951ae7b653365": {
+    "company": "Henry Schein",
+    "title": "Field Sales Consultant, Dental - Connecticut",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.376372",
+    "last_seen": "2026-02-03T14:35:04.955582",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/henryschein/field-sales-consultant-dental-connecticut-952d18",
+      "https://www.themuse.com/jobs/henryschein/field-sales-consultant-dental-connecticut-952d18"
+    ]
+  },
+  "99b449ba1e954ba5c66d0b0d2f66dffb": {
+    "company": "Autodesk",
+    "title": "Technical Sales Manager AEC",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.379035",
+    "last_seen": "2026-02-03T14:35:04.958693",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/autodesk/technical-sales-manager-aec",
+      "https://www.themuse.com/jobs/autodesk/technical-sales-manager-aec"
+    ]
+  },
+  "101610c6b097f9537e2e83db4d427547": {
+    "company": "CSL",
+    "title": "Sales Representative (m/f/x) - Impfstoffe (Gebiet: Coburg, Erlangen, F\u00fcrth)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.379832",
+    "last_seen": "2026-02-03T14:35:04.960152",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/csl/sales-representative-mfx-impfstoffe-gebiet-coburg-erlangen-furth",
+      "https://www.themuse.com/jobs/csl/sales-representative-mfx-impfstoffe-gebiet-coburg-erlangen-furth"
+    ]
+  },
+  "17f267d2cbc0a7e011049a641000355f": {
+    "company": "J. J. Keller & Associates, Inc.",
+    "title": "Sales Development Representative (Sales Academy)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.380660",
+    "last_seen": "2026-02-03T14:35:04.961638",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/sales-development-representative-sales-academy-182f14",
+      "https://www.themuse.com/jobs/jjkellerassociatesinc/sales-development-representative-sales-academy-182f14"
+    ]
+  },
+  "a270260b3919479ed105687f0300f400": {
+    "company": "KeepTruckin",
+    "title": "Sales Engineer - Mid Market",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:29:53.381426",
+    "last_seen": "2026-02-03T14:35:04.963040",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/keeptruckin/sales-engineer-mid-market-46bad1",
+      "https://www.themuse.com/jobs/keeptruckin/sales-engineer-mid-market-46bad1"
+    ]
+  },
+  "92e6a9f5d4d96a32b5ac8539a5e5f81f": {
+    "company": "JPMorgan Chase & Co",
+    "title": "Data Scientist-GenAI & Modeling-Vice President",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.209907",
+    "last_seen": "2026-02-03T14:31:51.439576",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=yoh5JGHyo7EJQM36AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXNsQrCMBCAYVz7CE4HgoPYRgQXnaRKsdBSEIROJU2PJBpzJRewr-RbWpd_-uBPvovkepFRwl1Z9NFyTAv05xusoaIBnfU6fViF0ARkO8wEUiipB0YZlAHyUBBph8uTiXHkoxDMLtMcZbQqU_QW5LGnSTyp5386NjLg6GTEbn_YTdno9WZVNhUFLT3kRjLO95zAeqjxAy2F1xbq9gcslYRfrAAAAA&shmds=v1_ATWGeePqSTFquER4ZS_cDPkCWWE2HCtnaIloGKbyL4g_5fYKfg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=yoh5JGHyo7EJQM36AAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=yoh5JGHyo7EJQM36AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXNsQrCMBCAYVz7CE4HgoPYRgQXnaRKsdBSEIROJU2PJBpzJRewr-RbWpd_-uBPvovkepFRwl1Z9NFyTAv05xusoaIBnfU6fViF0ARkO8wEUiipB0YZlAHyUBBph8uTiXHkoxDMLtMcZbQqU_QW5LGnSTyp5386NjLg6GTEbn_YTdno9WZVNhUFLT3kRjLO95zAeqjxAy2F1xbq9gcslYRfrAAAAA&shmds=v1_ATWGeePqSTFquER4ZS_cDPkCWWE2HCtnaIloGKbyL4g_5fYKfg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=yoh5JGHyo7EJQM36AAAAAA%3D%3D"
+    ]
+  },
+  "3907475d855a5ed6bb827b9e5a844f52": {
+    "company": "Disney Entertainment Television",
+    "title": "Data Scientist Intern, Summer/Fall 2026",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.210998",
+    "last_seen": "2026-02-03T14:31:51.441094",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=a5ufGRv-YvzhekS4AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXOMQ6CQBBA0dhyBKupDbKERAtNrFCjBQ02VGQhE1hdZsjOqHgpz6g0v30_-i6iQ27VQtk6JHWicCHFQDGUz2HAYE7We8jSbAtruHIDgja0PTDBmbnzuNz3qqPsjBHxSSdq1bVJy4NhwoYnc-dG5tTS24Cjt4p1tkmnZKRuZXInhB84zqhaR8P_Am7o8eXE_RFHUOAbKg6PGIrqB26lEdWxAAAA&shmds=v1_ATWGeeM6v2OyvwZHpXro_j_eOh6sWedUq1Gj2256ggkgkPwHsg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=a5ufGRv-YvzhekS4AAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=a5ufGRv-YvzhekS4AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXOMQ6CQBBA0dhyBKupDbKERAtNrFCjBQ02VGQhE1hdZsjOqHgpz6g0v30_-i6iQ27VQtk6JHWicCHFQDGUz2HAYE7We8jSbAtruHIDgja0PTDBmbnzuNz3qqPsjBHxSSdq1bVJy4NhwoYnc-dG5tTS24Cjt4p1tkmnZKRuZXInhB84zqhaR8P_Am7o8eXE_RFHUOAbKg6PGIrqB26lEdWxAAAA&shmds=v1_ATWGeeM6v2OyvwZHpXro_j_eOh6sWedUq1Gj2256ggkgkPwHsg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=a5ufGRv-YvzhekS4AAAAAA%3D%3D"
+    ]
+  },
+  "15fee4fdfa90664462dc6b70e21d421e": {
+    "company": "Digitas",
+    "title": "Senior Data Scientist",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.211654",
+    "last_seen": "2026-02-03T14:31:51.442133",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=AdDBj9dOWymYqsZsAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEsQrCMBAAUFz7A4LTzVIbEVx0LQgOXTp1KpdwJKdpruQO7Af44eIbXvPdNe1IhaVCj4YwBqZirAYneIoHJawhgRR4iMRMh3syW_XmnGruohoahy7I4qSQl829xOu_WRNWWjMazZfreevWEo_7niMbKnCBgT4wSX23MEw_c2Pi4YcAAAA&shmds=v1_ATWGeePTdRUB3t4JwKYcpi8vZ7S7tVl4yIoSCgUmEbLUfHwKOg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=AdDBj9dOWymYqsZsAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=AdDBj9dOWymYqsZsAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEsQrCMBAAUFz7A4LTzVIbEVx0LQgOXTp1KpdwJKdpruQO7Af44eIbXvPdNe1IhaVCj4YwBqZirAYneIoHJawhgRR4iMRMh3syW_XmnGruohoahy7I4qSQl829xOu_WRNWWjMazZfreevWEo_7niMbKnCBgT4wSX23MEw_c2Pi4YcAAAA&shmds=v1_ATWGeePTdRUB3t4JwKYcpi8vZ7S7tVl4yIoSCgUmEbLUfHwKOg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=AdDBj9dOWymYqsZsAAAAAA%3D%3D"
+    ]
+  },
+  "60fe6c12904bc090fb751165578ceb0e": {
+    "company": "Talent Movers",
+    "title": "Data Scientist ::Onsite in NYC, NY (Onsite)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.212413",
+    "last_seen": "2026-02-03T14:31:51.443094",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=F9GpHzoB9m_2HdFsAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXNMQrCQBBAUWxzBEGYUkWzItgknQqCoBbapAqTZUhW152wM2iO41FNtPnFb17yGSXbPSrC1ToK6kQhyy5BnBK4AOdit-gD0_-awRKOXIEQRtsABzgw157GeaPaSmaMiE9rUVRnU8tPw4Eq7sydKxlSSoORWo9K5Xqz6tI21PPJDX1vw4lfFOXH0hsKjo_B_gKuaVV7owAAAA&shmds=v1_ATWGeePt1bxhk3KCGYOGIMGx6asTN3dD55HZZHx51GlhzHDKVA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=F9GpHzoB9m_2HdFsAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=F9GpHzoB9m_2HdFsAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXNMQrCQBBAUWxzBEGYUkWzItgknQqCoBbapAqTZUhW152wM2iO41FNtPnFb17yGSXbPSrC1ToK6kQhyy5BnBK4AOdit-gD0_-awRKOXIEQRtsABzgw157GeaPaSmaMiE9rUVRnU8tPw4Eq7sydKxlSSoORWo9K5Xqz6tI21PPJDX1vw4lfFOXH0hsKjo_B_gKuaVV7owAAAA&shmds=v1_ATWGeePt1bxhk3KCGYOGIMGx6asTN3dD55HZZHx51GlhzHDKVA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=F9GpHzoB9m_2HdFsAAAAAA%3D%3D"
+    ]
+  },
+  "263cc2191caafd9363ceb29cc96eba2f": {
+    "company": "Bask Health Inc",
+    "title": "Product Data Scientist",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.213129",
+    "last_seen": "2026-02-03T14:31:51.444080",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=pFMJWlv5spgOgotKAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEvQrCMBAAYFz7CC7eLDYRwUU3EfwZiuDUqVzi0cTGXMmd2JfwncVv-KrvrKpvhR9vr3BERbj7SFmjKNRwZQdCWHwAznBi7hPN90F1lJ21Isn0oqjRG88vy5kcT_bJTv51ErDQmFCp22zXkxlzv1wcUAY4EyYNcMkeYoaGPtByGVbQtD_rZT7CkAAAAA&shmds=v1_ATWGeeN2PWzWORL7DgNtd6rk2aVyyagSJr5b2KKQGIqmkwH3hA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=pFMJWlv5spgOgotKAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=pFMJWlv5spgOgotKAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEvQrCMBAAYFz7CC7eLDYRwUU3EfwZiuDUqVzi0cTGXMmd2JfwncVv-KrvrKpvhR9vr3BERbj7SFmjKNRwZQdCWHwAznBi7hPN90F1lJ21Isn0oqjRG88vy5kcT_bJTv51ErDQmFCp22zXkxlzv1wcUAY4EyYNcMkeYoaGPtByGVbQtD_rZT7CkAAAAA&shmds=v1_ATWGeeN2PWzWORL7DgNtd6rk2aVyyagSJr5b2KKQGIqmkwH3hA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=pFMJWlv5spgOgotKAAAAAA%3D%3D"
+    ]
+  },
+  "001219cf16eaea29e178f82f2de40af0": {
+    "company": "S&P Global",
+    "title": "Sr Data Scientist\u2013 NLP, LLM and GenAI",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.213980",
+    "last_seen": "2026-02-03T14:31:51.445264",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=nga6SqFcMFUBVgj1AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEsQrCMBAAUFz7CZ1ucpDaiOCiIAhCUWopdOpULvFoozFXkgM7-g9O_p5fIr7hJZ9Zsm8CHFEQGmPJi43yfb2hKusMyvIC6K9QkD-cYAln1hAJgxmAPRTMvaN0N4iMcatUjC7vo6BYkxt-KPakeVI31vFfFwcMNDoU6tab1ZSPvl-kzbyGwrFGB9ZDRU9oOdwzqNofxrUqIZwAAAA&shmds=v1_ATWGeeMe-63rP71wOZ7E8hTkuSgiqfs482yDwgi0et8jfTaxZA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=nga6SqFcMFUBVgj1AAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=nga6SqFcMFUBVgj1AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEsQrCMBAAUFz7CZ1ucpDaiOCiIAhCUWopdOpULvFoozFXkgM7-g9O_p5fIr7hJZ9Zsm8CHFEQGmPJi43yfb2hKusMyvIC6K9QkD-cYAln1hAJgxmAPRTMvaN0N4iMcatUjC7vo6BYkxt-KPakeVI31vFfFwcMNDoU6tab1ZSPvl-kzbyGwrFGB9ZDRU9oOdwzqNofxrUqIZwAAAA&shmds=v1_ATWGeeMe-63rP71wOZ7E8hTkuSgiqfs482yDwgi0et8jfTaxZA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=nga6SqFcMFUBVgj1AAAAAA%3D%3D"
+    ]
+  },
+  "53486d91f53797d3ccb5c1acef4c0a64": {
+    "company": "Coinbase",
+    "title": "Senior Data Scientist - Product",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.214976",
+    "last_seen": "2026-02-03T14:31:51.446552",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=SypwlPPd1J1aZKswAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXGsQrCQAwAUFz7BeKUWbQngg52VBAcitCpU8mdoXdak3KJ2L_wl6XL4xW_RXFsiJNkuKAhNCERW1KDLdyzPD5h3k08KGEOEYThKtIPtKqi2agn51SHsldDS6EM8nbC5GVyT_E602nETOOARt3-sJvKkfv18iyJPSpBYqjpC63k1wbq9g-GbS6XkgAAAA&shmds=v1_ATWGeeMkYseW14B5B_ohCrcpk7XUBwyleXLcxODVhoHst0yUIQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=SypwlPPd1J1aZKswAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=SypwlPPd1J1aZKswAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXGsQrCQAwAUFz7BeKUWbQngg52VBAcitCpU8mdoXdak3KJ2L_wl6XL4xW_RXFsiJNkuKAhNCERW1KDLdyzPD5h3k08KGEOEYThKtIPtKqi2agn51SHsldDS6EM8nbC5GVyT_E602nETOOARt3-sJvKkfv18iyJPSpBYqjpC63k1wbq9g-GbS6XkgAAAA&shmds=v1_ATWGeeMkYseW14B5B_ohCrcpk7XUBwyleXLcxODVhoHst0yUIQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=SypwlPPd1J1aZKswAAAAAA%3D%3D"
+    ]
+  },
+  "364f3428155bfa871c18f24a9d97861b": {
+    "company": "Capital One",
+    "title": "Senior Data Scientist, AI Foundations",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.215882",
+    "last_seen": "2026-02-03T14:31:51.447726",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=Nr_bRtAnlKruWnTEAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXKMQ_BUBAA4Fj7E1huFvpEYsEihDDU0KlTc61L-3juXt6d6E_xc7F805d9Rtm2JPaS4ICGULae2LzaDHZnOMqLb2heWGEOF2lACVPbgzCcRLpA401vFnXtnGrIO7XfbvNWnk6YGhncXRr9U2uPiWJAo3q5Wgx55G462WP0hgGuTOAZCnpDJekxg6L6ArXcJyybAAAA&shmds=v1_ATWGeeNObghhg7ic6e8IU3-alK_VI7Yn8zEUeT5LX_s0LF8pOw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=Nr_bRtAnlKruWnTEAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=Nr_bRtAnlKruWnTEAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXKMQ_BUBAA4Fj7E1huFvpEYsEihDDU0KlTc61L-3juXt6d6E_xc7F805d9Rtm2JPaS4ICGULae2LzaDHZnOMqLb2heWGEOF2lACVPbgzCcRLpA401vFnXtnGrIO7XfbvNWnk6YGhncXRr9U2uPiWJAo3q5Wgx55G462WP0hgGuTOAZCnpDJekxg6L6ArXcJyybAAAA&shmds=v1_ATWGeeNObghhg7ic6e8IU3-alK_VI7Yn8zEUeT5LX_s0LF8pOw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=Nr_bRtAnlKruWnTEAAAAAA%3D%3D"
+    ]
+  },
+  "1111b6a02621b1af482d9bcff8f7bc6f": {
+    "company": "IBM",
+    "title": "Data Scientist - Artificial Intelligence",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.216817",
+    "last_seen": "2026-02-03T14:31:51.449001",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=1Hj_ySAwl6AqKiCQAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXJsQrCQAwAUFy7ujllFu2J4KKDKIJUsItTp5Ie8Ro9L-USsP_hD6vLW17xmRT7ExrCzTMlYzVYwiEb39kzRqiSUYwcKHn6zUU6UMLse5AEZ5EQabbrzQbdOqcay6CGxr708nKSqJPRPaTTP632mGmIaNSuN6uxHFKYT6vjFThBTW9oJD8XUDdfd5BOk5YAAAA&shmds=v1_ATWGeeM32zzgzFru_-jWFuzgLGCfkTsPMxm4-DgqcVO_lDo7Bg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=1Hj_ySAwl6AqKiCQAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Data+Scientist&htidocid=1Hj_ySAwl6AqKiCQAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXJsQrCQAwAUFy7ujllFu2J4KKDKIJUsItTp5Ie8Ro9L-USsP_hD6vLW17xmRT7ExrCzTMlYzVYwiEb39kzRqiSUYwcKHn6zUU6UMLse5AEZ5EQabbrzQbdOqcay6CGxr708nKSqJPRPaTTP632mGmIaNSuN6uxHFKYT6vjFThBTW9oJD8XUDdfd5BOk5YAAAA&shmds=v1_ATWGeeM32zzgzFru_-jWFuzgLGCfkTsPMxm4-DgqcVO_lDo7Bg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Data+Scientist&htidocid=1Hj_ySAwl6AqKiCQAAAAAA%3D%3D"
+    ]
+  },
+  "28c534b1cac0fe1d861f810014863848": {
+    "company": "Mount Sinai Health Systems",
+    "title": "Machine Learning Engineer I - Windreich Department of Artificial Intelligence & Human Health (On Site)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.217833",
+    "last_seen": "2026-02-03T14:31:51.450340",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=XGThJ8OiK_Dze7WcAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_zWOMU7DQBBFRZsjUP0KQQQ2QqKBCglEgkgoXKBU0XiZrAfWM9buRISC-3IMloLmS695789-jmbfKwqDKOOZKatoxIPGypyxxAVeRd8ySxhwzxNlH1kdtsNddtlJEEpYqnNKElkD4wSL_UiKBVPyAacvik6cz6rqyXqUGqkuUzyaxcTHt4P7VG7atpTUxOLkEppgY2vKvR3ad-vL32zLQJmnRM7bq-vLQzNpnM9Xtq93OlGS_2L3VZzHAlGs-RMbyx_nWG9-AXIRDavrAAAA&shmds=v1_ATWGeePt-qrtRDWsw3Q7fB41GQKN-Ib7vf57VF4dGwtjKi3BdQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=XGThJ8OiK_Dze7WcAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=XGThJ8OiK_Dze7WcAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_zWOMU7DQBBFRZsjUP0KQQQ2QqKBCglEgkgoXKBU0XiZrAfWM9buRISC-3IMloLmS695789-jmbfKwqDKOOZKatoxIPGypyxxAVeRd8ySxhwzxNlH1kdtsNddtlJEEpYqnNKElkD4wSL_UiKBVPyAacvik6cz6rqyXqUGqkuUzyaxcTHt4P7VG7atpTUxOLkEppgY2vKvR3ad-vL32zLQJmnRM7bq-vLQzNpnM9Xtq93OlGS_2L3VZzHAlGs-RMbyx_nWG9-AXIRDavrAAAA&shmds=v1_ATWGeePt-qrtRDWsw3Q7fB41GQKN-Ib7vf57VF4dGwtjKi3BdQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=XGThJ8OiK_Dze7WcAAAAAA%3D%3D"
+    ]
+  },
+  "53356a520fbcf701d04aaec538d98380": {
+    "company": "Capital One Financial Corporation",
+    "title": "Senior Lead Machine Learning Engineer | New York, NY, USA",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.218832",
+    "last_seen": "2026-02-03T14:31:51.451577",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=ZDOokGOcnH14vpZ0AAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_1WOsQrCMBRFce0nOL1ZaqOCi05SVBCtQnHoJGl8JNH6XkgCdvDr_DLT0eXCgcu9J_uOskuNZNnDEeUdTlIZSziAJ0satqQTo4cPVPiGhv0zh6rJ4VpvYAoHbiGkrjLABHtm3eF4bWJ0YSVECF2hQ5TRqkLxSzBhy714cBuGuAUjPbpORrwtlrO-cKQn81I6G2UH56SxsyRJ2UQle8c-LaUbS38uP_ZT-HXFAAAA&shmds=v1_ATWGeeOOGTpFNp8MbAHGeZfex610sU6kWCFuP6aUebEbCs7bsg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=ZDOokGOcnH14vpZ0AAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=ZDOokGOcnH14vpZ0AAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_1WOsQrCMBRFce0nOL1ZaqOCi05SVBCtQnHoJGl8JNH6XkgCdvDr_DLT0eXCgcu9J_uOskuNZNnDEeUdTlIZSziAJ0satqQTo4cPVPiGhv0zh6rJ4VpvYAoHbiGkrjLABHtm3eF4bWJ0YSVECF2hQ5TRqkLxSzBhy714cBuGuAUjPbpORrwtlrO-cKQn81I6G2UH56SxsyRJ2UQle8c-LaUbS38uP_ZT-HXFAAAA&shmds=v1_ATWGeeOOGTpFNp8MbAHGeZfex610sU6kWCFuP6aUebEbCs7bsg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=ZDOokGOcnH14vpZ0AAAAAA%3D%3D"
+    ]
+  },
+  "66adde9b8c9baa1ba8620f92e08bcf4a": {
+    "company": "Amazon",
+    "title": "Machine Learning Engineer (Sponsored Products Search Sourcing, Amazon Advertising)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.219683",
+    "last_seen": "2026-02-03T14:31:51.452692",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=xYPoQA22uqmiSJQcAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_y2NsQrCQBBEsfUDLKy2VImJCDZapRBBNAipUoXLZbmcJrvh9tTg1_lpnmgzMPMezPg9Gtuz0o0lhBMqR5YM7MmEjg5mec8k7LCGi-P6rr1AHizdQM53p4McQdqpFxOk9QOdtxK2OSzhyBXITw3wwGxanO4a73vZJolIGxvxylsda-4SJqx4SK5cyTdKaZTDvlUey_VmNcQ9mcXkf2QJMnxCwe4WQVZ8ADHbd2zDAAAA&shmds=v1_ATWGeeOLNxevGx-ECzCP1cx8q01ToBRBSLAD8INjjOwsf-CzvQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=xYPoQA22uqmiSJQcAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=xYPoQA22uqmiSJQcAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_y2NsQrCQBBEsfUDLKy2VImJCDZapRBBNAipUoXLZbmcJrvh9tTg1_lpnmgzMPMezPg9Gtuz0o0lhBMqR5YM7MmEjg5mec8k7LCGi-P6rr1AHizdQM53p4McQdqpFxOk9QOdtxK2OSzhyBXITw3wwGxanO4a73vZJolIGxvxylsda-4SJqx4SK5cyTdKaZTDvlUey_VmNcQ9mcXkf2QJMnxCwe4WQVZ8ADHbd2zDAAAA&shmds=v1_ATWGeeOLNxevGx-ECzCP1cx8q01ToBRBSLAD8INjjOwsf-CzvQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=xYPoQA22uqmiSJQcAAAAAA%3D%3D"
+    ]
+  },
+  "defe597750ce8b02adbded17ba53a519": {
+    "company": "Netflix",
+    "title": "Engineering Manager, Machine Learning,  Content Representation Models (AI Foundations)",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.220452",
+    "last_seen": "2026-02-03T14:31:51.454154",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=rAi2TxzTaDUoXRQeAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_x2MPQrCQBCFsc0FBKspVWIigo1WIiqKSWGXSjbJuFndzISdFXNB7-XG5vHx_qLvKGoPpA0hOkMaMkVKo4sDVE1w4YrKUUhigD2TR_Jww86hBFLeMEHGNVqB6e4MR35T_XdlBgu4cAkS9lUDoXdi1hYn28b7TjZpKmITLcNJlVTcpkxYcp8-uZRB7tIoh51VHu-r9bJPOtLzcY7-YU0PhiDHDxTsXjHkxQ9f44ATyAAAAA&shmds=v1_ATWGeeNcWRZdUu0u5Krsgf8qKT0AzTL-8YGJtLSGfx9dDLCiPQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=rAi2TxzTaDUoXRQeAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=rAi2TxzTaDUoXRQeAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_x2MPQrCQBCFsc0FBKspVWIigo1WIiqKSWGXSjbJuFndzISdFXNB7-XG5vHx_qLvKGoPpA0hOkMaMkVKo4sDVE1w4YrKUUhigD2TR_Jww86hBFLeMEHGNVqB6e4MR35T_XdlBgu4cAkS9lUDoXdi1hYn28b7TjZpKmITLcNJlVTcpkxYcp8-uZRB7tIoh51VHu-r9bJPOtLzcY7-YU0PhiDHDxTsXjHkxQ9f44ATyAAAAA&shmds=v1_ATWGeeNcWRZdUu0u5Krsgf8qKT0AzTL-8YGJtLSGfx9dDLCiPQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=rAi2TxzTaDUoXRQeAAAAAA%3D%3D"
+    ]
+  },
+  "aafb59971fc968d3828755c1d9d69e39": {
+    "company": "Etsy",
+    "title": "Senior Software Engineer II, Machine Learning, Recommendation Ranking",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.221553",
+    "last_seen": "2026-02-03T14:31:51.455412",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=-zvpbrtgayXXM9GvAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_xWNvQrCMBSFce3s5HRnqY0ILjoXqWiHdioIJY3XJLa9tySB1sfyDY3LgfNxfpLvKnnUSJYd1PwKs3QIOWlLiA6KIoW7VCY6uKF0ZEmnUKHicUR6ymCZoJLURw47uHIHPsaUgcgvzHrAzdmEMPmTEN4PmfYhllQWBwQTdryIN3f-L6038XsaZMD2cNwv2UR6u86D_4AlKHGGhl2fQtn8ANhXMvG0AAAA&shmds=v1_ATWGeeNuWzug6WamZFyynHJfbj2eHaJxQvcUjiV7O04oPzxNWw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=-zvpbrtgayXXM9GvAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=-zvpbrtgayXXM9GvAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_xWNvQrCMBSFce3s5HRnqY0ILjoXqWiHdioIJY3XJLa9tySB1sfyDY3LgfNxfpLvKnnUSJYd1PwKs3QIOWlLiA6KIoW7VCY6uKF0ZEmnUKHicUR6ymCZoJLURw47uHIHPsaUgcgvzHrAzdmEMPmTEN4PmfYhllQWBwQTdryIN3f-L6038XsaZMD2cNwv2UR6u86D_4AlKHGGhl2fQtn8ANhXMvG0AAAA&shmds=v1_ATWGeeNuWzug6WamZFyynHJfbj2eHaJxQvcUjiV7O04oPzxNWw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=-zvpbrtgayXXM9GvAAAAAA%3D%3D"
+    ]
+  },
+  "783297b86d5cdf684dfbcc47d0502aa1": {
+    "company": "Capital One",
+    "title": "Senior AI Engineer",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.222534",
+    "last_seen": "2026-02-03T14:31:51.456615",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=aec7xPGW2b410twFAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_xXEsQrCMBAAUFz7CbrcqmgigoudRER0qINTp3IpRxKNdyEXsD_gf4tveM131iwfxFEKHK9wZh-ZqMAGbuJACcsYQBguIj7RvA21Zj1Yq5qM14o1jmaUtxUmJ5N9itN_gwYslBNWGnb77WQy-9XihDlWTHBngsjQ0Qd6Ka81dP0P0Ic4jogAAAA&shmds=v1_ATWGeeP5WsVdyoTx-i6S3_wNlC8WU_EbvK5yGgrv1L4c-oE4GA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=aec7xPGW2b410twFAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=aec7xPGW2b410twFAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_xXEsQrCMBAAUFz7CbrcqmgigoudRER0qINTp3IpRxKNdyEXsD_gf4tveM131iwfxFEKHK9wZh-ZqMAGbuJACcsYQBguIj7RvA21Zj1Yq5qM14o1jmaUtxUmJ5N9itN_gwYslBNWGnb77WQy-9XihDlWTHBngsjQ0Qd6Ka81dP0P0Ic4jogAAAA&shmds=v1_ATWGeeP5WsVdyoTx-i6S3_wNlC8WU_EbvK5yGgrv1L4c-oE4GA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=aec7xPGW2b410twFAAAAAA%3D%3D"
+    ]
+  },
+  "554a2b7eaa4f8ad40a7cf1d8a3e81a9a": {
+    "company": "DoorDash",
+    "title": "Applied Machine Learning Engineer - Causal Inference Recommendation",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.223607",
+    "last_seen": "2026-02-03T14:31:51.457935",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=QbMwWBheFH3UZ0uDAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_xWLwQ4BMRBA4-oLxGnOwlYkLpwEEYKDG5dNtzvaUjNNp2L_yw-qy0te8l7_2-vfVjEGjy2ctHGeEI6oE3mysCVbHBNMYK3fogPs6Y4JySBc0PDrhdTq7JlKceAGpJzGQfEdsw04XLqcoyyUEgmVlVxiU5VRMWHDnXpwI3_U4nTCGHTGejafdlUkOxpsmNNGiwNPcMYPXDk9x3C-_gAuiwMWtgAAAA&shmds=v1_ATWGeePtb0OiawVaqGlho1LFCKDriIZiMfQWyySgi-SjX1qDUA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=QbMwWBheFH3UZ0uDAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Machine+Learning+Engineer&htidocid=QbMwWBheFH3UZ0uDAAAAAA%3D%3D&hl=en-US&shem=bdsle,epsd1&shndl=37&shmd=H4sIAAAAAAAA_xWLwQ4BMRBA4-oLxGnOwlYkLpwEEYKDG5dNtzvaUjNNp2L_yw-qy0te8l7_2-vfVjEGjy2ctHGeEI6oE3mysCVbHBNMYK3fogPs6Y4JySBc0PDrhdTq7JlKceAGpJzGQfEdsw04XLqcoyyUEgmVlVxiU5VRMWHDnXpwI3_U4nTCGHTGejafdlUkOxpsmNNGiwNPcMYPXDk9x3C-_gAuiwMWtgAAAA&shmds=v1_ATWGeePtb0OiawVaqGlho1LFCKDriIZiMfQWyySgi-SjX1qDUA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Machine+Learning+Engineer&htidocid=QbMwWBheFH3UZ0uDAAAAAA%3D%3D"
+    ]
+  },
+  "1d4a225841f566347dfead80ebfa14f5": {
+    "company": "Amazon",
+    "title": "Applied Scientist, Sponsored Products Off-Search Sourcing",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.224676",
+    "last_seen": "2026-02-03T14:31:51.459236",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=-4noytJAxdNqAOZkAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXMsQ6CMBCA4bjyAA5ONxugxsRFJyYTByTpxERKOaBaek2vROIL-ZpiXP7hG_7ks0mqwntrsAOpDbpoOKYgPTmmsGIVqJt1ZLj3fSZRBT2CpDlo4wbI4EYt8F_JwZVosLi7jDF6PgvBbPOBo4pG55omQQ5bWsSDWv6l4VEF9FZFbI6nw5J7N-y3xaTe68s4KPEFNYVnCmX9BeYrS_CqAAAA&shmds=v1_ATWGeeNseQAZIFGmxWbG-odgmb83VUl24qO6e0VA5oRfjjbVMg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=-4noytJAxdNqAOZkAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=-4noytJAxdNqAOZkAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXMsQ6CMBCA4bjyAA5ONxugxsRFJyYTByTpxERKOaBaek2vROIL-ZpiXP7hG_7ks0mqwntrsAOpDbpoOKYgPTmmsGIVqJt1ZLj3fSZRBT2CpDlo4wbI4EYt8F_JwZVosLi7jDF6PgvBbPOBo4pG55omQQ5bWsSDWv6l4VEF9FZFbI6nw5J7N-y3xaTe68s4KPEFNYVnCmX9BeYrS_CqAAAA&shmds=v1_ATWGeeNseQAZIFGmxWbG-odgmb83VUl24qO6e0VA5oRfjjbVMg&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=-4noytJAxdNqAOZkAAAAAA%3D%3D"
+    ]
+  },
+  "9cdb49eb42c0d6eba6c1d0bcd27cdc8d": {
+    "company": "Amazon.com Services LLC",
+    "title": "Sr. Applied Scientist, Amazon Business Ads",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.225752",
+    "last_seen": "2026-02-03T14:31:51.460483",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=aaZqOECqYOCtkNGdAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yWNsQrCMBQAce0nOL1NkJqI4KJTdBCkdOnUqaTpo42meSEvavGP_EstLrfcwWWfRaaqKECF4Cx2UBmLPllOOahRv8nD6cHWIzOojmEDV2qBUUczwE9eiHqHy-OQUuCDlMxO9Jx0skYYGiV5bGmSN2p5RsODjhicTtjs9ttJBN-vV__R3EOF8WkNMhTFGayHEl9QU7znUNZfLloWuawAAAA&shmds=v1_ATWGeeMoBMtSJBwfybeio_6exjl-m_JTegC-9PkISFMFnSmP4Q&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=aaZqOECqYOCtkNGdAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=aaZqOECqYOCtkNGdAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yWNsQrCMBQAce0nOL1NkJqI4KJTdBCkdOnUqaTpo42meSEvavGP_EstLrfcwWWfRaaqKECF4Cx2UBmLPllOOahRv8nD6cHWIzOojmEDV2qBUUczwE9eiHqHy-OQUuCDlMxO9Jx0skYYGiV5bGmSN2p5RsODjhicTtjs9ttJBN-vV__R3EOF8WkNMhTFGayHEl9QU7znUNZfLloWuawAAAA&shmds=v1_ATWGeeMoBMtSJBwfybeio_6exjl-m_JTegC-9PkISFMFnSmP4Q&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=aaZqOECqYOCtkNGdAAAAAA%3D%3D"
+    ]
+  },
+  "77b712cbc3fa2acfefc9288793d05d7c": {
+    "company": "Circle",
+    "title": "Staff AI Applied Scientist",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.226686",
+    "last_seen": "2026-02-03T14:31:51.461693",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=9zLvN5CC3DvHNt0nAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEsQ7CIBAA0Lj2AxycbjYKauKiU-NgdOjSqVMDeAUUOcJdYj_Bzza-4TXfRbPvxUwTtDdoS0kRH9C7iFkiC2zhThYYTXUBKMOVyCdcnYNI4ZPWzEl5FiPRKUdvTRktzfpJlv-NHEzFkozgeDjuZlWyXy8vsbqEEDN0-IGB6msD3fAD591LrIsAAAA&shmds=v1_ATWGeeM341lMqdYIhEeQJ1FiLW6b-cSLiPCP1oVwCNBawF2rHQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=9zLvN5CC3DvHNt0nAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=9zLvN5CC3DvHNt0nAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXEsQ7CIBAA0Lj2AxycbjYKauKiU-NgdOjSqVMDeAUUOcJdYj_Bzza-4TXfRbPvxUwTtDdoS0kRH9C7iFkiC2zhThYYTXUBKMOVyCdcnYNI4ZPWzEl5FiPRKUdvTRktzfpJlv-NHEzFkozgeDjuZlWyXy8vsbqEEDN0-IGB6msD3fAD591LrIsAAAA&shmds=v1_ATWGeeM341lMqdYIhEeQJ1FiLW6b-cSLiPCP1oVwCNBawF2rHQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=9zLvN5CC3DvHNt0nAAAAAA%3D%3D"
+    ]
+  },
+  "a315de2fb8e872308d1fda68b39557fa": {
+    "company": "Uber",
+    "title": "Staff Applied Scientist, Road Safety",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.227584",
+    "last_seen": "2026-02-03T14:31:51.462795",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=MhZPMitplxv5HJPaAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXHsQrCMBAAUFw7OzndLLURwcVOToJDB4tDp3KJ1zYacyF3YP0LP1ldHrzisyjqVnEY4JhS8HSD1nmK6kVLuDD-jgPpGzZwZgtCmN0EHOHEPAZa1ZNqkoMxIqEaRVG9qxw_DUeyPJs7W_nTy4SZUkClfrffzlWK43p5tZTBR2joBR3nRwlN9wULOqq4kwAAAA&shmds=v1_ATWGeeP9HElHs_m1g0tIwDu0XV4VfZrD2P_8R54WYliyr6luaw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=MhZPMitplxv5HJPaAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=MhZPMitplxv5HJPaAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXHsQrCMBAAUFw7OzndLLURwcVOToJDB4tDp3KJ1zYacyF3YP0LP1ldHrzisyjqVnEY4JhS8HSD1nmK6kVLuDD-jgPpGzZwZgtCmN0EHOHEPAZa1ZNqkoMxIqEaRVG9qxw_DUeyPJs7W_nTy4SZUkClfrffzlWK43p5tZTBR2joBR3nRwlN9wULOqq4kwAAAA&shmds=v1_ATWGeeP9HElHs_m1g0tIwDu0XV4VfZrD2P_8R54WYliyr6luaw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=MhZPMitplxv5HJPaAAAAAA%3D%3D"
+    ]
+  },
+  "955fa2e7ee597309dbbc5c98e5f5636f": {
+    "company": "Amazon",
+    "title": "Senior Applied Scientist, Sponsored Products and Brands, Off-Search",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.228543",
+    "last_seen": "2026-02-03T14:31:51.464032",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=I-8GkuY7dYAy4nz5AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yWMsQrCMBQAce0HODi9WdpGBBed6iI4VCFTXUqavrbRNC_kRSz-lX9oxeXgbrjks0huEp2hAIX31mALUht00XBMQXpyTGGO10DtU0cG5Vo4hpmcwqXrMokq6AEyOFMD_BdycCLqLa4OQ4ye90Iw27znqKLRuaZRkMOGJnGnhn-oeVABvVUR6-1uM-Xe9etlMar3_DIOSnxBReGRQll9AfYwafC0AAAA&shmds=v1_ATWGeeMYGTWjQmAW93BaHPrWx_hIGBsKc4fFJiF8mc8WxtycRQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=I-8GkuY7dYAy4nz5AAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=I-8GkuY7dYAy4nz5AAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yWMsQrCMBQAce0HODi9WdpGBBed6iI4VCFTXUqavrbRNC_kRSz-lX9oxeXgbrjks0huEp2hAIX31mALUht00XBMQXpyTGGO10DtU0cG5Vo4hpmcwqXrMokq6AEyOFMD_BdycCLqLa4OQ4ye90Iw27znqKLRuaZRkMOGJnGnhn-oeVABvVUR6-1uM-Xe9etlMar3_DIOSnxBReGRQll9AfYwafC0AAAA&shmds=v1_ATWGeeMYGTWjQmAW93BaHPrWx_hIGBsKc4fFJiF8mc8WxtycRQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=I-8GkuY7dYAy4nz5AAAAAA%3D%3D"
+    ]
+  },
+  "9e698826f295730e590dc7bf3d7b7f2c": {
+    "company": "Amazon",
+    "title": "Applied Scientist III, Optimal Sourcing Systems",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.229642",
+    "last_seen": "2026-02-03T14:31:51.465342",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=n5aHiLpK36bLDznuAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXMoQ7CMBAA0GD3AQjUaTJWQoIBNQMZYoipKdKVS1doe03vCIN_4V8B8-QrPrPiUKfkHV6hMw6jOBZomqaEcxIXtIeOHtm4aKF7sWBgWMGJBmDU2YxAEY5E1uNiP4ok3inF7CvLosWZylBQFHGgSd1o4D8XHnXG5LXgZbNdT1WKdjmvg37_LhehxSf0lO8ltP0XS152xKAAAAA&shmds=v1_ATWGeeNhqdrzhAvG74rpiaj8Fxkc6Z39wsQCNixKfzg7fcgnxQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=n5aHiLpK36bLDznuAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=n5aHiLpK36bLDznuAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXMoQ7CMBAA0GD3AQjUaTJWQoIBNQMZYoipKdKVS1doe03vCIN_4V8B8-QrPrPiUKfkHV6hMw6jOBZomqaEcxIXtIeOHtm4aKF7sWBgWMGJBmDU2YxAEY5E1uNiP4ok3inF7CvLosWZylBQFHGgSd1o4D8XHnXG5LXgZbNdT1WKdjmvg37_LhehxSf0lO8ltP0XS152xKAAAAA&shmds=v1_ATWGeeNhqdrzhAvG74rpiaj8Fxkc6Z39wsQCNixKfzg7fcgnxQ&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=n5aHiLpK36bLDznuAAAAAA%3D%3D"
+    ]
+  },
+  "6d675d2702414f6957852ffdaad00872": {
+    "company": "Etsy",
+    "title": "Senior Applied Scientist, Market Optimization",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.230480",
+    "last_seen": "2026-02-03T14:31:51.466953",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=nabx27M319CJqXWkAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXKsQrCMBCAYVw7OzndLLURwUUnQREE69CpU0nj0Z5NcyF3YPVNfFt1-eGDP_vMsmOFgTjBIUZPeIfKEQYl0RyuNg2ocItKI72tEgdYwYVbELTJ9fDzmbnzuNj3qlF2xoj4ohP9za5wPBoO2PJkHtzKP430NmH0VrHZbNdTEUO3nJ9UXkABSnxCzWnIoay_dDFQkZwAAAA&shmds=v1_ATWGeeOhL03II1RM--UVzBwlmeCDUhaVNxNMODYzWg_aaX8wkw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=nabx27M319CJqXWkAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=nabx27M319CJqXWkAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXKsQrCMBCAYVw7OzndLLURwUUnQREE69CpU0nj0Z5NcyF3YPVNfFt1-eGDP_vMsmOFgTjBIUZPeIfKEQYl0RyuNg2ocItKI72tEgdYwYVbELTJ9fDzmbnzuNj3qlF2xoj4ohP9za5wPBoO2PJkHtzKP430NmH0VrHZbNdTEUO3nJ9UXkABSnxCzWnIoay_dDFQkZwAAAA&shmds=v1_ATWGeeOhL03II1RM--UVzBwlmeCDUhaVNxNMODYzWg_aaX8wkw&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=nabx27M319CJqXWkAAAAAA%3D%3D"
+    ]
+  },
+  "93db5bd04dead0769ecbaec1fe0bd2e0": {
+    "company": "Amazon.com",
+    "title": "Sr. Applied Scientist, Special Projects",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.231327",
+    "last_seen": "2026-02-03T14:31:51.468480",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=Yb7qtAqwJBEdvysBAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXKsQrCMBAAUFz7CZ1ulpqI4KIgdBIcipCpU0ni0aamuZA7sPgn_q10edOrfrvqZoqCNucY8AXGB0wSWBowGX2wEZ6FZvTCcIAHOWC0xU9ACe5EY8T6OolkvmjNHNXIYiV45WnRlNDRqmdyvDHwZAvmaAWH0_m4qpzGfd0u9ktp-xASdPiBnsq7ga7_A3OUmhOcAAAA&shmds=v1_ATWGeeOo14TXO5NOpuJ69zlVqGbLyXhAaTmc3RQ-fsLunzrAJA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=Yb7qtAqwJBEdvysBAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=Yb7qtAqwJBEdvysBAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_xXKsQrCMBAAUFz7CZ1ulpqI4KIgdBIcipCpU0ni0aamuZA7sPgn_q10edOrfrvqZoqCNucY8AXGB0wSWBowGX2wEZ6FZvTCcIAHOWC0xU9ACe5EY8T6OolkvmjNHNXIYiV45WnRlNDRqmdyvDHwZAvmaAWH0_m4qpzGfd0u9ktp-xASdPiBnsq7ga7_A3OUmhOcAAAA&shmds=v1_ATWGeeOo14TXO5NOpuJ69zlVqGbLyXhAaTmc3RQ-fsLunzrAJA&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=Yb7qtAqwJBEdvysBAAAAAA%3D%3D"
+    ]
+  },
+  "053ab7026f16f43621327d5dc7038820": {
+    "company": "Etsy",
+    "title": "Staff Applied Scientist, Ads Search Quality",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.232175",
+    "last_seen": "2026-02-03T14:31:51.470011",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=eFaWDrlMz1guv35VAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXIsQrCMBAAUFw7OzndLLURwUWnCiI4FKRTp5Kk1yYac6F3Yvsl_q6Iyxte9llkp1p030OZUvDYQW09RvEsOZQdQ416tA5uLx28zLCBKxngf1KEC9EQcHV0IokPSjGHYmDR4m1h6akooqFJ3cnwj5adHjEFLdju9tupSHFYL8_CM_gIFb6hofGRQ9V8AcRWQcSaAAAA&shmds=v1_ATWGeeM3e76-XSwJn30bM0TiedtfYqaPeG0fyGWEtQqlhljC8A&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=eFaWDrlMz1guv35VAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=eFaWDrlMz1guv35VAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXIsQrCMBAAUFw7OzndLLURwUWnCiI4FKRTp5Kk1yYac6F3Yvsl_q6Iyxte9llkp1p030OZUvDYQW09RvEsOZQdQ416tA5uLx28zLCBKxngf1KEC9EQcHV0IokPSjGHYmDR4m1h6akooqFJ3cnwj5adHjEFLdju9tupSHFYL8_CM_gIFb6hofGRQ9V8AcRWQcSaAAAA&shmds=v1_ATWGeeM3e76-XSwJn30bM0TiedtfYqaPeG0fyGWEtQqlhljC8A&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=eFaWDrlMz1guv35VAAAAAA%3D%3D"
+    ]
+  },
+  "e45bafaa3cf931e03641801e2115cdc1": {
+    "company": "Capital One",
+    "title": "Applied Researcher I",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.233216",
+    "last_seen": "2026-02-03T14:31:51.471685",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=MFJ2XDeNe_ALdGdEAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXIOwoCMRAAUGz3CNpM7ScRwUYrsRAtVrDbaknikI3GzJAZcG_gtUVsXvGaz6RZHJhzwjvcUNDVMGCFM6zgQh7-AVTgRBQzTveDKsvOWpFsoqjTFEygl6WCnkb7IC8_ehlcRc5Osd9s16PhEuezo-OkLsO1IKQCLb6ho_pcQtt9AcUWkr2KAAAA&shmds=v1_ATWGeeOkg0kyPI3Racu4ybpiFInTl8q2cMFiLEXj8sqimt219w&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=MFJ2XDeNe_ALdGdEAAAAAA%3D%3D",
+      "https://www.google.com/search?ibp=htl;jobs&q=Applied+Scientist&htidocid=MFJ2XDeNe_ALdGdEAAAAAA%3D%3D&hl=en-US&shem=bdsle&shndl=37&shmd=H4sIAAAAAAAA_yXIOwoCMRAAUGz3CNpM7ScRwUYrsRAtVrDbaknikI3GzJAZcG_gtUVsXvGaz6RZHJhzwjvcUNDVMGCFM6zgQh7-AVTgRBQzTveDKsvOWpFsoqjTFEygl6WCnkb7IC8_ehlcRc5Osd9s16PhEuezo-OkLsO1IKQCLb6ho_pcQtt9AcUWkr2KAAAA&shmds=v1_ATWGeeOkg0kyPI3Racu4ybpiFInTl8q2cMFiLEXj8sqimt219w&source=sh/x/job/li/m1/1#fpstate=tldetail&htivrt=jobs&htiq=Applied+Scientist&htidocid=MFJ2XDeNe_ALdGdEAAAAAA%3D%3D"
+    ]
+  },
+  "13b04865cd4ffd9ecd355871ea7c1c1d": {
+    "company": "Mixpanel",
+    "title": "Customer Success Digital Programs Manager",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.234270",
+    "last_seen": "2026-02-03T14:31:51.473135",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://remoteok.com/remote-jobs/remote-customer-success-digital-programs-manager-mixpanel-1129965",
+      "https://remoteok.com/remote-jobs/remote-customer-success-digital-programs-manager-mixpanel-1129965"
+    ]
+  },
+  "63294ca65536ecfef6f554804400e7a6": {
+    "company": "Pilotly",
+    "title": "Data Science Lead",
+    "times_seen": 2,
+    "first_seen": "2026-02-03T14:30:40.235952",
+    "last_seen": "2026-02-03T14:31:51.475406",
+    "days_active": 0,
+    "is_repost": false,
+    "urls": [
+      "https://www.themuse.com/jobs/pilotly/data-science-lead-6f5f7b",
+      "https://www.themuse.com/jobs/pilotly/data-science-lead-6f5f7b"
+    ]
+  }
+}
