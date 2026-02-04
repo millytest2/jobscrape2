@@ -17,9 +17,10 @@ async function runScrapersParallel(
   role: string,
   location: string,
   concurrency: number = 8
-): Promise<{ jobs: Job[]; errorsBySource: Record<string, string> }> {
+): Promise<{ jobs: Job[]; errorsBySource: Record<string, string>; countsBySource: Record<string, number> }> {
   const allJobs: Job[] = [];
   const errorsBySource: Record<string, string> = {};
+  const countsBySource: Record<string, number> = {};
   const sources = Object.keys(SCRAPERS);
   
   // Process sources in batches with concurrency limit
@@ -43,8 +44,10 @@ async function runScrapersParallel(
         const { sourceName, jobs, error } = result.value;
         if (error) {
           errorsBySource[sourceName] = error;
+          countsBySource[sourceName] = 0;
         } else {
           allJobs.push(...jobs);
+          countsBySource[sourceName] = jobs.length;
           console.log(`[${sourceName}] Scraped ${jobs.length} jobs`);
         }
       } else {
@@ -59,7 +62,7 @@ async function runScrapersParallel(
     }
   }
   
-  return { jobs: allJobs, errorsBySource };
+  return { jobs: allJobs, errorsBySource, countsBySource };
 }
 
 export const appRouter = router({
@@ -103,7 +106,7 @@ export const appRouter = router({
           console.log(`[Scraper] Starting scrape for "${role}" in "${location}"`);
           
           // Run all scrapers in parallel
-          const { jobs: rawJobs, errorsBySource } = await runScrapersParallel(role, location);
+          const { jobs: rawJobs, errorsBySource, countsBySource } = await runScrapersParallel(role, location);
           
           console.log(`[Scraper] Collected ${rawJobs.length} raw jobs`);
           
@@ -146,6 +149,12 @@ export const appRouter = router({
             },
             jobs: top20,
             errorsBySource,
+            countsBySource,
+            sourceBreakdown: SCRAPER_NAMES.map(name => ({
+              name,
+              count: countsBySource[name] || 0,
+              error: errorsBySource[name] || null
+            })),
           };
           
           // Cache the result

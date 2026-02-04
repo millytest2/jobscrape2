@@ -21,6 +21,12 @@ interface Job {
   scoreExplanation: string;
 }
 
+interface SourceBreakdown {
+  name: string;
+  count: number;
+  error: string | null;
+}
+
 interface ScraperResult {
   status: string;
   timestamp?: string;
@@ -39,6 +45,8 @@ interface ScraperResult {
     duration: number;
   };
   jobs: Job[];
+  sourceBreakdown?: SourceBreakdown[];
+  errorsBySource?: Record<string, string>;
 }
 
 export default function Home() {
@@ -235,6 +243,34 @@ export default function Home() {
                 </Button>
               </Card>
             </div>
+
+            {/* Source Breakdown */}
+            {result.sourceBreakdown && result.sourceBreakdown.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm font-mono uppercase tracking-wider">Source Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {result.sourceBreakdown.map((source) => (
+                      <div key={source.name} className="flex flex-col gap-1 p-3 border rounded-lg">
+                        <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                          {source.name}
+                        </div>
+                        {source.error ? (
+                          <div className="flex items-center gap-1 text-xs text-red-500">
+                            <AlertCircle className="w-3 h-3" />
+                            <span>Failed</span>
+                          </div>
+                        ) : (
+                          <div className="text-lg font-bold font-mono">{source.count}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Job List */}
             <div className="grid gap-4">

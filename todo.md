@@ -221,3 +221,47 @@
 - [x] Fix senior role filter - added isSeniorRole() function to filter.ts
 - [x] Verify experience level filter is actually being applied (maxExperienceYears: 5 added to filterOptions)
 - [ ] Test and verify 200+ jobs with NO senior roles in results (ready to test)
+
+
+## 🚨 FIX SCORING & FILTERING SYSTEM (User Report - Feb 4, 2026) - CRITICAL
+### Issues:
+- 90% match jobs in wrong location (Guadalajara vs Los Angeles)
+- Only 74 jobs scraped (target: 200+)
+- Experience filter blocking too much (title-keyword-only approach)
+- Match scores inflated and not reflecting reality
+
+### 1. Location Logic Fixes
+- [ ] Add hard location penalty: US job + non-US location = 0 score (unless Remote)
+- [ ] Add LA region list: Los Angeles, Santa Monica, Venice, Culver City, El Segundo, West Hollywood, Beverly Hills, Downtown LA, Pasadena, Burbank, Glendale, Long Beach, Torrance, Manhattan Beach, Playa Vista, Irvine, Orange County
+- [ ] Normalize locations and check against LA region
+- [ ] If job is Remote, location score can be high
+- [ ] If job is hybrid/onsite, require LA region match
+- [ ] Unknown location parsing = neutral score (not 100)
+
+### 2. Experience Filtering (Rules-Based, Not Title-Only)
+- [ ] Don't auto-exclude "Senior" titles - check description requirements first
+- [ ] DO exclude if requirements clearly exceed profile (7+ years, 5+ years for niche domains)
+- [ ] Downgrade score for Senior/Staff/Principal instead of hard delete
+- [ ] Treat "Account Manager" / "Technical Account Manager" differently from Sales Engineering
+
+### 3. Scoring Transparency
+- [ ] Show score breakdown on every job card (role, location, experience subscores + reasons)
+- [ ] Add debug toggle showing: parsedLocation, isRemote, requiredYears, senioritySignals, roleCluster
+
+### 4. Sanity Checks
+- [ ] 90% total match requires: role >= 80 AND (location >= 80 OR isRemote) AND experience >= 70
+- [ ] If any subscore is low, cap total score (max 65)
+
+### 5. Source Counts & Failure Reporting
+- [ ] Show breakdown: RemoteOK: X, WeWorkRemotely: X, Craigslist: X, Arbeitnow: X, Jooble: X, Remotive: X, SerpAPI: X, The Muse: X
+- [ ] If source returns 0, show error message
+- [ ] Surface "Not enough sources responded" if < 200 total jobs
+
+### 6. Acceptance Test
+- [ ] No top 20 job outside US unless Remote
+- [ ] At least 12/20 must be Remote OR LA region
+- [ ] At least 15/20 must be in target role cluster (Sales Engineer, Solutions Engineer, Pre-Sales, Demo Engineer, TAM-IC)
+- [ ] At least 200 total jobs scraped per run
+
+### 7. Test & Report
+- [ ] Run one scrape and report: total jobs, per-source counts, top 20 with parsedLocation/isRemote/requiredYears/score breakdown
