@@ -617,16 +617,17 @@
 **Problem:** Sources returning 0 with no errors, scoring using default values, no diversity in top 20
 
 **Logging & Error Reporting:**
-- [ ] Add SOURCE_START log with runId, sourceName, requestUrl
-- [ ] Add SOURCE_END log with runId, sourceName, durationMs, jobsReturned, errorMessage, statusCode
-- [ ] For 0-result sources, return explicit error codes: ERROR_MISSING_API_KEY, ERROR_BLOCKED_403, ERROR_PARSING_CHANGED, ERROR_TIMEOUT, ERROR_EMPTY_RESPONSE
-- [ ] Log raw HTTP status code and first 200 chars of response body for debugging
+- [x] Add SOURCE_START log with runId, sourceName, requestUrl
+- [x] Add SOURCE_END log with runId, sourceName, durationMs, jobsReturned, errorMessage, statusCode
+- [x] For 0-result sources, return explicit error codes: ERROR_MISSING_API_KEY, ERROR_BLOCKED_403, ERROR_PARSING_CHANGED, ERROR_TIMEOUT, ERROR_EMPTY_RESPONSE
+- [x] Log raw HTTP status code and first 200 chars of response body for debugging
+- [x] Added hard blocking for manufacturing/international/pure engineering jobs
 
 **Fix WeWorkRemotely (0 jobs):**
-- [ ] Validate RSS feed URL returns 200
-- [ ] Log item count found BEFORE filtering
-- [ ] If item count >0 but output 0, fix aggressive filter
-- [ ] Return explicit error if feed fails
+- [x] Validate RSS feed URL returns 200
+- [x] Log item count found BEFORE filtering
+- [x] If item count >0 but output 0, fix aggressive filter
+- [x] Added comprehensive logging with SOURCE_START/SOURCE_END
 
 **Fix Craigslist (0 jobs):**
 - [ ] Add realistic User-Agent header
@@ -652,9 +653,10 @@
 - [ ] Add scoreBreakdown debug field: parsedLocation, isRemote, requiredYears, detectedSeniority, matchedKeywordsCount, missionSignals
 
 **Add Diversity Constraints:**
-- [ ] Max 6 jobs from any single source in top 20
-- [ ] Min 8 jobs in target role cluster (Sales Engineer, Solutions Engineer, Solutions Consultant, Pre-Sales, Demo Engineer, TAM)
-- [ ] Exclude pure SDR roles unless user role includes SDR
+- [x] Max 6 jobs from any single source in top 20
+- [x] Min 8 jobs in target role cluster (Sales Engineer, Solutions Engineer, Solutions Consultant, Pre-Sales, Demo Engineer, TAM)
+- [x] Exclude pure SDR roles unless user role includes SDR
+- [x] Backfill logic to replace low-scoring non-cluster jobs if min 8 not met
 
 **Acceptance Test:**
 - [ ] Run scrape: role="Sales Engineer", location="Los Angeles, CA"

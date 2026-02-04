@@ -535,6 +535,49 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
   const requiredYears = extractRequiredYears(job);
   const maxYears = options.maxExperienceYears || 5;
   const title = job.title.toLowerCase();
+  const description = (job.description || '').toLowerCase();
+  const location = job.location.toLowerCase();
+  
+  // HARD BLOCK: Manufacturing/industrial roles
+  const manufacturingKeywords = [
+    'manufacturing', 'factory', 'production', 'assembly',
+    'warehouse', 'logistics', 'supply chain', 'operations',
+    'quality assurance', 'qa engineer', 'quality engineer',
+    'process engineer', 'industrial', 'mechanical'
+  ];
+  if (manufacturingKeywords.some(kw => title.includes(kw) || description.includes(kw))) {
+    return true; // Block manufacturing jobs
+  }
+  
+  // HARD BLOCK: Pure software engineering (not sales-focused)
+  const pureEngineeringKeywords = [
+    'software engineer', 'backend engineer', 'frontend engineer',
+    'full stack engineer', 'fullstack engineer', 'web developer',
+    'mobile developer', 'ios engineer', 'android engineer',
+    'devops engineer', 'platform engineer', 'infrastructure engineer',
+    'data engineer', 'ml engineer', 'machine learning engineer',
+    'data scientist', 'research engineer', 'security engineer'
+  ];
+  if (pureEngineeringKeywords.some(kw => title.includes(kw))) {
+    // Exception: If title also includes sales-related keywords, allow it
+    const salesKeywords = ['sales', 'pre-sales', 'presales', 'demo', 'solutions', 'customer'];
+    if (!salesKeywords.some(sk => title.includes(sk))) {
+      return true; // Block pure engineering
+    }
+  }
+  
+  // HARD BLOCK: International locations for US searches
+  if (options.targetLocation.toLowerCase().includes('los angeles') || 
+      options.targetLocation.toLowerCase().includes('california')) {
+    const internationalKeywords = [
+      'mexico', 'guadalajara', 'canada', 'toronto', 'vancouver',
+      'uk', 'london', 'europe', 'asia', 'india', 'bangalore',
+      'australia', 'brazil', 'argentina', 'colombia'
+    ];
+    if (internationalKeywords.some(kw => location.includes(kw))) {
+      return true; // Block international for US searches
+    }
+  }
   
   // HARD BLOCK: Any senior keyword in title (no exceptions for TAM/Account Manager)
   const seniorKeywords = [
@@ -566,6 +609,101 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
   }
   
   return false; // Don't exclude
+}
+
+/**
+ * Apply diversity constraints to ensure balanced top N results
+ * - Max 6 jobs from any single source
+ * - Min 8 jobs must be in target role cluster (Sales Engineer, Solutions Engineer, etc.)
+ * - Exclude pure SDR roles unless user role includes SDR
+ */
+function applyDiversityConstraints(
+  scored: FilteredJob[],
+  targetRoles: string[],
+  topN: number
+): FilteredJob[] {
+  const targetRoleCluster = [
+    'sales engineer', 'solutions engineer', 'solution engineer',
+    'pre-sales', 'presales', 'demo engineer', 'technical demo',
+    'technical account manager', 'tam', 'customer engineer',
+    'field engineer', 'sales development engineer'
+  ];
+  
+  // Check if user is targeting SDR roles
+  const userTargetsSDR = targetRoles.some(r => 
+    r.toLowerCase().includes('sdr') || 
+    r.toLowerCase().includes('sales development representative')
+  );
+  
+  const result: FilteredJob[] = [];
+  const sourceCount: { [source: string]: number } = {};
+  let roleClusterCount = 0;
+  
+  for (const job of scored) {
+    if (result.length >= topN) break;
+    
+    const source = job.source;
+    const title = job.title.toLowerCase();
+    
+    // Check if job is in target role cluster
+    const isInRoleCluster = targetRoleCluster.some(role => title.includes(role));
+    
+    // Check if job is pure SDR (and user doesn't want SDR)
+    const isPureSDR = !userTargetsSDR && (
+      title.includes('sdr') || 
+      title.includes('sales development representative') ||
+      (title.includes('business development') && !title.includes('engineer'))
+    );
+    
+    // Skip pure SDR if user doesn't want them
+    if (isPureSDR) {
+      continue;
+    }
+    
+    // Check source diversity constraint (max 6 per source)
+    const currentSourceCount = sourceCount[source] || 0;
+    if (currentSourceCount >= 6) {
+      continue; // Skip if source already has 6 jobs
+    }
+    
+    // Add job
+    result.push(job);
+    sourceCount[source] = currentSourceCount + 1;
+    if (isInRoleCluster) roleClusterCount++;
+  }
+  
+  // Verify min 8 in role cluster constraint
+  if (roleClusterCount < 8 && result.length >= topN) {
+    console.warn(`[FILTER] Diversity constraint violated: only ${roleClusterCount} jobs in role cluster (min 8 required)`);
+    // Try to backfill with role cluster jobs that were skipped due to source diversity
+    const backfill: FilteredJob[] = [];
+    for (const job of scored) {
+      if (result.includes(job)) continue;
+      const title = job.title.toLowerCase();
+      const isInRoleCluster = targetRoleCluster.some(role => title.includes(role));
+      if (isInRoleCluster) {
+        backfill.push(job);
+        roleClusterCount++;
+        if (roleClusterCount >= 8) break;
+      }
+    }
+    // Replace lowest-scoring non-cluster jobs with backfill
+    if (backfill.length > 0) {
+      const nonClusterJobs = result.filter(j => {
+        const title = j.title.toLowerCase();
+        return !targetRoleCluster.some(role => title.includes(role));
+      }).sort((a, b) => a.score - b.score); // Sort by score ascending
+      
+      for (let i = 0; i < Math.min(backfill.length, nonClusterJobs.length); i++) {
+        const indexToReplace = result.indexOf(nonClusterJobs[i]);
+        result[indexToReplace] = backfill[i];
+      }
+    }
+  }
+  
+  console.log(`[FILTER] Diversity applied: ${result.length} jobs, ${roleClusterCount} in role cluster, sources:`, sourceCount);
+  
+  return result;
 }
 
 /**
@@ -639,5 +777,8 @@ export function rankJobs(
   // Sort by score descending
   scored.sort((a, b) => b.score - a.score);
   
-  return scored.slice(0, topN);
+  // Apply diversity constraints
+  const diversified = applyDiversityConstraints(scored, options.targetRoles, topN);
+  
+  return diversified;
 }
