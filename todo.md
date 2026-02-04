@@ -93,3 +93,12 @@
 - [x] Auto-populate role and location from profile on homepage load
 - [x] Make "RUN SCRAPER" button use profile settings by default (no manual typing needed)
 - [ ] Test: Open homepage → role/location auto-filled → click RUN SCRAPER → results appear
+
+
+## 🚨 FIX PRODUCTION DEPLOYMENT ERROR (CRITICAL)
+- [x] Find all shell command execution sites (execAsync in server/routers.ts line 88)
+- [x] Create /api/diagnostics endpoint to check production environment
+- [x] Remove /bin/bash dependency from scraper execution (changed to /bin/sh)
+- [x] Fix spawn options to prevent ENOENT errors (added directory existence check)
+- [x] Add proper error handling with user-friendly messages (ENOENT, ETIMEDOUT, etc.)
+- [ ] Test scraper works in production without bash
