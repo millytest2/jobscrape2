@@ -523,3 +523,12 @@
 - [ ] Apify Career Site: Already at 100 max
 - [ ] Apify LinkedIn: Already at 100 max
 - [ ] Goal: 10 sources × 20 jobs = 200+ total minimum
+
+
+## ✅ FIXED REDFLAGS ERROR PERMANENTLY (Feb 4, 2026 21:07)
+- [x] Traced data flow: profile JSON → routers.ts → filter.ts
+- [x] Found root cause: profile has `red_flags: {avoid: [...]}` but code expected flat array
+- [x] Fixed routers.ts to extract `profile.red_flags?.avoid || []`
+- [x] Added defensive checks in filter.ts hasRedFlags() to handle both formats
+- [x] Server restarted with fix applied
+- [ ] Test scraper to verify error is gone

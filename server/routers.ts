@@ -146,7 +146,7 @@ export const appRouter = router({
             ],
             maxExperienceYears: profile.experience_summary?.total_years || 5,
             companyPreferences: profile.company_preferences || {},
-            redFlags: profile.red_flags || [],
+            redFlags: Array.isArray(profile.red_flags) ? profile.red_flags : (profile.red_flags?.avoid || []),
             skills: profile.skills || {},
           };
           

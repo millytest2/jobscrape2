@@ -409,8 +409,19 @@ function calculateCompanyScore(job: Job, companyPreferences?: { size?: string[];
 /**
  * Check for red flags (returns true if red flag found)
  */
-function hasRedFlags(job: Job, redFlags?: string[]): boolean {
-  if (!redFlags || redFlags.length === 0) {
+function hasRedFlags(job: Job, redFlags?: string[] | any): boolean {
+  // Defensive check: ensure redFlags is actually an array
+  if (!redFlags) {
+    return false;
+  }
+  
+  // If redFlags is an object with 'avoid' property, extract it
+  if (typeof redFlags === 'object' && !Array.isArray(redFlags)) {
+    redFlags = redFlags.avoid || [];
+  }
+  
+  // If still not an array or empty, return false
+  if (!Array.isArray(redFlags) || redFlags.length === 0) {
     return false;
   }
   
