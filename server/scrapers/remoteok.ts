@@ -28,14 +28,24 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     // RemoteOK API returns array where first item is metadata
     const jobs = data.slice(1);
     
-    // Filter by role (case-insensitive)
+    // Filter by role (case-insensitive) - expanded to get more results
     const roleKeywords = role.toLowerCase().split(' ');
+    
+    // Add related keywords to expand search
+    const expandedKeywords = [...roleKeywords];
+    if (role.toLowerCase().includes('sales engineer')) {
+      expandedKeywords.push('solutions', 'presales', 'technical sales', 'demo', 'customer engineer');
+    }
+    
     const filtered = jobs.filter((job: any) => {
       const title = (job.position || '').toLowerCase();
       const tags = (job.tags || []).map((t: string) => t.toLowerCase());
+      const description = (job.description || '').toLowerCase();
       
-      return roleKeywords.some(keyword => 
-        title.includes(keyword) || tags.some((tag: string) => tag.includes(keyword))
+      return expandedKeywords.some(keyword => 
+        title.includes(keyword) || 
+        tags.some((tag: string) => tag.includes(keyword)) ||
+        description.includes(keyword)
       );
     });
     

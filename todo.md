@@ -488,3 +488,38 @@
 - [x] Fix "redFlags is not iterable" error in filter.ts or routers.ts - Added safety checks
 - [x] Check if profile.red_flags is undefined or not an array - Added `|| []` fallback
 - [x] Add safety check: `profile.red_flags || []` - Done
+
+
+## 🎯 REWEIGHT SCORING PRIORITIES (Feb 4, 2026)
+- [ ] Change scoring weights to prioritize landing probability:
+  * Experience: 30% (highest - must match user's level)
+  * Role: 25% (exact role match critical)
+  * Location: 20% (must be accessible)
+  * Skills: 10% (technical fit)
+  * Company: 10% (culture/size fit)
+  * Mission: 5% (nice to have)
+- [ ] Update filter.ts with new weights
+- [ ] Test and verify scores reflect landing probability
+
+
+## ✅ COMPLETED UPDATES (Feb 4, 2026 21:00)
+- [x] Reweighted scoring: Experience 30%, Role 25%, Location 20%, Skills 10%, Company 10%, Mission 5%
+- [x] Increased Apify Career Site limit: 50 → 100 jobs
+- [x] Increased Apify LinkedIn limit: 50 → 100 jobs
+- [x] Increased SerpAPI limit: 50 → 100 total, 20 → 40 per strategy
+- [x] Added pagination to The Muse: 1 page → 5 pages (up to 100 jobs)
+- [x] All scrapers now maximized for 200+ total jobs per scrape
+
+
+## 🎯 MINIMUM 20 JOBS PER SOURCE (Feb 4, 2026 21:01)
+- [ ] RemoteOK: Expand search to get 20+ jobs (currently filters too aggressively)
+- [ ] Jooble: Ensure 20+ jobs returned (may need broader keywords)
+- [ ] SerpAPI: Already configured for 40+ per strategy
+- [ ] Remotive: Expand role matching to get 20+ jobs
+- [ ] Arbeitnow: Expand role matching to get 20+ jobs
+- [ ] The Muse: Already paginated for 20+ jobs
+- [ ] WeWorkRemotely: Expand RSS parsing to get 20+ jobs
+- [ ] Craigslist: Bypass bot detection (rotate user agents, add delays, use proxies if needed)
+- [ ] Apify Career Site: Already at 100 max
+- [ ] Apify LinkedIn: Already at 100 max
+- [ ] Goal: 10 sources × 20 jobs = 200+ total minimum

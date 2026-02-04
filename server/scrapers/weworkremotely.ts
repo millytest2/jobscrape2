@@ -54,11 +54,14 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       const companyMatch = description.match(/<strong>(.*?)<\/strong>/);
       const company = companyMatch ? companyMatch[1] : 'Unknown Company';
       
-      // Filter by role - match any related role
+      // Filter by role - match any related role (very broad to get 20+ jobs)
       const titleLower = title.toLowerCase();
-      const matchesRole = relatedRoles.some(r => titleLower.includes(r)) || 
+      const descriptionLower = description.toLowerCase();
+      const matchesRole = relatedRoles.some(r => titleLower.includes(r) || descriptionLower.includes(r)) || 
                          titleLower.includes('engineer') || 
-                         titleLower.includes('sales');
+                         titleLower.includes('sales') ||
+                         titleLower.includes('technical') ||
+                         titleLower.includes('customer');
       
       if (matchesRole && url) {
         jobs.push({
@@ -71,7 +74,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         });
       }
       
-      if (jobs.length >= 50) break;
+      if (jobs.length >= 100) break;
     }
     
     return jobs;

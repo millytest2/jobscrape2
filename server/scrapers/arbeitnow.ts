@@ -26,14 +26,24 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     const data = await response.json();
     const jobs = data.data || [];
     
-    // Filter by role (case-insensitive)
+    // Filter by role (case-insensitive) - expanded to get more results
     const roleKeywords = role.toLowerCase().split(' ');
+    
+    // Add related keywords to expand search
+    const expandedKeywords = [...roleKeywords];
+    if (role.toLowerCase().includes('sales engineer')) {
+      expandedKeywords.push('solutions', 'presales', 'technical sales', 'demo', 'customer engineer', 'account manager');
+    }
+    
     const filtered = jobs.filter((job: any) => {
       const title = (job.title || '').toLowerCase();
       const tags = (job.tags || []).map((t: string) => t.toLowerCase());
+      const description = (job.description || '').toLowerCase();
       
-      return roleKeywords.some(keyword => 
-        title.includes(keyword) || tags.some((tag: string) => tag.includes(keyword))
+      return expandedKeywords.some(keyword => 
+        title.includes(keyword) || 
+        tags.some((tag: string) => tag.includes(keyword)) ||
+        description.includes(keyword)
       );
     });
     

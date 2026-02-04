@@ -33,7 +33,7 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
       {
         query: role,
         location: location,
-        maxResults: 50, // Limit to 50 jobs to control costs
+        maxResults: 100, // Increased to 100 jobs for better coverage
       },
       {
         headers: { "Content-Type": "application/json" },

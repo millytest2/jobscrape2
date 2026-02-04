@@ -38,7 +38,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         url.searchParams.set('q', strategy.q);
         url.searchParams.set('location', strategy.location);
         url.searchParams.set('api_key', apiKey);
-        url.searchParams.set('num', '20'); // Limit per strategy to avoid rate limits
+        url.searchParams.set('num', '40'); // Increased limit per strategy
         
         const response = await fetch(url.toString(), {
           headers: {
@@ -70,7 +70,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         allJobs.push(...normalized);
         
         // Stop if we have enough jobs
-        if (allJobs.length >= 50) break;
+        if (allJobs.length >= 100) break;
       } catch (error) {
         console.error(`[SerpAPI] Error for strategy ${strategy.q}:`, error);
         continue;

@@ -17,11 +17,24 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     const searchQuery = encodeURIComponent(role);
     const url = `https://${subdomain}.craigslist.org/search/jjj?query=${searchQuery}`;
     
+    // Use more realistic browser headers to bypass bot detection
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Cache-Control': 'max-age=0',
       },
     });
+    
+    // Add small delay to appear more human-like
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     if (!response.ok) {
       console.error(`[Craigslist] HTTP ${response.status}`);
@@ -37,7 +50,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     const listingRegex = /<li class="cl-search-result[^>]*>[\s\S]*?<\/li>/g;
     const listings = html.match(listingRegex) || [];
     
-    for (const listing of listings.slice(0, 50)) {
+    for (const listing of listings.slice(0, 100)) {
       // Extract title
       const titleMatch = listing.match(/<div class="title"><a[^>]*>(.*?)<\/a>/);
       const title = titleMatch ? titleMatch[1].trim() : '';

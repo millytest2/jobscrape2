@@ -583,14 +583,20 @@ export function rankJobs(
     const companyScore = calculateCompanyScore(job, options.companyPreferences);
     const skillsScore = calculateSkillsScore(job, options.skills);
     
-    // Weighted average with new scores
+    // Weighted average - prioritize landing probability
+    // Experience (30%) - Must match user's level
+    // Role (25%) - Exact role match critical
+    // Location (20%) - Must be accessible
+    // Skills (10%) - Technical fit
+    // Company (10%) - Culture/size fit
+    // Mission (5%) - Nice to have
     let totalScore = (
-      (roleScore * 0.30) + 
-      (locationScore * 0.25) + 
-      (experienceScore * 0.15) + 
-      (missionScore * 0.10) + 
-      (companyScore * 0.15) + 
-      (skillsScore * 0.05)
+      (experienceScore * 0.30) + 
+      (roleScore * 0.25) + 
+      (locationScore * 0.20) + 
+      (skillsScore * 0.10) + 
+      (companyScore * 0.10) + 
+      (missionScore * 0.05)
     );
     
     // Apply sanity checks
@@ -598,7 +604,7 @@ export function rankJobs(
       totalScore = Math.min(totalScore, 60);
     }
     
-    const explanation = `Total: ${totalScore.toFixed(0)} | Role: ${roleScore.toFixed(0)} | Location: ${locationScore.toFixed(0)} | Experience: ${experienceScore.toFixed(0)} | Mission: ${missionScore.toFixed(0)} | Company: ${companyScore.toFixed(0)} | Skills: ${skillsScore.toFixed(0)}`;
+    const explanation = `Total: ${totalScore.toFixed(0)} | Experience: ${experienceScore.toFixed(0)} | Role: ${roleScore.toFixed(0)} | Location: ${locationScore.toFixed(0)} | Skills: ${skillsScore.toFixed(0)} | Company: ${companyScore.toFixed(0)} | Mission: ${missionScore.toFixed(0)}`;
     
     return {
       ...job,
@@ -608,7 +614,9 @@ export function rankJobs(
         roleScore,
         locationScore,
         experienceScore,
-        missionScore
+        missionScore,
+        companyScore,
+        skillsScore
       },
       parsedLocation: parsed.city,
       isRemote: parsed.isRemote,
