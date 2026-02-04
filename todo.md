@@ -151,3 +151,14 @@
 - [ ] Concurrency caps + early stop rules
 - [ ] SerpAPI location normalization + fallback
 - [ ] Partial results streaming (poll results every 5s)
+
+
+## 🚨 FIX SENIOR ROLE FILTERING (User Report - Feb 4, 2026) - FIXED
+- [x] Review latest scraper results to identify senior roles getting through
+- [x] Check miles_profile.json for experience level settings (3 years total, red flag: "Roles requiring 5+ years experience (too senior)")
+- [x] Add experience level filter to Python scraper (exclude Senior, Lead, Principal, Staff, Director, VP, Manager, etc.)
+- [x] Update role filter to match experience level from profile (uses total_years + 2 year buffer)
+- [x] Added is_senior_role() method to RoleFilter class
+- [x] Special case: Allow "Technical Account Manager" and "Account Manager" (not manager roles)
+- [ ] Test scraper and verify NO senior roles in results
+- [x] Make system work for others with different experience levels (configurable via profile - reads from experience_summary.total_years)

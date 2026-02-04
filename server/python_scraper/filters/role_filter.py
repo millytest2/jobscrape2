@@ -12,6 +12,13 @@ from typing import Dict, List
 class RoleFilter:
     """Filter to strictly match user's target roles"""
     
+    # Senior-level keywords to EXCLUDE (for junior/mid-level candidates)
+    SENIOR_LEVEL_KEYWORDS = [
+        "senior", "sr", "sr.", "lead", "principal", "staff", 
+        "director", "vp", "vice president", "head of", "chief",
+        "manager" # Exclude manager roles unless it's "Account Manager" or "Technical Account Manager"
+    ]
+    
     # Generic engineering roles to EXCLUDE (unless in user's target_roles)
     EXCLUDED_ENGINEERING_ROLES = [
         "software engineer", "backend engineer", "frontend engineer", "full stack engineer",
@@ -25,19 +32,39 @@ class RoleFilter:
         "architect", "principal engineer", "staff engineer", "engineering manager"
     ]
     
-    def __init__(self, target_roles: List[str]):
+    def __init__(self, target_roles: List[str], max_experience_years: int = 5):
         """
         Initialize role filter with user's target roles.
         
         Args:
             target_roles: List of roles from user profile (e.g., ["Sales Engineer", "Solutions Engineer"])
+            max_experience_years: Maximum years of experience (default 5 = exclude senior roles)
         """
         self.target_roles = [role.lower().strip() for role in target_roles]
+        self.max_experience_years = max_experience_years
         
+    def is_senior_role(self, title: str) -> bool:
+        """
+        Check if title indicates a senior-level role.
+        Returns True if role is too senior for candidate.
+        """
+        title_lower = title.lower()
+        
+        for keyword in self.SENIOR_LEVEL_KEYWORDS:
+            # Special case: Allow "Technical Account Manager" and "Account Manager"
+            if keyword == "manager":
+                if "account manager" in title_lower or "technical account manager" in title_lower:
+                    continue  # Don't exclude
+                elif keyword in title_lower:
+                    return True  # Exclude other manager roles
+            # Check for senior keywords
+            elif f" {keyword} " in f" {title_lower} " or title_lower.startswith(f"{keyword} "):
+                return True
+        
+        return False
+    
     def normalize_title(self, title: str) -> str:
-        """Normalize job title for matching"""
-        # Remove seniority levels
-        title = re.sub(r'\b(senior|sr|junior|jr|mid|mid-level|staff|principal|lead|entry|entry-level)\b', '', title, flags=re.IGNORECASE)
+        """Normalize job title for matching (but keep seniority for filtering)"""
         # Remove location info
         title = re.sub(r'\s*[-–]\s*[A-Z]{2,}\s*$', '', title)
         # Remove extra whitespace
@@ -118,6 +145,10 @@ class RoleFilter:
             
             # Skip if empty title
             if not title:
+                continue
+            
+            # EXCLUDE senior-level roles (NEW)
+            if self.is_senior_role(title):
                 continue
             
             # Exclude generic engineering roles

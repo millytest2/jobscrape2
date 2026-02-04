@@ -231,8 +231,11 @@ def main(location: str, role: str, profile_path: str, top_n: int = 20):
     print(f"\n{'='*60}", file=sys.stderr)
     print(f"FILTERING PHASE", file=sys.stderr)
     print(f"{'='*60}", file=sys.stderr)
-    print(f"Applying strict role filter (only target roles)...", file=sys.stderr)
-    role_filter = RoleFilter(target_roles)
+    print(f"Applying strict role filter (only target roles + experience level)...", file=sys.stderr)
+    # Get max experience years from profile (default 5 if not specified)
+    max_exp_years = profile.get("experience_summary", {}).get("total_years", 3) + 2  # Allow 2 years buffer
+    print(f"Excluding roles requiring >{max_exp_years} years (Senior, Lead, Principal, etc.)", file=sys.stderr)
+    role_filter = RoleFilter(target_roles, max_experience_years=max_exp_years)
     role_matched_jobs = role_filter.filter_jobs(all_jobs)
     print(f"Role-matched jobs: {len(role_matched_jobs)} jobs", file=sys.stderr)
     
