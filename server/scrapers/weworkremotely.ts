@@ -29,7 +29,13 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     const items = xml.match(/<item>[\s\S]*?<\/item>/g) || [];
     
     const jobs: Job[] = [];
-    const roleKeywords = role.toLowerCase().split(' ');
+    
+    // Broader role matching - include related roles
+    const relatedRoles = [
+      'sales engineer', 'solutions engineer', 'pre-sales', 'presales',
+      'technical sales', 'sales specialist', 'demo engineer',
+      'customer engineer', 'field engineer', 'tam', 'account manager'
+    ];
     
     for (const item of items) {
       // Extract title
@@ -48,9 +54,11 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       const companyMatch = description.match(/<strong>(.*?)<\/strong>/);
       const company = companyMatch ? companyMatch[1] : 'Unknown Company';
       
-      // Filter by role
+      // Filter by role - match any related role
       const titleLower = title.toLowerCase();
-      const matchesRole = roleKeywords.some(keyword => titleLower.includes(keyword));
+      const matchesRole = relatedRoles.some(r => titleLower.includes(r)) || 
+                         titleLower.includes('engineer') || 
+                         titleLower.includes('sales');
       
       if (matchesRole && url) {
         jobs.push({

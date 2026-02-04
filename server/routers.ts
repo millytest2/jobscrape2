@@ -10,6 +10,9 @@ import type { Job } from "./scrapers/types";
 // In-memory cache for last successful scrape results
 const scrapeCache = new Map<string, { jobs: Job[]; top20: any[]; timestamp: string; stats: any }>();
 
+// Clear cache on server startup to force fresh scraping after code changes
+scrapeCache.clear();
+
 /**
  * Run scrapers in parallel with concurrency limit
  */
@@ -199,35 +202,11 @@ export const appRouter = router({
     getProfile: publicProcedure
       .query(async () => {
         try {
-          // Return a default profile structure
-          // In production, this would read from database
-          return {
-            name: "Miles",
-            target_roles: {
-              direct: ["Sales Engineer"],
-              indirect: [
-                "Solutions Engineer",
-                "Demo Engineer",
-                "Technical Account Manager",
-                "Pre-Sales Engineer",
-                "Customer Success Engineer"
-              ]
-            },
-            location: {
-              primary: "Los Angeles, CA",
-              willing_to_relocate: false,
-              remote_preference: "remote_first"
-            },
-            experience_summary: {
-              total_years: 3,
-              relevant_years: 2
-            },
-            salary_expectations: {
-              min: 80000,
-              max: 100000,
-              currency: "USD"
-            },
-          };
+          const fs = await import('fs/promises');
+          const path = await import('path');
+          const profilePath = path.resolve(process.cwd(), 'server/data/miles_profile.json');
+          const profileData = await fs.readFile(profilePath, 'utf-8');
+          return JSON.parse(profileData);
         } catch (error: any) {
           console.error("Profile read error:", error);
           throw new Error("Failed to load profile");
@@ -238,8 +217,10 @@ export const appRouter = router({
       .input(z.any())
       .mutation(async ({ input }) => {
         try {
-          // In production, this would save to database
-          console.log("Profile update requested:", input);
+          const fs = await import('fs/promises');
+          const path = await import('path');
+          const profilePath = path.resolve(process.cwd(), 'server/data/miles_profile.json');
+          await fs.writeFile(profilePath, JSON.stringify(input, null, 2), 'utf-8');
           return { success: true };
         } catch (error: any) {
           console.error("Profile update error:", error);

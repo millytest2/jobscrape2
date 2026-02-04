@@ -1,0 +1,120 @@
+{
+  "name": "Miles Tipton",
+  "email": "milestipton10@gmail.com",
+  "phone": "(310) 606-9788",
+  "location": {
+    "primary": "Los Angeles, CA",
+    "willing_to_relocate": false,
+    "remote_preference": "Remote or LA area"
+  },
+  "experience_summary": {
+    "total_years": 3,
+    "relevant_years": 2,
+    "current_role": "Head of Technology at UPath.ai",
+    "previous_roles": [
+      "Sales Engineer at Inbenta (July 2023 - June 2024)",
+      "Sales Engineer at Homegrown Solutions (Feb 2023 - June 2023)",
+      "Technical Sales Specialist at Merly.ai (June 2025 - Sept 2025)"
+    ]
+  },
+  "target_roles": {
+    "direct": [
+      "Sales Engineer",
+      "Technical Sales Specialist",
+      "Demo Engineer",
+      "Technical Demo Engineer"
+    ],
+    "indirect": [
+      "Solutions Engineer",
+      "Solution Engineer",
+      "Pre-Sales Engineer",
+      "PreSales Engineer",
+      "Technical Account Manager",
+      "TAM",
+      "Customer Engineer",
+      "Field Engineer",
+      "Sales Development Engineer"
+    ]
+  },
+  "skills": {
+    "technical": [
+      "Generative AI",
+      "Conversational AI",
+      "Power BI",
+      "Python",
+      "React",
+      "Django",
+      "REST APIs",
+      "Data Analysis",
+      "Technical Documentation"
+    ],
+    "sales": [
+      "Product Demos",
+      "Outbound Sales",
+      "Lead Generation",
+      "HubSpot",
+      "Apollo.io",
+      "SEO",
+      "Copywriting",
+      "Customer Pain Point Analysis"
+    ],
+    "soft_skills": [
+      "Cross-functional Collaboration",
+      "Executive Presentations",
+      "Technical Training",
+      "Problem Solving"
+    ]
+  },
+  "education": {
+    "degree": "Bachelor of Arts in Organizational Sciences",
+    "university": "The George Washington University",
+    "graduation_year": 2020,
+    "additional": [
+      "Harvard CS50 Web & Computer Science Course (Oct 2022)",
+      "Harvard Lifestyle & Wellness Certificate Program Coaching (2025)"
+    ]
+  },
+  "salary_expectations": {
+    "minimum": 80000,
+    "target": 90000,
+    "maximum": 100000,
+    "currency": "USD"
+  },
+  "company_preferences": {
+    "size": ["Startup", "Small (1-50)", "Medium (51-500)"],
+    "stage": ["Seed", "Series A", "Series B", "Growth"],
+    "industries": [
+      "AI/ML",
+      "SaaS",
+      "Developer Tools",
+      "Data Analytics",
+      "Healthcare Tech",
+      "EdTech"
+    ],
+    "mission_driven_keywords": [
+      "AI",
+      "machine learning",
+      "generative AI",
+      "conversational AI",
+      "SaaS",
+      "innovative",
+      "cutting-edge",
+      "data-driven",
+      "automation",
+      "developer tools"
+    ]
+  },
+  "red_flags": {
+    "avoid": [
+      "Roles requiring 5+ years experience (too senior)",
+      "Pure engineering roles (not sales-focused)",
+      "Non-tech industries (manufacturing, retail, etc.)",
+      "Large enterprises (500+ employees) unless mission-driven",
+      "Roles with no customer interaction"
+    ]
+  },
+  "work_authorization": {
+    "us_citizen": true,
+    "requires_sponsorship": false
+  }
+}

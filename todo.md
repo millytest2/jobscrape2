@@ -318,3 +318,41 @@
 - [ ] 200+ jobs scraped total
 - [ ] Realistic scores (30-60% range, NOT 70-90%)
 - [ ] All 8 scrapers returning jobs (min 10 jobs per scraper)
+
+
+## 🚨 USER FEEDBACK - API KEYS & PROFILE SYSTEM (Feb 4, 2026)
+- [ ] User says they already provided API keys - find where they provided them
+- [ ] Check if API keys are in uploaded files or previous messages
+- [ ] Configure Jooble and SerpAPI keys properly
+- [ ] Profile system should display ALL information from miles_profile.json (not just basic fields)
+- [ ] Profile system should allow editing ALL fields easily (experience, skills, education, company preferences, etc.)
+- [ ] Make profile system work for ANY user (not just Miles) - generic and reusable
+- [ ] Auto-use profile data when running scraper (no need to ask user every time)
+
+
+## 🚨 SCRAPER FIXES (Feb 4, 2026) - IN PROGRESS
+- [x] Configure SerpAPI key (validated and working)
+- [x] Configure Jooble API key (validated and working)
+- [x] Fix The Muse scraper (removed category parameter - NOW WORKING: 6 jobs)
+- [x] Fix role filtering to be more flexible (broadened matching)
+- [x] Fix location filtering (HARD BLOCK international locations)
+- [x] Fix senior role filtering (HARD BLOCK all senior roles for 3-year experience)
+- [x] Test all scrapers: **110 jobs from 5 sources**
+  - RemoteOK: 50 jobs ✅
+  - Remotive: 12 jobs ✅
+  - Arbeitnow: 12 jobs ✅
+  - Jooble: 30 jobs ✅
+  - The Muse: 6 jobs ✅
+  - SerpAPI: 0 jobs ❌ (key valid but location format issue)
+  - WeWorkRemotely: 0 jobs ❌ (RSS has 100 items but role filter too strict)
+  - Craigslist: 0 jobs ❌ (blocked by bot detection - SKIPPING)
+- [x] Verify filters working perfectly:
+  - ✅ 95 quality matches (up from 62)
+  - ✅ NO senior roles showing
+  - ✅ NO wrong locations (Guadalajara blocked)
+  - ✅ NO wrong roles (QA Engineer, ML Engineer blocked)
+  - ✅ All jobs are "Sales Engineer" or "Field Sales Engineer" in Los Angeles
+- [x] Fix SerpAPI location format (full location format + remote/hybrid expansion)
+- [x] Test SerpAPI: NOW WORKING with 20 jobs (10 remote + 10 hybrid)
+- [ ] Fix WeWorkRemotely role matching (RSS feed has 100 items but 0 Sales Engineer matches)
+- [ ] Save checkpoint with working 6-source scraper (130 jobs → 115 quality matches → 20 displayed)

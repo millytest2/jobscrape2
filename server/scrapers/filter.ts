@@ -46,17 +46,26 @@ function parseLocation(location: string): { city: string; state: string; country
   // Check if remote
   const isRemote = locationLower.includes('remote') || locationLower.includes('anywhere') || locationLower.includes('worldwide');
   
+  // Detect international locations explicitly
+  const internationalKeywords = [
+    'mexico', 'guadalajara', 'canada', 'toronto', 'vancouver', 'montreal',
+    'uk', 'london', 'europe', 'asia', 'india', 'bangalore', 'mumbai',
+    'australia', 'sydney', 'brazil', 'argentina', 'colombia'
+  ];
+  
+  const isInternational = internationalKeywords.some(keyword => locationLower.includes(keyword));
+  
   // Try to extract US state
   const usStateMatch = locationLower.match(/\b([a-z]{2})\b/);
   const state = usStateMatch ? usStateMatch[1].toUpperCase() : '';
   
   // Check if US location (has state code or known US city)
-  const isUS = state.length === 2 || LA_REGION.some(city => locationLower.includes(city));
+  const isUS = !isInternational && (state.length === 2 || LA_REGION.some(city => locationLower.includes(city)));
   
   return {
     city: location,
     state,
-    country: isUS ? 'US' : 'Unknown',
+    country: isInternational ? 'International' : (isUS ? 'US' : 'Unknown'),
     isRemote
   };
 }
@@ -165,26 +174,34 @@ function calculateRoleScore(job: Job, targetRoles: string[]): number {
     }
   }
   
-  // Allowed variants for Sales Engineer
-  if (roleCluster.some(r => r.includes('sales engineer'))) {
+  // Allowed variants for Sales Engineer (EXPLICIT whitelist only)
+  if (roleCluster.some(r => r.includes('sales engineer') || r.includes('sales') || r.includes('solutions'))) {
+    // High match: Direct sales/solutions roles
     if (title.includes('solutions engineer') || title.includes('solution engineer')) return 90;
     if (title.includes('pre-sales') || title.includes('presales')) return 85;
-    if (title.includes('demo engineer')) return 80;
+    if (title.includes('demo engineer') || title.includes('technical demo')) return 80;
     if (title.includes('technical account manager') || title.includes('tam')) return 75;
-    if (title.includes('customer engineer')) return 70;
-    if (title.includes('field engineer')) return 65;
+    if (title.includes('customer engineer') || title.includes('customer success engineer')) return 70;
+    if (title.includes('field engineer') && title.includes('sales')) return 65;
+    if (title.includes('sales development') || title.includes('technical sales')) return 85;
+    
+    // Reject: Pure engineering roles (NOT sales-related)
+    const rejectKeywords = [
+      'software engineer', 'backend', 'frontend', 'full stack', 'fullstack',
+      'machine learning', 'ml engineer', 'data scientist', 'data engineer',
+      'devops', 'platform engineer', 'infrastructure', 'security engineer',
+      'qa engineer', 'test engineer', 'research engineer'
+    ];
+    
+    for (const reject of rejectKeywords) {
+      if (title.includes(reject)) {
+        return 0; // Hard reject - wrong role type
+      }
+    }
   }
   
-  // Partial match (some words present) - but penalize heavily
-  let partialScore = 0;
-  for (const role of roleCluster) {
-    const roleWords = role.split(' ').filter(w => w !== 'engineer' && w !== 'manager'); // Ignore generic words
-    const matchedWords = roleWords.filter(word => title.includes(word));
-    const matchRatio = matchedWords.length / Math.max(roleWords.length, 1);
-    partialScore = Math.max(partialScore, matchRatio * 40); // Cap at 40% for partial matches
-  }
-  
-  return partialScore;
+  // NO partial matching - if not in whitelist, return 0
+  return 0;
 }
 
 /**
@@ -194,17 +211,33 @@ function calculateLocationScore(job: Job, targetLocation: string): number {
   const parsed = parseLocation(job.location);
   const targetParsed = parseLocation(targetLocation);
   
+  // DEBUG: Log location parsing for problematic jobs
+  if (job.location.toLowerCase().includes('guadalajara') || job.title.toLowerCase().includes('qa engineer')) {
+    console.log(`[FILTER DEBUG] Job: "${job.title}" at "${job.location}"`);
+    console.log(`[FILTER DEBUG] Parsed: country=${parsed.country}, isRemote=${parsed.isRemote}`);
+    console.log(`[FILTER DEBUG] Target: country=${targetParsed.country}`);
+  }
+  
+  // HARD BLOCK: International locations get 0% for US searches
+  if (targetParsed.country === 'US' && parsed.country === 'International') {
+    return 0; // Guadalajara, Canada, etc. = 0%
+  }
+  
   // If job is remote, check if it's US-based or international
   if (parsed.isRemote) {
-    // If target is US and job is international remote, reduce score
-    if (targetParsed.country === 'US' && parsed.country !== 'US') {
-      return 60; // Allow international remote but lower priority
+    // International remote gets very low score for US searches
+    if (targetParsed.country === 'US' && parsed.country === 'International') {
+      return 0; // Block international remote
     }
-    return 100; // US remote or unknown remote
+    // Unknown remote (might be international) gets moderate score
+    if (parsed.country === 'Unknown') {
+      return 70; // Assume US remote unless proven otherwise
+    }
+    return 100; // US remote
   }
   
   // Hard penalty: US target + non-US job = 0 score
-  if (targetParsed.country === 'US' && parsed.country !== 'US') {
+  if (targetParsed.country === 'US' && parsed.country !== 'US' && parsed.country !== 'Unknown') {
     return 0;
   }
   
@@ -331,30 +364,35 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
   const senioritySignals = detectSenioritySignals(job);
   const requiredYears = extractRequiredYears(job);
   const maxYears = options.maxExperienceYears || 5;
-  
-  // Hard block: Senior title + high experience requirement
-  if (senioritySignals.length > 0 && requiredYears && requiredYears >= 7) {
-    return true; // Definitely too senior
-  }
-  
-  // Hard block: Senior title in specific positions (not IC roles like TAM)
   const title = job.title.toLowerCase();
-  const isSeniorNonIC = (
-    (title.includes('senior') || title.includes('sr.') || title.includes('sr ')) &&
-    !title.includes('account manager') &&
-    !title.includes('tam')
-  );
   
-  if (isSeniorNonIC && maxYears < 5) {
-    return true; // Block senior roles for junior candidates
+  // HARD BLOCK: Any senior keyword in title (no exceptions for TAM/Account Manager)
+  const seniorKeywords = [
+    'senior', 'sr.', 'sr ', 
+    'lead', 'principal', 'staff',
+    'director', 'vp', 'vice president', 
+    'head of', 'chief', 'manager'
+  ];
+  
+  // Exception: "Technical Account Manager" and "Account Manager" are allowed (not management roles)
+  const isAccountManager = title.includes('account manager') || title.includes('tam');
+  const isSeniorAccountManager = isAccountManager && (title.includes('senior') || title.includes('sr.') || title.includes('sr '));
+  
+  // Block if ANY senior keyword found (except non-senior Account Manager)
+  for (const keyword of seniorKeywords) {
+    if (title.includes(keyword)) {
+      // Allow non-senior Account Manager/TAM
+      if (keyword === 'manager' && isAccountManager && !isSeniorAccountManager) {
+        continue; // Don't block "Technical Account Manager" or "Account Manager"
+      }
+      // Block everything else including "Senior Account Manager"
+      return true;
+    }
   }
   
-  // Hard block: Lead, Principal, Staff, Director, VP
-  const hardSeniorKeywords = ['lead', 'principal', 'staff', 'director', 'vp', 'vice president', 'head of', 'chief'];
-  for (const keyword of hardSeniorKeywords) {
-    if (title.includes(keyword)) {
-      return true; // Always block these titles
-    }
+  // Hard block: Required years >= 7 (clearly too senior)
+  if (requiredYears && requiredYears >= 7) {
+    return true;
   }
   
   return false; // Don't exclude

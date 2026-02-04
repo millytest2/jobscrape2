@@ -11,7 +11,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     
     // The Muse API endpoint
     const url = new URL('https://www.themuse.com/api/public/jobs');
-    url.searchParams.set('category', role);
+    // Don't use category parameter - it's too restrictive
     url.searchParams.set('location', location);
     url.searchParams.set('page', '0');
     url.searchParams.set('descending', 'true');
