@@ -43,6 +43,21 @@ export const appRouter = router({
       writableTmp = false;
     }
     
+    // Check scraper path
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const scraperDir = resolve(__dirname, './python_scraper');
+    const scraperExists = fs.existsSync(scraperDir);
+    
+    let scraperFiles: string[] = [];
+    if (scraperExists) {
+      try {
+        scraperFiles = fs.readdirSync(scraperDir).filter(f => f.endsWith('.py'));
+      } catch {
+        scraperFiles = ['Error reading directory'];
+      }
+    }
+    
     return {
       nodeVersion: process.version,
       platform: process.platform,
@@ -55,6 +70,11 @@ export const appRouter = router({
       existsSh,
       existsBash,
       writableTmp,
+      scraper: {
+        resolvedPath: scraperDir,
+        exists: scraperExists,
+        pythonFiles: scraperFiles,
+      },
       timestamp: new Date().toISOString(),
     };
   }),
@@ -73,8 +93,10 @@ export const appRouter = router({
           // Use path relative to server directory (deployed with app)
           const __filename = fileURLToPath(import.meta.url);
           const __dirname = dirname(__filename);
-          const scraperPath = resolve(__dirname, '../python_scraper/web_runner_v4_comprehensive.py');
-          const scraperDir = resolve(__dirname, '../python_scraper');
+          // In production: __dirname is /dist/, scrapers are at /dist/python_scraper/
+          // In dev: __dirname is /server/, scrapers are at /server/python_scraper/
+          const scraperPath = resolve(__dirname, './python_scraper/web_runner_v4_comprehensive.py');
+          const scraperDir = resolve(__dirname, './python_scraper');
           
           // Check if scraper directory exists
           const fs = await import('fs/promises');

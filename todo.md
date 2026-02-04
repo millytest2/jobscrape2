@@ -102,3 +102,11 @@
 - [x] Fix spawn options to prevent ENOENT errors (added directory existence check)
 - [x] Add proper error handling with user-friendly messages (ENOENT, ETIMEDOUT, etc.)
 - [ ] Test scraper works in production without bash
+
+
+## 🔧 FIX SCRAPER FILES MISSING IN PRODUCTION
+- [x] Find where "Scraper files missing" error is thrown (server/routers.ts line 122)
+- [x] Check build output (dist/) to see if python_scraper is included (YES - at dist/python_scraper/)
+- [x] Fix path resolution to work in production (changed '../python_scraper' to './python_scraper')
+- [x] Update diagnostics endpoint to show scraper path and files (added scraper.resolvedPath, exists, pythonFiles)
+- [ ] Test in production to verify scrapers are found
