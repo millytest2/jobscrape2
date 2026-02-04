@@ -27,6 +27,17 @@ export interface FilterOptions {
   maxSalary?: number;
   missionDrivenKeywords?: string[];
   maxExperienceYears?: number;
+  companyPreferences?: {
+    size?: string[];
+    stage?: string[];
+    industries?: string[];
+  };
+  redFlags?: string[];
+  skills?: {
+    technical?: string[];
+    sales?: string[];
+    soft?: string[];
+  };
 }
 
 // LA region cities for location matching
@@ -325,6 +336,154 @@ function calculateMissionScore(job: Job, keywords: string[]): number {
 }
 
 /**
+ * Calculate company preferences score (0-100)
+ */
+function calculateCompanyScore(job: Job, companyPreferences?: { size?: string[]; stage?: string[]; industries?: string[] }): number {
+  if (!companyPreferences) {
+    return 50; // Neutral score if no preferences
+  }
+  
+  const text = `${job.title} ${job.company} ${job.description || ''}`.toLowerCase();
+  let totalMatches = 0;
+  let totalCategories = 0;
+  
+  // Check company size keywords
+  if (companyPreferences.size && companyPreferences.size.length > 0) {
+    totalCategories++;
+    const sizeKeywords = {
+      'startup': ['startup', 'early stage', 'seed'],
+      'small': ['small', 'boutique', '10-50', 'team of'],
+      'medium': ['medium', 'mid-size', '50-500', 'growing'],
+      'large': ['enterprise', 'fortune', 'large', '500+', 'global']
+    };
+    
+    for (const size of companyPreferences.size) {
+      const keywords = sizeKeywords[size.toLowerCase() as keyof typeof sizeKeywords] || [];
+      if (keywords.some(kw => text.includes(kw))) {
+        totalMatches++;
+        break;
+      }
+    }
+  }
+  
+  // Check company stage keywords
+  if (companyPreferences.stage && companyPreferences.stage.length > 0) {
+    totalCategories++;
+    const stageKeywords = {
+      'seed': ['seed', 'pre-seed', 'angel'],
+      'series a': ['series a', 'series-a'],
+      'series b': ['series b', 'series-b'],
+      'growth': ['growth stage', 'series c', 'series d', 'scaling'],
+      'public': ['public', 'nasdaq', 'nyse', 'ipo']
+    };
+    
+    for (const stage of companyPreferences.stage) {
+      const keywords = stageKeywords[stage.toLowerCase() as keyof typeof stageKeywords] || [];
+      if (keywords.some(kw => text.includes(kw))) {
+        totalMatches++;
+        break;
+      }
+    }
+  }
+  
+  // Check industry keywords
+  if (companyPreferences.industries && companyPreferences.industries.length > 0) {
+    totalCategories++;
+    let industryMatch = false;
+    for (const industry of companyPreferences.industries) {
+      if (text.includes(industry.toLowerCase())) {
+        industryMatch = true;
+        break;
+      }
+    }
+    if (industryMatch) totalMatches++;
+  }
+  
+  if (totalCategories === 0) return 50;
+  
+  // Score based on percentage of categories matched
+  const matchPercentage = (totalMatches / totalCategories) * 100;
+  return Math.min(100, matchPercentage + 30); // Boost base score
+}
+
+/**
+ * Check for red flags (returns true if red flag found)
+ */
+function hasRedFlags(job: Job, redFlags?: string[]): boolean {
+  if (!redFlags || redFlags.length === 0) {
+    return false;
+  }
+  
+  const text = `${job.title} ${job.description || ''}`.toLowerCase();
+  
+  const redFlagKeywords: { [key: string]: string[] } = {
+    '5+ years experience': ['5+ years', '5 years', '6+ years', '7+ years', '8+ years', '10+ years'],
+    'pure engineering': ['software engineer', 'backend engineer', 'frontend engineer', 'full stack engineer'],
+    'non-tech industries': ['retail', 'hospitality', 'restaurant', 'food service'],
+    'large enterprises': ['enterprise', 'fortune 500', 'fortune 100'],
+    'no customer interaction': ['backend only', 'internal tools only']
+  };
+  
+  for (const flag of redFlags) {
+    const keywords = redFlagKeywords[flag.toLowerCase()] || [flag.toLowerCase()];
+    if (keywords.some(kw => text.includes(kw))) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+/**
+ * Calculate skills match score (0-100)
+ */
+function calculateSkillsScore(job: Job, skills?: { technical?: string[]; sales?: string[]; soft?: string[] }): number {
+  if (!skills) {
+    return 50; // Neutral score if no skills
+  }
+  
+  const text = `${job.title} ${job.description || ''}`.toLowerCase();
+  let totalMatches = 0;
+  let totalSkills = 0;
+  
+  // Check technical skills
+  if (skills.technical && skills.technical.length > 0) {
+    for (const skill of skills.technical) {
+      totalSkills++;
+      if (text.includes(skill.toLowerCase())) {
+        totalMatches++;
+      }
+    }
+  }
+  
+  // Check sales skills
+  if (skills.sales && skills.sales.length > 0) {
+    for (const skill of skills.sales) {
+      totalSkills++;
+      if (text.includes(skill.toLowerCase())) {
+        totalMatches++;
+      }
+    }
+  }
+  
+  // Check soft skills
+  if (skills.soft && skills.soft.length > 0) {
+    for (const skill of skills.soft) {
+      totalSkills++;
+      if (text.includes(skill.toLowerCase())) {
+        totalMatches++;
+      }
+    }
+  }
+  
+  if (totalSkills === 0) return 50;
+  
+  // Score based on percentage of skills matched
+  const matchPercentage = (totalMatches / totalSkills) * 100;
+  return Math.min(100, matchPercentage + 20); // Small boost
+}
+
+/**
  * Apply sanity checks to prevent inflated scores
  */
 function applySanityChecks(
@@ -408,7 +567,11 @@ export function rankJobs(
 ): FilteredJob[] {
   // First, hard filter out excluded jobs
   const filtered = jobs.filter(job => !shouldExcludeJob(job, options));
-  const scored: FilteredJob[] = filtered.map(job => {
+  
+  // Second, filter out red flags
+  const noRedFlags = filtered.filter(job => !hasRedFlags(job, options.redFlags));
+  
+  const scored: FilteredJob[] = noRedFlags.map(job => {
     const parsed = parseLocation(job.location);
     const requiredYears = extractRequiredYears(job);
     const senioritySignals = detectSenioritySignals(job);
@@ -417,10 +580,25 @@ export function rankJobs(
     const locationScore = calculateLocationScore(job, options.targetLocation);
     const experienceScore = calculateExperienceScore(job, options.maxExperienceYears || 5);
     const missionScore = calculateMissionScore(job, options.missionDrivenKeywords || []);
+    const companyScore = calculateCompanyScore(job, options.companyPreferences);
+    const skillsScore = calculateSkillsScore(job, options.skills);
     
-    const totalScore = applySanityChecks(roleScore, locationScore, experienceScore, missionScore, parsed.isRemote);
+    // Weighted average with new scores
+    let totalScore = (
+      (roleScore * 0.30) + 
+      (locationScore * 0.25) + 
+      (experienceScore * 0.15) + 
+      (missionScore * 0.10) + 
+      (companyScore * 0.15) + 
+      (skillsScore * 0.05)
+    );
     
-    const explanation = `Total: ${totalScore.toFixed(0)} | Role: ${roleScore.toFixed(0)} | Location: ${locationScore.toFixed(0)} | Experience: ${experienceScore.toFixed(0)} | Mission: ${missionScore.toFixed(0)}`;
+    // Apply sanity checks
+    if (roleScore < 50 || locationScore < 30 || experienceScore < 30) {
+      totalScore = Math.min(totalScore, 60);
+    }
+    
+    const explanation = `Total: ${totalScore.toFixed(0)} | Role: ${roleScore.toFixed(0)} | Location: ${locationScore.toFixed(0)} | Experience: ${experienceScore.toFixed(0)} | Mission: ${missionScore.toFixed(0)} | Company: ${companyScore.toFixed(0)} | Skills: ${skillsScore.toFixed(0)}`;
     
     return {
       ...job,

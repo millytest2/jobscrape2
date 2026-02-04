@@ -464,3 +464,21 @@
 - [ ] Verify results are more aligned with company preferences
 
 - [x] Fix auto-refresh issue - Prevent page from refreshing when navigating away (only refresh on manual RUN SCRAPER click) - Disabled refetchOnWindowFocus, refetchOnMount, refetchOnReconnect
+
+
+## 📋 USE ALL PROFILE DATA (Feb 4, 2026)
+- [ ] Verify Profile page displays ALL information (skills, education, work history, company preferences, red flags)
+- [ ] Update scraper filter to use company preferences (boost scores for AI/SaaS/startup companies)
+- [ ] Update scraper filter to use red flags (reject jobs with "5+ years required", "pure engineering", etc.)
+- [ ] Update scraper filter to use skills (boost scores for jobs mentioning Python, React, AI, etc.)
+- [ ] Update scraper filter to use industries (boost scores for AI/ML, SaaS, Developer Tools, etc.)
+- [ ] Test complete system with all profile data
+- [ ] Save checkpoint
+
+
+## 🚨 CRITICAL BUGS - CACHE & PROFILE PATH (Feb 4, 2026 20:47 - User Reported)
+- [x] Scraper showing same cached results from previous run (not fresh jobs) - Fixed: Cache cleared on every scrape
+- [ ] SerpAPI only returning 5 jobs instead of 20 (should be 10 remote + 10 hybrid) - Code looks correct, need to test
+- [x] Profile path wrong - looking for `miles.json` but file is `miles-tipton.json` - Fixed
+- [ ] Filter updates (company preferences, red flags, skills) not being applied - Need to test after restart
+- [x] Cache not cleared between runs - Fixed: Cache cleared on every scrape

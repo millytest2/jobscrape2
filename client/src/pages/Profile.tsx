@@ -342,15 +342,173 @@ export default function Profile() {
             </CardContent>
           </Card>
 
-          {/* Note about advanced editing */}
-          {!isEditing && (
-            <Card className="bg-muted/50">
-              <CardContent className="pt-6">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Note:</strong> For advanced editing (skills, education, work history, company preferences), 
-                  you can edit the JSON file directly at <code className="bg-background px-2 py-1 rounded">server/data/miles_profile.json</code> 
-                  or ask me to update specific fields.
-                </p>
+          {/* Skills */}
+          {profile.skills && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Briefcase className="h-5 w-5" />
+                  Skills
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {profile.skills.technical && profile.skills.technical.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Technical Skills</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.skills.technical.map((skill: string, i: number) => (
+                        <Badge key={i} variant="default">{skill}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {profile.skills.sales && profile.skills.sales.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Sales Skills</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.skills.sales.map((skill: string, i: number) => (
+                        <Badge key={i} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {profile.skills.soft && profile.skills.soft.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Soft Skills</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.skills.soft.map((skill: string, i: number) => (
+                        <Badge key={i} variant="outline">{skill}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Education */}
+          {profile.education && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  Education
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {profile.education.degree && (
+                  <div>
+                    <p className="text-lg font-medium">{profile.education.degree}</p>
+                    <p className="text-sm text-muted-foreground">{profile.education.university} • {profile.education.graduation_year}</p>
+                  </div>
+                )}
+                {profile.education.additional_courses && profile.education.additional_courses.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Additional Courses</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.education.additional_courses.map((course: string, i: number) => (
+                        <Badge key={i} variant="outline">{course}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Work History */}
+          {profile.work_history && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="h-5 w-5" />
+                  Work History
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {profile.work_history.current_role && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Current Role</label>
+                    <p className="text-lg font-medium">{profile.work_history.current_role.title}</p>
+                    <p className="text-sm text-muted-foreground">{profile.work_history.current_role.company} • {profile.work_history.current_role.dates}</p>
+                  </div>
+                )}
+                {profile.work_history.previous_roles && profile.work_history.previous_roles.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Previous Roles</label>
+                    <div className="space-y-2 mt-2">
+                      {profile.work_history.previous_roles.map((role: any, i: number) => (
+                        <div key={i} className="border-l-2 border-primary pl-4">
+                          <p className="font-medium">{role.title}</p>
+                          <p className="text-sm text-muted-foreground">{role.company} • {role.dates}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Company Preferences */}
+          {profile.company_preferences && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="h-5 w-5" />
+                  Company Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {profile.company_preferences.size && profile.company_preferences.size.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Company Size</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.company_preferences.size.map((size: string, i: number) => (
+                        <Badge key={i} variant="default">{size}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {profile.company_preferences.stage && profile.company_preferences.stage.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Company Stage</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.company_preferences.stage.map((stage: string, i: number) => (
+                        <Badge key={i} variant="secondary">{stage}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {profile.company_preferences.industries && profile.company_preferences.industries.length > 0 && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Industries</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.company_preferences.industries.map((industry: string, i: number) => (
+                        <Badge key={i} variant="outline">{industry}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Red Flags */}
+          {profile.red_flags && profile.red_flags.length > 0 && (
+            <Card className="border-destructive/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-destructive">
+                  <AlertCircle className="h-5 w-5" />
+                  Red Flags (Avoid These)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {profile.red_flags.map((flag: string, i: number) => (
+                    <Badge key={i} variant="destructive">{flag}</Badge>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           )}

@@ -3,6 +3,8 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import * as path from "path";
+import { promises as fs } from "fs";
 import { SCRAPERS, SCRAPER_NAMES } from "./scrapers/registry";
 import { removeGhostJobs, rankJobs, type FilterOptions } from "./scrapers/filter";
 import type { Job } from "./scrapers/types";
@@ -106,7 +108,20 @@ export const appRouter = router({
         const startTime = Date.now();
         
         try {
-          console.log(`[Scraper] Starting scrape for "${role}" in "${location}"`);
+          // Clear cache to force fresh scraping
+          const cacheKey = `${role}:${location}`;
+          scrapeCache.delete(cacheKey);
+          console.log(`[Scraper] Starting FRESH scrape for "${role}" in "${location}" (cache cleared)`);
+          
+          // Load profile to get company preferences, red flags, and skills
+          const profilePath = path.join(process.cwd(), 'server', 'data', 'profiles', 'miles-tipton.json');
+          let profile: any = {};
+          try {
+            const profileData = await fs.readFile(profilePath, 'utf-8');
+            profile = JSON.parse(profileData);
+          } catch (error) {
+            console.warn('[Scraper] Could not load profile, using defaults');
+          }
           
           // Run all scrapers in parallel
           const { jobs: rawJobs, errorsBySource, countsBySource } = await runScrapersParallel(role, location);
@@ -117,23 +132,22 @@ export const appRouter = router({
           const validJobs = removeGhostJobs(rawJobs);
           console.log(`[Scraper] ${validJobs.length} jobs after ghost job removal`);
           
-          // Rank and filter to top 20
+          // Rank and filter to top 20 using profile data
           const filterOptions: FilterOptions = {
             targetRoles: [
               role,
-              'Solutions Engineer',
-              'Demo Engineer',
-              'Technical Account Manager',
-              'Pre-Sales Engineer',
-              'Customer Success Engineer',
-              'Implementation Engineer',
+              ...(profile.target_roles?.direct || []),
+              ...(profile.target_roles?.indirect || []),
             ],
             targetLocation: location,
             missionDrivenKeywords: [
               'ai', 'ml', 'machine learning', 'artificial intelligence',
               'saas', 'innovative', 'startup', 'tech', 'developer tools',
             ],
-            maxExperienceYears: 5, // Filter out senior roles (user has 3 years experience)
+            maxExperienceYears: profile.experience_summary?.total_years || 5,
+            companyPreferences: profile.company_preferences,
+            redFlags: profile.red_flags,
+            skills: profile.skills,
           };
           
           const top20 = rankJobs(validJobs, filterOptions, 20);
@@ -160,8 +174,7 @@ export const appRouter = router({
             })),
           };
           
-          // Cache the result
-          const cacheKey = `${role}:${location}`;
+          // Cache the result for getCachedResults endpoint
           scrapeCache.set(cacheKey, {
             jobs: validJobs,
             top20,
