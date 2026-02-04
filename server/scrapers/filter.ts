@@ -323,7 +323,7 @@ function calculateMissionScore(job: Job, keywords: string[]): number {
     return 50; // Neutral score if no keywords
   }
   
-  const text = `${job.title} ${job.company} ${job.description || ''}`.toLowerCase();
+  const text = normalizeText(`${job.title} ${job.company} ${job.description || ''}`);
   
   let matches = 0;
   for (const keyword of keywords) {
@@ -343,7 +343,7 @@ function calculateCompanyScore(job: Job, companyPreferences?: { size?: string[];
     return 50; // Neutral score if no preferences
   }
   
-  const text = `${job.title} ${job.company} ${job.description || ''}`.toLowerCase();
+  const text = normalizeText(`${job.title} ${job.company} ${job.description || ''}`);
   let totalMatches = 0;
   let totalCategories = 0;
   
@@ -425,7 +425,7 @@ function hasRedFlags(job: Job, redFlags?: string[] | any): boolean {
     return false;
   }
   
-  const text = `${job.title} ${job.description || ''}`.toLowerCase();
+  const text = normalizeText(`${job.title} ${job.description || ''}`);
   
   const redFlagKeywords: { [key: string]: string[] } = {
     '5+ years experience': ['5+ years', '5 years', '6+ years', '7+ years', '8+ years', '10+ years'],
@@ -446,6 +446,22 @@ function hasRedFlags(job: Job, redFlags?: string[] | any): boolean {
 }
 
 /**
+ * Decode HTML entities and normalize text for matching
+ */
+function normalizeText(text: string): string {
+  return text
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/<[^>]*>/g, ' ') // Remove HTML tags
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .toLowerCase()
+    .trim();
+}
+
+/**
  * Calculate skills match score (0-100)
  */
 function calculateSkillsScore(job: Job, skills?: { technical?: string[]; sales?: string[]; soft?: string[] }): number {
@@ -453,7 +469,7 @@ function calculateSkillsScore(job: Job, skills?: { technical?: string[]; sales?:
     return 50; // Neutral score if no skills
   }
   
-  const text = `${job.title} ${job.description || ''}`.toLowerCase();
+  const text = normalizeText(`${job.title} ${job.description || ''}`);
   let totalMatches = 0;
   let totalSkills = 0;
   
@@ -534,9 +550,9 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
   const senioritySignals = detectSenioritySignals(job);
   const requiredYears = extractRequiredYears(job);
   const maxYears = options.maxExperienceYears || 5;
-  const title = job.title.toLowerCase();
-  const description = (job.description || '').toLowerCase();
-  const location = job.location.toLowerCase();
+  const title = normalizeText(job.title);
+  const description = normalizeText(job.description || '');
+  const location = normalizeText(job.location);
   
   // HARD BLOCK: Manufacturing/industrial roles
   const manufacturingKeywords = [

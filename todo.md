@@ -666,3 +666,15 @@
 - [ ] Verify: Craigslist non-zero OR real error
 - [ ] Verify: Apify sources non-zero OR real error
 - [ ] Verify: Score breakdown NOT constant values
+
+
+## 🔧 FIX SCORING WITH HTML DECODING (Feb 4, 2026 21:51)
+**Problem:** Skills & Company scores constant (20, 30) because descriptions have HTML entities (&nbsp;) and tags
+**Solution:** Added normalizeText() function to decode HTML and normalize whitespace before matching
+
+- [x] Add normalizeText() function to decode &nbsp;, &amp;, &lt;, &gt;, &quot;
+- [x] Remove HTML tags with regex
+- [x] Normalize whitespace
+- [x] Apply to calculateSkillsScore, calculateMissionScore, calculateCompanyScore, hasRedFlags, shouldExcludeJob
+- [ ] Test scraper and verify Skills/Company scores are no longer constant
+- [ ] Verify scores reflect actual skill matches in descriptions
