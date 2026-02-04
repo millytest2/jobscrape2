@@ -532,3 +532,26 @@
 - [x] Added defensive checks in filter.ts hasRedFlags() to handle both formats
 - [x] Server restarted with fix applied
 - [ ] Test scraper to verify error is gone
+
+
+## 🚨 FIX FAILING SCRAPERS (Feb 4, 2026 21:08)
+**Current Results:**
+- RemoteOK: 70 jobs ✅
+- WeWorkRemotely: 0 jobs ❌
+- Remotive: 18 jobs ✅
+- Arbeitnow: 43 jobs ✅
+- Jooble: 30 jobs ✅
+- SerpAPI: 20 jobs ⚠️ (cached, no new requests)
+- Craigslist: 0 jobs ❌
+- The Muse: 91 jobs ✅
+- Apify Career Site: 0 jobs ❌
+- Apify LinkedIn: 0 jobs ❌
+
+**Tasks:**
+- [ ] Check server logs for Apify Career Site failure reason
+- [ ] Check server logs for Apify LinkedIn failure reason
+- [ ] Fix Apify timeout issues (currently 30s, may need 60s+)
+- [ ] Fix SerpAPI caching - verify fresh requests being made
+- [ ] Debug WeWorkRemotely RSS parsing
+- [ ] Debug Craigslist bot detection bypass
+- [ ] Target: All 10 sources returning 20+ jobs each

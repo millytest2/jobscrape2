@@ -25,8 +25,9 @@ export const SCRAPERS: ScraperRegistry = {
   serpapi: serpAPIScraper,
   craigslist: craigslistScraper,
   themuse: theMuseScraper,
-  'apify-career-site': apifyCareerSiteScraper,
-  'apify-linkedin': apifyLinkedInScraper,
+  // Apify scrapers disabled - too slow (2-5 min per run)
+  // 'apify-career-site': apifyCareerSiteScraper,
+  // 'apify-linkedin': apifyLinkedInScraper,
 };
 
 export const SCRAPER_NAMES = Object.keys(SCRAPERS);

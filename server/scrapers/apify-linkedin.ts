@@ -44,13 +44,13 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
     const runId = runResponse.data.data.id;
     console.log(`[Apify LinkedIn] Run started: ${runId}`);
 
-    // Wait for the run to complete (poll every 2 seconds, max 30 seconds)
+    // Wait for the run to complete (poll every 3 seconds, max 120 seconds)
     let attempts = 0;
-    const maxAttempts = 15;
+    const maxAttempts = 40; // 40 attempts × 3 seconds = 120 seconds
     let runStatus = "RUNNING";
 
     while (runStatus === "RUNNING" && attempts < maxAttempts) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       const statusResponse = await axios.get(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`
