@@ -766,3 +766,13 @@
 - [x] Fixed scraper to use correct format: "Sales Engineer jobs in Los Angeles"
 - [x] Verified fix: Base search endpoint returns 4 jobs, google_jobs engine returns 0
 - [ ] Test full scrape to verify SerpAPI now contributes jobs
+
+
+## 🐛 DEBUG APIFY SCRAPERS (Feb 4, 2026 22:26)
+- [ ] Check server logs for Apify LinkedIn error messages
+- [ ] Check server logs for Apify Career Site error messages
+- [ ] Test Apify LinkedIn API directly with curl using actor ID vIGxjRrHqDTPuE6M4
+- [ ] Test Apify Career Site API directly with curl using actor ID s3dtSTZSZWFtAVLn5
+- [ ] Verify API token is correct and has credits remaining
+- [ ] Fix any parameter mismatches or API errors
+- [ ] Test both Apify scrapers and verify they return jobs

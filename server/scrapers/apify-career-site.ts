@@ -31,24 +31,11 @@ async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
         timeRange: "7d",
         limit: 100,
         includeAi: true,
-        includeLinkedIn: null,
-        titleSearch: role, // Search by role title
-        locationSearch: location, // Search by location
-        descriptionSearch: null,
+        titleSearch: [role], // Must be array
+        locationSearch: [location], // Must be array
         descriptionType: "text",
-        ats: null,
-        atsExclusionFilter: null,
-        aiEmploymentTypeFilter: null,
-        aiWorkArrangementFilter: null,
-        aiHasSalary: null,
-        aiExperienceLevelFilter: null,
-        aiVisaSponsorshipFilter: null,
-        aiTaxonomiesFilter: null,
-        aiTaxonomiesPrimaryFilter: null,
-        aiTaxonomiesExclusionFilter: null,
         populateAiRemoteLocation: false,
         populateAiRemoteLocationDerived: false,
-        removeAgency: null,
       },
       {
         headers: { "Content-Type": "application/json" },

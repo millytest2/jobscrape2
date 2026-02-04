@@ -31,13 +31,9 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
         timeRange: "7d",
         limit: 100,
         includeAi: true,
-        titleSearch: role, // Search by role title
-        locationSearch: location, // Search by location
-        descriptionSearch: null,
+        titleSearch: [role], // Must be array
+        locationSearch: [location], // Must be array
         descriptionType: "text",
-        remote: null,
-        seniorityFilter: null,
-        removeAgency: null,
       },
       {
         headers: { "Content-Type": "application/json" },
