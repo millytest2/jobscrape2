@@ -10,7 +10,7 @@ import { removeGhostJobs, rankJobs, type FilterOptions } from "./scrapers/filter
 import type { Job } from "./scrapers/types";
 
 // In-memory cache for last successful scrape results
-const scrapeCache = new Map<string, { jobs: Job[]; top20: any[]; timestamp: string; stats: any }>();
+const scrapeCache = new Map<string, { runId: string; jobs: Job[]; top20: any[]; timestamp: string; stats: any }>();
 
 // Clear cache on server startup to force fresh scraping after code changes
 scrapeCache.clear();
@@ -34,10 +34,15 @@ async function runScrapersParallel(
     
     const results = await Promise.allSettled(
       batch.map(async (sourceName) => {
+        const sourceStartTime = Date.now();
+        const sourceStartedAt = new Date().toISOString();
         try {
+          console.log(`[${sourceName}] Starting scrape for role="${role}" location="${location}"`);
           const scraper = SCRAPERS[sourceName];
           const jobs = await scraper.scrape({ role, location });
-          return { sourceName, jobs };
+          const durationMs = Date.now() - sourceStartTime;
+          console.log(`[${sourceName}] ✓ Completed in ${durationMs}ms | Jobs: ${jobs.length}`);
+          return { sourceName, jobs, durationMs, startedAt: sourceStartedAt };
         } catch (error: any) {
           return { sourceName, jobs: [], error: error.message };
         }
@@ -102,16 +107,48 @@ export const appRouter = router({
       .input(z.object({
         location: z.string(),
         role: z.string(),
+        forceFresh: z.boolean().optional().default(true),
       }))
       .mutation(async ({ input }) => {
-        const { location, role } = input;
+        const { location, role, forceFresh } = input;
+        
+        // Generate unique runId for this scrape
+        const runId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
         const startTime = Date.now();
+        const startedAt = new Date().toISOString();
+        
+        console.log(`[Scraper] ========== NEW RUN: ${runId} ==========`);
+        console.log(`[Scraper] Role: "${role}", Location: "${location}", ForceFresh: ${forceFresh}`);
+        console.log(`[Scraper] Started at: ${startedAt}`);
         
         try {
-          // Clear cache to force fresh scraping
+          // Check cache only if forceFresh is false
           const cacheKey = `${role}:${location}`;
+          
+          if (!forceFresh && scrapeCache.has(cacheKey)) {
+            const cached = scrapeCache.get(cacheKey)!;
+            const cachedAgeSeconds = Math.round((Date.now() - new Date(cached.timestamp).getTime()) / 1000);
+            console.log(`[Scraper] Returning CACHED results (age: ${cachedAgeSeconds}s)`);
+            
+            return {
+              status: 'success',
+              runId,
+              usedCache: true,
+              cachedRunId: cached.runId || 'unknown',
+              cachedAgeSeconds,
+              timestamp: cached.timestamp,
+              params: { location, role },
+              stats: cached.stats,
+              jobs: cached.top20,
+              sourceBreakdown: [],
+              errorsBySource: {},
+              countsBySource: {},
+            };
+          }
+          
+          // Force fresh scrape
           scrapeCache.delete(cacheKey);
-          console.log(`[Scraper] Starting FRESH scrape for "${role}" in "${location}" (cache cleared)`);
+          console.log(`[Scraper] FRESH SCRAPE - cache cleared`);
           
           // Load profile to get company preferences, red flags, and skills
           const profilePath = path.join(process.cwd(), 'server', 'data', 'profiles', 'miles-tipton.json');
@@ -152,9 +189,23 @@ export const appRouter = router({
           
           const top20 = rankJobs(validJobs, filterOptions, 20);
           
+          const finishedAt = new Date().toISOString();
+          const durationMs = Date.now() - startTime;
+          
+          // Final summary log
+          console.log(`[Scraper] ========== RUN COMPLETE: ${runId} ==========`);
+          console.log(`[Scraper] Duration: ${durationMs}ms (${Math.round(durationMs / 1000)}s)`);
+          console.log(`[Scraper] Total jobs: ${rawJobs.length}, Unique: ${validJobs.length}, Top 20: ${top20.length}`);
+          console.log(`[Scraper] Per-source counts:`, countsBySource);
+          console.log(`[Scraper] Errors:`, errorsBySource);
+          
           const result = {
             status: 'success',
-            timestamp: new Date().toISOString(),
+            runId,
+            usedCache: false,
+            startedAt,
+            finishedAt,
+            timestamp: finishedAt,
             params: { location, role },
             stats: {
               scraped: rawJobs.length,
@@ -162,7 +213,8 @@ export const appRouter = router({
               top20: top20.length,
               sources: SCRAPER_NAMES.length,
               errors: Object.keys(errorsBySource).length,
-              duration: Math.round((Date.now() - startTime) / 1000),
+              duration: Math.round(durationMs / 1000),
+              durationMs,
             },
             jobs: top20,
             errorsBySource,
@@ -174,8 +226,9 @@ export const appRouter = router({
             })),
           };
           
-          // Cache the result for getCachedResults endpoint
+          // Cache the result
           scrapeCache.set(cacheKey, {
+            runId,
             jobs: validJobs,
             top20,
             timestamp: result.timestamp,

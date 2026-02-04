@@ -555,3 +555,59 @@
 - [ ] Debug WeWorkRemotely RSS parsing
 - [ ] Debug Craigslist bot detection bypass
 - [ ] Target: All 10 sources returning 20+ jobs each
+
+
+## 🔄 RE-ENABLE APIFY SCRAPERS WITH ASYNC (Feb 4, 2026 21:14)
+- [ ] Re-enable Apify Career Site and LinkedIn in registry.ts
+- [ ] Implement async background scraping pattern
+- [ ] Return fast scraper results immediately (7 seconds)
+- [ ] Continue Apify scraping in background
+- [ ] Update results when Apify completes (2-5 min later)
+- [ ] Test full scrape with all 10 sources
+- [ ] Verify Apify jobs appear in results
+
+
+## 🚨 FIX SCRAPER NOT RUNNING FRESH SCRAPES (Feb 4, 2026 21:17)
+**Issue:** Clicking "RUN SCRAPER" returns cached results instead of running fresh scrapes
+**Problems:**
+- Cache is not being cleared properly
+- Apify scrapers may not be getting called at all
+- Filtering may not be processing new results
+- Same jobs returned every time (not fresh data)
+
+**Tasks:**
+- [ ] Check routers.ts caching logic - verify cache is cleared on each scrape
+- [ ] Add logging to verify each scraper is actually being called
+- [ ] Check Apify API calls - verify they're being triggered with correct params
+- [ ] Verify filter.ts is processing fresh results, not cached
+- [ ] Remove all caching - force fresh scrapes every time
+- [ ] Test end-to-end and verify different results on each run
+
+
+## ✅ FRESHNESS CONTRACT IMPLEMENTED (Feb 4, 2026 21:31)
+**Goal:** Prove every RUN SCRAPER click triggers fresh scrape with visible metadata
+
+**Backend Changes:**
+- [x] Generate runId = `${timestamp}-${randomString}` on every runScraper call
+- [x] Track run metadata: runId, startedAt, finishedAt, roles, location
+- [x] Add forceFresh boolean flag to runScraper input (default true)
+- [x] Add per-source structured logging: sourceName, startedAt, endedAt, durationMs, jobsReturned, error
+- [x] Add final summary log: runId, totalDurationMs, totalJobs, uniqueJobs, top20Count
+- [x] Return usedCache, cachedRunId, cachedAgeSeconds when cache is used
+- [x] Cache only used when forceFresh=false
+
+**Frontend Changes:**
+- [x] Display runId under RUN SCRAPER button
+- [x] Display startedAt and finishedAt timestamps
+- [x] Display total jobs scraped in stats
+- [x] Display per-source counts in Source Breakdown table
+- [x] Show "FRESH RUN" badge when usedCache=false
+- [x] Show "CACHED" warning when usedCache=true with age
+- [x] Pass forceFresh=true when RUN SCRAPER is clicked
+
+**Ready for Testing:**
+- [ ] Click RUN SCRAPER twice → verify runId differs
+- [ ] Verify startedAt updates on each click
+- [ ] Check server logs for per-source execution
+- [ ] Verify filtering runs and top 20 regenerates
+- [ ] Verify UI shows all metadata clearly
