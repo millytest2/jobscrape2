@@ -356,3 +356,9 @@
 - [x] Test SerpAPI: NOW WORKING with 20 jobs (10 remote + 10 hybrid)
 - [ ] Fix WeWorkRemotely role matching (RSS feed has 100 items but 0 Sales Engineer matches)
 - [ ] Save checkpoint with working 6-source scraper (130 jobs → 115 quality matches → 20 displayed)
+
+
+## 🚨 PROFILE PAGE ERROR (Feb 4, 2026)
+- [x] Fix Profile page error: "Cannot read properties of undefined (reading 'toLocaleString')" - Fixed field names (min/max → minimum/maximum)
+- [x] Test Profile page after fix - Working correctly!
+- [ ] Save checkpoint with working Profile page

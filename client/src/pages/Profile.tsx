@@ -23,8 +23,9 @@ interface UserProfile {
     relevant_years: number;
   };
   salary_expectations: {
-    min: number;
-    max: number;
+    minimum: number;
+    target: number;
+    maximum: number;
     currency: string;
   };
 }
@@ -171,7 +172,7 @@ export default function Profile() {
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Range</label>
                 <p className="text-lg font-semibold mt-1">
-                  ${profile.salary_expectations.min.toLocaleString()} - ${profile.salary_expectations.max.toLocaleString()} {profile.salary_expectations.currency}
+                  ${profile.salary_expectations.minimum.toLocaleString()} - ${profile.salary_expectations.maximum.toLocaleString()} {profile.salary_expectations.currency}
                 </p>
               </div>
             </CardContent>
