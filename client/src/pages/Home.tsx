@@ -59,19 +59,39 @@ export default function Home() {
     }
   }, [profileQuery.data]);
 
+  const [scrapeStartTime, setScrapeStartTime] = useState<number | null>(null);
+  const [showTimeoutMessage, setShowTimeoutMessage] = useState(false);
+
   const scrapeMutation = trpc.scraper.runScraper.useMutation({
     onSuccess: (data) => {
       setResult(data);
+      setScrapeStartTime(null);
+      setShowTimeoutMessage(false);
       const jobCount = data.stats.top_matches || data.stats.filtered || data.jobs.length;
       toast.success(`Found ${jobCount} high-quality matches!`);
     },
     onError: (error) => {
+      setScrapeStartTime(null);
+      setShowTimeoutMessage(false);
       toast.error("Scraping failed: " + error.message);
     },
   });
 
+  // Show timeout message after 30 seconds
+  useEffect(() => {
+    if (scrapeStartTime) {
+      const timer = setTimeout(() => {
+        setShowTimeoutMessage(true);
+      }, 30000); // 30 seconds
+      
+      return () => clearTimeout(timer);
+    }
+  }, [scrapeStartTime]);
+
   const handleScrape = () => {
     setResult(null);
+    setScrapeStartTime(Date.now());
+    setShowTimeoutMessage(false);
     scrapeMutation.mutate({ location, role });
   };
 
@@ -157,7 +177,7 @@ export default function Home() {
                   {scrapeMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Scraping...
+                      {showTimeoutMessage ? "Still scraping (this may take 2-3 min)..." : "Scraping..."}
                     </>
                   ) : (
                     <>

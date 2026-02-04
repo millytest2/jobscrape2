@@ -110,3 +110,44 @@
 - [x] Fix path resolution to work in production (changed '../python_scraper' to './python_scraper')
 - [x] Update diagnostics endpoint to show scraper path and files (added scraper.resolvedPath, exists, pythonFiles)
 - [ ] Test in production to verify scrapers are found
+
+
+## 🚀 ASYNC JOB QUEUE + CACHING (User Request - Feb 3, 2026)
+### A) Async Job Queue with Polling
+- [ ] Create database schema for scrape_jobs table (id, status, progress, jobsFound, results, createdAt, updatedAt)
+- [ ] Add POST /api/scrape/start endpoint (returns jobId immediately)
+- [ ] Add GET /api/scrape/status?jobId=X endpoint (returns status, progress, counts)
+- [ ] Add GET /api/scrape/results?jobId=X endpoint (returns normalized jobs + metadata)
+- [ ] Update Python scraper to write progress updates to database
+- [ ] Frontend: Call /start → store jobId → poll /status every 3s → fetch /results when done
+
+### B) Cache Results for Instant UX
+- [ ] Create database schema for scrape_cache table (userId, searchConfig, results, timestamp)
+- [ ] On /start: Return cached results immediately if they exist (with "Last updated X ago" label)
+- [ ] Start fresh scrape in background while showing cached results
+- [ ] Frontend: Show cached results instantly → poll for fresh results → swap when ready
+
+### C) Speed Improvements
+- [ ] Add concurrency control (max 6-10 concurrent API calls total)
+- [ ] Add per-source concurrency limit (max 2 per source)
+- [ ] Add early stopping (stop at 260 jobs if goal is 200)
+- [ ] Add per-title limit (stop title after 40 jobs)
+- [ ] Add per-source limit (stop source after 70 jobs)
+- [ ] Add deduplication during ingest (hash by title+company+location+url)
+
+### D) Fix SerpAPI Location Errors
+- [ ] Normalize locations to "City, State" format before calling SerpAPI
+- [ ] Add fallback: If "Santa Monica, CA" fails → retry with "Los Angeles, CA"
+- [ ] Log source-level errors to diagnostics (don't show raw errors to users)
+- [ ] Show user-friendly message: "Some sources did not respond"
+
+### SHIP TODAY (Minimal but Real Improvement) - V1 SHIPPED
+- [x] Fix frontend timeout UX (show progress message after 30s: "Still scraping (this may take 2-3 min)...")
+- [x] Keep existing working scraper (284+ jobs proven)
+- [ ] Async job model with polling (V2 - future enhancement)
+- [ ] Basic caching of last successful results (V2 - future enhancement)
+
+### SHIP NEXT (Make It Fast)
+- [ ] Concurrency caps + early stop rules
+- [ ] SerpAPI location normalization + fallback
+- [ ] Partial results streaming (poll results every 5s)
