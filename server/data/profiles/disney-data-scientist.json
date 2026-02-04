@@ -1,0 +1,151 @@
+{
+  "name": "Disney Data Scientist",
+  "experience": {
+    "total_years": 5,
+    "relevant_years": 5,
+    "current_role": "Former Disney Data Scientist",
+    "previous_roles": [
+      {
+        "title": "Data Scientist",
+        "company": "Disney",
+        "duration": "5 years (FTE + contract)",
+        "responsibilities": [
+          "Measured marketing effectiveness across tens of KPIs and sports leagues",
+          "Scaled marketing measurement solutions",
+          "Developed solutions using randomized testing and causal inference",
+          "Worked with high-profile brands"
+        ]
+      }
+    ]
+  },
+  "target_roles": {
+    "direct": [
+      "Data Scientist",
+      "Applied Scientist",
+      "Machine Learning Engineer",
+      "Product Manager"
+    ],
+    "indirect": [
+      "Senior Data Scientist",
+      "Lead Data Scientist",
+      "Staff Data Scientist",
+      "Principal Data Scientist",
+      "Data Science Manager",
+      "ML Research Scientist"
+    ]
+  },
+  "location": {
+    "primary": "New York City, NY",
+    "remote_preference": "NYC or Remote",
+    "willing_to_relocate": false
+  },
+  "salary_expectations": {
+    "minimum": 120000,
+    "target": 150000,
+    "maximum": 180000,
+    "currency": "USD"
+  },
+  "skills": {
+    "technical": [
+      "Statistical modeling",
+      "Causal inference",
+      "Randomized controlled experiments",
+      "A/B testing",
+      "Marketing measurement",
+      "Data analysis",
+      "Machine learning",
+      "Python",
+      "R",
+      "SQL"
+    ],
+    "domain": [
+      "Marketing analytics",
+      "Experimentation",
+      "Statistical inference",
+      "Computational biology",
+      "Biomedical research"
+    ],
+    "soft": [
+      "Data science mentoring",
+      "Teaching data wrangling",
+      "Collaborative learning",
+      "Documentation",
+      "Reproducible research"
+    ]
+  },
+  "education": [
+    {
+      "degree": "Advanced degree (PhD or MS)",
+      "field": "Statistics, Data Science, or related field",
+      "institution": "Unknown",
+      "year": "Unknown"
+    }
+  },
+  "work_history": [
+    {
+      "title": "Data Scientist",
+      "company": "Disney",
+      "start_date": "~2020",
+      "end_date": "2025",
+      "type": "FTE + Contract",
+      "description": "Measured marketing effectiveness, scaled measurement solutions, developed causal inference models"
+    },
+    {
+      "title": "Computational Biologist",
+      "company": "Unknown",
+      "start_date": "Unknown",
+      "end_date": "Unknown",
+      "type": "Previous role",
+      "description": "Solved complex biomedical problems with advanced statistical techniques"
+    },
+    {
+      "title": "Data Science Mentor",
+      "company": "Unknown",
+      "start_date": "Unknown",
+      "end_date": "Present",
+      "type": "Part-time/Volunteer",
+      "description": "Teaching data wrangling and analysis skills"
+    }
+  },
+  "company_preferences": {
+    "size": ["Startup", "Small", "Medium", "Large"],
+    "stage": ["Seed", "Series A", "Series B", "Series C", "Growth", "Public"],
+    "industries": [
+      "Data Science",
+      "Machine Learning",
+      "AI/ML",
+      "Healthcare Tech",
+      "Biotech",
+      "Marketing Technology",
+      "Analytics",
+      "E-commerce",
+      "Media & Entertainment"
+    ],
+    "culture": [
+      "Teams that reference Statistical Rethinking book",
+      "Teams that reference Causal Inference for the Brave and True",
+      "Teams that reference Trustworthy Online Controlled Experiments",
+      "Reproducible data analyses",
+      "Good documentation practices",
+      "Collaborative collective learning",
+      "Experimentation-driven culture"
+    ]
+  },
+  "red_flags": {
+    "roles": [
+      "Pure software engineering roles",
+      "Roles without data science component",
+      "Roles without statistical modeling"
+    ],
+    "companies": [
+      "Companies without experimentation culture",
+      "Companies with poor documentation practices",
+      "Companies that don't value reproducibility"
+    ],
+    "requirements": [
+      "Roles requiring 10+ years experience",
+      "Roles without mentorship opportunities",
+      "Roles in non-technical industries"
+    ]
+  }
+}

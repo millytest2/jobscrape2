@@ -436,3 +436,19 @@
 - [x] 10 scrapers working: RemoteOK (56), Jooble (30), SerpAPI (20), Apify Career Site (10), Apify LinkedIn (10), Remotive (12), Arbeitnow (12), The Muse (7)
 - [x] Total: 157 jobs scraped → 142 quality matches → 20 displayed
 - [x] All filters working perfectly (no senior roles, no wrong locations, no wrong roles)
+
+
+## 🔧 NEW REQUIREMENTS (Feb 4, 2026) - IN PROGRESS
+- [x] Fix green image on home page (make it white/gradient to blend with background) - Generated new white/gradient image
+- [x] Add multi-user profile support (create profiles for different people) - Backend updated with listProfiles, getProfile(profileId), updateProfile(profileId)
+- [ ] Add profile switcher dropdown (switch between Miles, Disney data scientist, etc.) - Backend ready, UI not implemented yet
+- [x] Parse LinkedIn post to create Disney data scientist profile:
+  - Name: (from LinkedIn post)
+  - Roles: Data Scientist, Applied Scientist, Machine Learning Engineer, Product Manager
+  - Location: NYC or Remote
+  - Experience: 5 years at Disney (FTE + contract)
+  - Skills: Statistical modeling, causal inference, randomized testing, marketing measurement
+  - Company preferences: Teams using Statistical Rethinking, Causal Inference books, reproducible analyses
+  - Red flags: (none mentioned)
+- [ ] Fix auto-refresh issue (don't refresh when leaving page, only when clicking RUN SCRAPER)
+- [ ] Test multi-user system with both profiles

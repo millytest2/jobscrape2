@@ -199,12 +199,34 @@ export const appRouter = router({
         };
       }),
     
-    getProfile: publicProcedure
+    listProfiles: publicProcedure
       .query(async () => {
         try {
           const fs = await import('fs/promises');
           const path = await import('path');
-          const profilePath = path.resolve(process.cwd(), 'server/data/miles_profile.json');
+          const profilesDir = path.resolve(process.cwd(), 'server/data/profiles');
+          const files = await fs.readdir(profilesDir);
+          const profiles = files
+            .filter(f => f.endsWith('.json'))
+            .map(f => ({
+              id: f.replace('.json', ''),
+              name: f.replace('.json', '').split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+            }));
+          return profiles;
+        } catch (error: any) {
+          console.error("Profile list error:", error);
+          return [];
+        }
+      }),
+    
+    getProfile: publicProcedure
+      .input(z.object({ profileId: z.string().optional() }).optional())
+      .query(async ({ input }) => {
+        try {
+          const fs = await import('fs/promises');
+          const path = await import('path');
+          const profileId = input?.profileId || 'miles-tipton'; // Default to Miles
+          const profilePath = path.resolve(process.cwd(), `server/data/profiles/${profileId}.json`);
           const profileData = await fs.readFile(profilePath, 'utf-8');
           return JSON.parse(profileData);
         } catch (error: any) {
@@ -214,13 +236,13 @@ export const appRouter = router({
       }),
     
     updateProfile: publicProcedure
-      .input(z.any())
+      .input(z.object({ profileId: z.string(), data: z.any() }))
       .mutation(async ({ input }) => {
         try {
           const fs = await import('fs/promises');
           const path = await import('path');
-          const profilePath = path.resolve(process.cwd(), 'server/data/miles_profile.json');
-          await fs.writeFile(profilePath, JSON.stringify(input, null, 2), 'utf-8');
+          const profilePath = path.resolve(process.cwd(), `server/data/profiles/${input.profileId}.json`);
+          await fs.writeFile(profilePath, JSON.stringify(input.data, null, 2), 'utf-8');
           return { success: true };
         } catch (error: any) {
           console.error("Profile update error:", error);

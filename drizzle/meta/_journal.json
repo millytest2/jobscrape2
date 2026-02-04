@@ -15,6 +15,20 @@
       "when": 1770170200796,
       "tag": "0001_yellow_sphinx",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1770236328839,
+      "tag": "0002_silent_power_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1770236655878,
+      "tag": "0003_watery_tony_stark",
+      "breakpoints": true
     }
   ]
 }

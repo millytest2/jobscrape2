@@ -335,7 +335,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 opacity-50">
-            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663032434087/nfcQmeyQQfXMDJUa.png" alt="No results" className="w-64 h-64 object-contain" />
+            <img src="https://private-us-east-1.manuscdn.com/sessionFile/b4HSUUCMhvxiDBwLmXewJm/sandbox/ZmRfp04zFHTPn9Cnd8leNE-img-1_1770236241000_na1fn_ZW1wdHktc3RhdGUtd2hpdGU.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvYjRIU1VVQ01odnhpREJ3TG1YZXdKbS9zYW5kYm94L1ptUmZwMDR6RkhUUG45Q25kOGxlTkUtaW1nLTFfMTc3MDIzNjI0MTAwMF9uYTFmbl9aVzF3ZEhrdGMzUmhkR1V0ZDJocGRHVS5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=tTqoaOlEDxFpFEwJWyfxfwCGwaM2lxtVs4mm6DP0EmZoOM3aZsFNR1SseGBJPYWgYcthLOkjnv1dcGEbUCyc1TFUjeddatzaYODauD2nypQxTFIpITKBvhXIYPXpakj9a3ecoo57xq~~wHe85VIDzEbwMDpvrBfkUmqwMI9QGRYLfQULHQQoBtFfgK5ZzoRpOnCAg4bX9lCn8WoizMUciqMIdKgyWUxQ-tWLaMP6y6bcyvua3kUWWXQBjDLGBNPWwR-OwEK1aUFwJqKVcxsfwNVg~Ke4-iCPiROhslMPFYM4aqEcVViKel8~TqRMi3GZvu1cHJG8HVkyDpK4gl9JLA__" alt="No results" className="w-64 h-64 object-contain" />
             <div className="space-y-2">
               <h3 className="text-2xl font-bold font-mono uppercase">Ready to Scrape</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
