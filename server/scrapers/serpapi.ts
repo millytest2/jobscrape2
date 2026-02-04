@@ -40,6 +40,8 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         url.searchParams.set('location', strategy.location);
         url.searchParams.set('api_key', apiKey);
         
+        console.log(`[SerpAPI] Fetching: ${url.toString()}`);
+        
         const response = await fetch(url.toString(), {
           headers: {
             'User-Agent': 'Mozilla/5.0 (compatible; JobScraperBot/1.0)',
@@ -52,7 +54,11 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         }
         
         const data = await response.json();
-        const jobs = data.jobs_results || [];
+        console.log(`[SerpAPI] Response keys:`, Object.keys(data));
+        
+        // jobs_results is an object with a 'jobs' array inside
+        const jobs = data.jobs_results?.jobs || [];
+        console.log(`[SerpAPI] jobs_results.jobs:`, Array.isArray(jobs) ? `${jobs.length} jobs` : 'not an array');
         
         console.log(`[SerpAPI] Found ${jobs.length} jobs for query: ${strategy.q}`);
         
