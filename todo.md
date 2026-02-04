@@ -776,3 +776,61 @@
 - [ ] Verify API token is correct and has credits remaining
 - [ ] Fix any parameter mismatches or API errors
 - [ ] Test both Apify scrapers and verify they return jobs
+
+
+## 🚀 ADD NEW FREE SCRAPER SOURCES (Feb 4, 2026 23:00)
+**Goal:** Reach 400+ jobs per scrape using only free sources
+
+### Adzuna API (FREE: 1,000 calls/month)
+- [ ] Sign up for free API keys at https://developer.adzuna.com/signup
+- [ ] Create server/scrapers/adzuna.ts scraper
+- [ ] Add ADZUNA_APP_ID and ADZUNA_APP_KEY to secrets
+- [ ] Register in scrapers/registry.ts
+- [ ] Test and verify returns 50+ jobs (aggregates Indeed, Monster, CareerBuilder)
+
+### RSS Feed Aggregator (FREE: Unlimited)
+- [ ] Install rss-parser: `pnpm add rss-parser`
+- [ ] Create server/scrapers/rss-aggregator.ts
+- [ ] Add feeds: AngelList, StackOverflow, WWR, Remotive
+- [ ] Register in scrapers/registry.ts
+- [ ] Test and verify returns 30+ jobs
+
+### USAJobs API (FREE: Unlimited)
+- [ ] Sign up for free API key at https://developer.usajobs.gov/
+- [ ] Create server/scrapers/usajobs.ts scraper
+- [ ] Add USAJOBS_API_KEY to secrets
+- [ ] Register in scrapers/registry.ts
+- [ ] Test and verify returns 15+ government jobs
+
+### Fix Apify Scrapers with Retry Logic
+- [ ] Update apify-linkedin.ts with 3-minute timeout and 5s polling
+- [ ] Update apify-career-site.ts with same retry logic
+- [ ] Test both scrapers and verify they return 20-50 jobs each
+
+### Expected Results
+- [ ] RemoteOK: 70
+- [ ] The Muse: 91
+- [ ] Arbeitnow: 44
+- [ ] Jooble: 30
+- [ ] Remotive: 18
+- [ ] SerpAPI: 4
+- [ ] **Adzuna: 50** (NEW)
+- [ ] **RSS Feeds: 30** (NEW)
+- [ ] **USAJobs: 15** (NEW)
+- [ ] **Apify LinkedIn: 30** (FIXED)
+- [ ] **Apify Career Sites: 15** (FIXED)
+- [ ] **TOTAL: 400+ jobs per scrape**
+
+
+## 🎯 ADD NEW FREE SCRAPERS (User Request - Feb 4, 2026)
+- [x] Implement Adzuna API scraper (aggregates Indeed/Monster/CareerBuilder)
+- [x] Implement RSS feed aggregator (Stack Overflow Jobs, GitHub Jobs, Hacker News Who's Hiring)
+- [x] Implement USAJobs API scraper (government jobs)
+- [x] Register all 3 new scrapers in registry.ts
+- [x] Add Adzuna API credentials via webdev_request_secrets
+- [ ] Test Adzuna scraper - verify it returns jobs (credentials added, needs testing)
+- [ ] Test RSS scraper - verify it returns jobs from multiple feeds (may legitimately return 0 for Sales Engineer)
+- [ ] Test USAJobs scraper - verify it returns jobs (may legitimately return 0 for Sales Engineer government jobs)
+- [ ] Debug Apify scrapers with retry logic (currently returning 0 - need detailed error logs)
+- [ ] Verify system reaches 400+ jobs per scrape with all 13 sources (currently 255 from 6 sources)
+- [ ] Verify scoring differentiates jobs properly (10+ unique values per dimension)

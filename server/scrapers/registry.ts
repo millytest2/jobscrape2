@@ -1,6 +1,6 @@
 /**
  * Scraper Registry - Explicit imports, no filesystem discovery
- * All 8 sources registered here
+ * All 13 sources registered here
  */
 
 import { remoteOKScraper } from './remoteok';
@@ -13,6 +13,9 @@ import { craigslistScraper } from './craigslist';
 import { theMuseScraper } from './themuse';
 import { apifyCareerSiteScraper } from './apify-career-site';
 import { apifyLinkedInScraper } from './apify-linkedin';
+import { adzunaScraper } from './adzuna-wrapper';
+import { rssScraper } from './rss-wrapper';
+import { usajobsScraper } from './usajobs-wrapper';
 
 import type { ScraperRegistry } from './types';
 
@@ -27,6 +30,9 @@ export const SCRAPERS: ScraperRegistry = {
   themuse: theMuseScraper,
   'apify-career-site': apifyCareerSiteScraper,
   'apify-linkedin': apifyLinkedInScraper,
+  adzuna: adzunaScraper,
+  rss: rssScraper,
+  usajobs: usajobsScraper,
 };
 
 export const SCRAPER_NAMES = Object.keys(SCRAPERS);
