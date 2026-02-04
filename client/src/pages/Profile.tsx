@@ -1,92 +1,65 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, User, Briefcase, MapPin, DollarSign, Building2, AlertCircle } from "lucide-react";
+import { Loader2, User, Briefcase, MapPin, DollarSign, Building2, AlertCircle, Edit, Save, X } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 
-interface UserProfile {
-  name: string;
-  email?: string;
-  phone?: string;
-  target_roles: {
-    direct: string[];
-    indirect: string[];
-  };
-  location: {
-    primary: string;
-    willing_to_relocate: boolean;
-    remote_preference: string;
-  };
-  experience_summary: {
-    total_years: number;
-    relevant_years: number;
-    current_role?: string;
-    previous_roles?: string[];
-  };
-  skills?: {
-    technical?: string[];
-    sales?: string[];
-    soft_skills?: string[];
-  };
-  education?: {
-    degree: string;
-    university: string;
-    graduation_year: number;
-    additional?: string[];
-  };
-  salary_expectations: {
-    minimum: number;
-    target: number;
-    maximum: number;
-    currency: string;
-  };
-  company_preferences?: {
-    size?: string[];
-    stage?: string[];
-    industries?: string[];
-  };
-  red_flags?: {
-    avoid?: string[];
-  };
-}
-
 export default function Profile() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-
-  // Fetch profile from backend
+  const [isEditing, setIsEditing] = useState(false);
   const profileQuery = trpc.scraper.getProfile.useQuery();
+  const utils = trpc.useUtils();
   
-  useEffect(() => {
-    if (profileQuery.data) {
-      setProfile(profileQuery.data);
-    } else if (profileQuery.error) {
-      toast.error("Failed to load profile");
-    }
-  }, [profileQuery.data, profileQuery.error]);
+  const [editedProfile, setEditedProfile] = useState<any>(null);
+  
+  const updateProfileMutation = trpc.scraper.updateProfile.useMutation({
+    onSuccess: () => {
+      toast.success("Profile updated successfully!");
+      setIsEditing(false);
+      utils.scraper.getProfile.invalidate();
+    },
+    onError: (error) => {
+      toast.error("Failed to update profile: " + error.message);
+    },
+  });
+
+  const handleEdit = () => {
+    setEditedProfile(JSON.parse(JSON.stringify(profileQuery.data)));
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setEditedProfile(null);
+    setIsEditing(false);
+  };
+
+  const handleSave = () => {
+    updateProfileMutation.mutate(editedProfile);
+  };
+
+  const profile = isEditing ? editedProfile : profileQuery.data;
 
   if (profileQuery.isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
-  if (!profile) {
+  if (profileQuery.error || !profile) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle>Profile Not Found</CardTitle>
-            <CardDescription>Unable to load your profile. Please try again.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Link href="/">
-              <Button className="w-full">Back to Home</Button>
-            </Link>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3 text-destructive">
+              <AlertCircle className="h-5 w-5" />
+              <p>Failed to load profile</p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -94,22 +67,47 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="container max-w-4xl">
+    <div className="min-h-screen bg-background">
+      <div className="container py-12 max-w-4xl">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">Your Profile</h1>
+            <h1 className="text-4xl font-bold font-mono uppercase">Your Profile</h1>
             <p className="text-muted-foreground mt-2">
               This profile is used to personalize your job search
             </p>
           </div>
-          <Link href="/">
-            <Button variant="outline">Back to Home</Button>
-          </Link>
+          <div className="flex gap-2">
+            {!isEditing ? (
+              <>
+                <Link href="/">
+                  <Button variant="outline">Back to Home</Button>
+                </Link>
+                <Button onClick={handleEdit}>
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Profile
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={handleCancel}>
+                  <X className="mr-2 h-4 w-4" />
+                  Cancel
+                </Button>
+                <Button onClick={handleSave} disabled={updateProfileMutation.isPending}>
+                  {updateProfileMutation.isPending ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                  )}
+                  Save Changes
+                </Button>
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="grid gap-6">
-          {/* Basic Info */}
+        <div className="space-y-6">
+          {/* Basic Information */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -118,15 +116,53 @@ export default function Profile() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Name</label>
-                <p className="text-lg font-semibold mt-1">{profile.name}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Experience</label>
-                <p className="text-lg mt-1">
-                  {profile.experience_summary.total_years} years total, {profile.experience_summary.relevant_years} years relevant
-                </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Name</label>
+                  {isEditing ? (
+                    <Input
+                      value={editedProfile.name}
+                      onChange={(e) => setEditedProfile({ ...editedProfile, name: e.target.value })}
+                    />
+                  ) : (
+                    <p className="text-lg font-medium">{profile.name}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Experience</label>
+                  {isEditing ? (
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        value={editedProfile.experience_summary.total_years}
+                        onChange={(e) => setEditedProfile({
+                          ...editedProfile,
+                          experience_summary: {
+                            ...editedProfile.experience_summary,
+                            total_years: parseInt(e.target.value)
+                          }
+                        })}
+                        placeholder="Total years"
+                      />
+                      <Input
+                        type="number"
+                        value={editedProfile.experience_summary.relevant_years}
+                        onChange={(e) => setEditedProfile({
+                          ...editedProfile,
+                          experience_summary: {
+                            ...editedProfile.experience_summary,
+                            relevant_years: parseInt(e.target.value)
+                          }
+                        })}
+                        placeholder="Relevant years"
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-lg font-medium">
+                      {profile.experience_summary.total_years} years total, {profile.experience_summary.relevant_years} years relevant
+                    </p>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -142,24 +178,52 @@ export default function Profile() {
             <CardContent className="space-y-4">
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Direct Roles</label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {profile.target_roles.direct.map((role, index) => (
-                    <Badge key={index} variant="default">{role}</Badge>
-                  ))}
-                </div>
+                {isEditing ? (
+                  <Textarea
+                    value={editedProfile.target_roles.direct.join(", ")}
+                    onChange={(e) => setEditedProfile({
+                      ...editedProfile,
+                      target_roles: {
+                        ...editedProfile.target_roles,
+                        direct: e.target.value.split(",").map(r => r.trim())
+                      }
+                    })}
+                    placeholder="Comma-separated list"
+                  />
+                ) : (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {profile.target_roles.direct.map((role: string, i: number) => (
+                      <Badge key={i} variant="default">{role}</Badge>
+                    ))}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Indirect Roles</label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {profile.target_roles.indirect.map((role, index) => (
-                    <Badge key={index} variant="secondary">{role}</Badge>
-                  ))}
-                </div>
+                {isEditing ? (
+                  <Textarea
+                    value={editedProfile.target_roles.indirect.join(", ")}
+                    onChange={(e) => setEditedProfile({
+                      ...editedProfile,
+                      target_roles: {
+                        ...editedProfile.target_roles,
+                        indirect: e.target.value.split(",").map(r => r.trim())
+                      }
+                    })}
+                    placeholder="Comma-separated list"
+                  />
+                ) : (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {profile.target_roles.indirect.map((role: string, i: number) => (
+                      <Badge key={i} variant="outline">{role}</Badge>
+                    ))}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
 
-          {/* Location */}
+          {/* Location Preferences */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -170,20 +234,36 @@ export default function Profile() {
             <CardContent className="space-y-4">
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Primary Location</label>
-                <p className="text-lg font-semibold mt-1">{profile.location.primary}</p>
+                {isEditing ? (
+                  <Input
+                    value={editedProfile.location.primary}
+                    onChange={(e) => setEditedProfile({
+                      ...editedProfile,
+                      location: { ...editedProfile.location, primary: e.target.value }
+                    })}
+                  />
+                ) : (
+                  <p className="text-lg font-medium">{profile.location.primary}</p>
+                )}
               </div>
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Remote Preference</label>
-                <p className="text-lg mt-1 capitalize">{profile.location.remote_preference.replace('_', ' ')}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Willing to Relocate</label>
-                <p className="text-lg mt-1">{profile.location.willing_to_relocate ? 'Yes' : 'No'}</p>
+                {isEditing ? (
+                  <Input
+                    value={editedProfile.location.remote_preference}
+                    onChange={(e) => setEditedProfile({
+                      ...editedProfile,
+                      location: { ...editedProfile.location, remote_preference: e.target.value }
+                    })}
+                  />
+                ) : (
+                  <p className="text-lg font-medium">{profile.location.remote_preference}</p>
+                )}
               </div>
             </CardContent>
           </Card>
 
-          {/* Salary */}
+          {/* Salary Expectations */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -191,179 +271,86 @@ export default function Profile() {
                 Salary Expectations
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Range</label>
-                <p className="text-lg font-semibold mt-1">
-                  ${profile.salary_expectations.minimum.toLocaleString()} - ${profile.salary_expectations.maximum.toLocaleString()} {profile.salary_expectations.currency}
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Minimum</label>
+                    {isEditing ? (
+                      <Input
+                        type="number"
+                        value={editedProfile.salary_expectations.minimum}
+                        onChange={(e) => setEditedProfile({
+                          ...editedProfile,
+                          salary_expectations: {
+                            ...editedProfile.salary_expectations,
+                            minimum: parseInt(e.target.value)
+                          }
+                        })}
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">
+                        ${profile.salary_expectations.minimum.toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Target</label>
+                    {isEditing ? (
+                      <Input
+                        type="number"
+                        value={editedProfile.salary_expectations.target}
+                        onChange={(e) => setEditedProfile({
+                          ...editedProfile,
+                          salary_expectations: {
+                            ...editedProfile.salary_expectations,
+                            target: parseInt(e.target.value)
+                          }
+                        })}
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">
+                        ${profile.salary_expectations.target.toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Maximum</label>
+                    {isEditing ? (
+                      <Input
+                        type="number"
+                        value={editedProfile.salary_expectations.maximum}
+                        onChange={(e) => setEditedProfile({
+                          ...editedProfile,
+                          salary_expectations: {
+                            ...editedProfile.salary_expectations,
+                            maximum: parseInt(e.target.value)
+                          }
+                        })}
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">
+                        ${profile.salary_expectations.maximum.toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Range: ${profile.salary_expectations.minimum.toLocaleString()} - ${profile.salary_expectations.maximum.toLocaleString()} {profile.salary_expectations.currency}
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Skills */}
-          {profile.skills && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Briefcase className="h-5 w-5" />
-                  Skills
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {profile.skills.technical && profile.skills.technical.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Technical Skills</label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.skills.technical.map((skill, index) => (
-                        <Badge key={index} variant="default">{skill}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {profile.skills.sales && profile.skills.sales.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Sales Skills</label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.skills.sales.map((skill, index) => (
-                        <Badge key={index} variant="secondary">{skill}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {profile.skills.soft_skills && profile.skills.soft_skills.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Soft Skills</label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.skills.soft_skills.map((skill, index) => (
-                        <Badge key={index} variant="outline">{skill}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Education */}
-          {profile.education && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Education
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Degree</label>
-                  <p className="text-lg font-semibold mt-1">{profile.education.degree}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">University</label>
-                  <p className="text-lg mt-1">{profile.education.university} ({profile.education.graduation_year})</p>
-                </div>
-                {profile.education.additional && profile.education.additional.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Additional Education</label>
-                    <ul className="list-disc list-inside mt-2 space-y-1">
-                      {profile.education.additional.map((item, index) => (
-                        <li key={index} className="text-sm">{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Work History */}
-          {profile.experience_summary.current_role && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Briefcase className="h-5 w-5" />
-                  Work History
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Current Role</label>
-                  <p className="text-lg font-semibold mt-1">{profile.experience_summary.current_role}</p>
-                </div>
-                {profile.experience_summary.previous_roles && profile.experience_summary.previous_roles.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Previous Roles</label>
-                    <ul className="list-disc list-inside mt-2 space-y-1">
-                      {profile.experience_summary.previous_roles.map((role, index) => (
-                        <li key={index} className="text-sm">{role}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Company Preferences */}
-          {profile.company_preferences && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Building2 className="h-5 w-5" />
-                  Company Preferences
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {profile.company_preferences.size && profile.company_preferences.size.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Company Size</label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.company_preferences.size.map((size, index) => (
-                        <Badge key={index} variant="outline">{size}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {profile.company_preferences.stage && profile.company_preferences.stage.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Company Stage</label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.company_preferences.stage.map((stage, index) => (
-                        <Badge key={index} variant="outline">{stage}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {profile.company_preferences.industries && profile.company_preferences.industries.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Industries</label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.company_preferences.industries.map((industry, index) => (
-                        <Badge key={index} variant="secondary">{industry}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Red Flags */}
-          {profile.red_flags && profile.red_flags.avoid && profile.red_flags.avoid.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5" />
-                  Red Flags (Roles to Avoid)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside space-y-1">
-                  {profile.red_flags.avoid.map((flag, index) => (
-                    <li key={index} className="text-sm text-muted-foreground">{flag}</li>
-                  ))}
-                </ul>
+          {/* Note about advanced editing */}
+          {!isEditing && (
+            <Card className="bg-muted/50">
+              <CardContent className="pt-6">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Note:</strong> For advanced editing (skills, education, work history, company preferences), 
+                  you can edit the JSON file directly at <code className="bg-background px-2 py-1 rounded">server/data/miles_profile.json</code> 
+                  or ask me to update specific fields.
+                </p>
               </CardContent>
             </Card>
           )}

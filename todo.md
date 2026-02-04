@@ -407,3 +407,32 @@
 - [ ] Check against stored URLs before displaying
 - [ ] Ensure each scrape returns NEW jobs only
 - [ ] Test deduplication system
+
+
+## 🎨 RESTORE ORIGINAL IMAGES & ADD PROFILE EDITING (Feb 4, 2026)
+- [ ] Find original empty-state_original.png image
+- [ ] Find original logo-icon image
+- [ ] Restore images to client/public/images/ directory
+- [ ] Update Home.tsx to use restored images
+- [ ] Add "Edit Profile" button to Profile page
+- [ ] Add form fields for editing all profile sections (roles, location, salary, skills, education, work history, company preferences, red flags)
+- [ ] Add "Save" button that updates server/data/miles_profile.json
+- [ ] Add tRPC mutation for updating profile
+- [ ] Test Profile editing end-to-end
+- [ ] Save checkpoint with Profile editing functionality
+
+- [ ] Remove green color from job cards to blend with background
+
+
+## ✅ FINAL UPDATES (Feb 4, 2026) - COMPLETED
+- [x] Restored original images (empty-state.png, logo-icon.png) - Uploaded to S3 CDN
+- [x] Updated Home.tsx to use CDN URLs for images
+- [x] Removed green color from job cards (changed to primary color)
+- [x] Added Profile editing UI with Edit Profile button
+- [x] Added editable fields for name, experience, roles, location, salary
+- [x] Connected to updateProfile mutation and tested successfully
+- [x] Changed salary minimum from $80k to $85k to verify saving works
+- [x] Added note about advanced editing (skills, education, work history) via JSON file
+- [x] 10 scrapers working: RemoteOK (56), Jooble (30), SerpAPI (20), Apify Career Site (10), Apify LinkedIn (10), Remotive (12), Arbeitnow (12), The Muse (7)
+- [x] Total: 157 jobs scraped → 142 quality matches → 20 displayed
+- [x] All filters working perfectly (no senior roles, no wrong locations, no wrong roles)

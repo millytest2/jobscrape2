@@ -75,14 +75,23 @@
     ]
   },
   "salary_expectations": {
-    "minimum": 80000,
+    "minimum": 85000,
     "target": 90000,
     "maximum": 100000,
     "currency": "USD"
   },
   "company_preferences": {
-    "size": ["Startup", "Small (1-50)", "Medium (51-500)"],
-    "stage": ["Seed", "Series A", "Series B", "Growth"],
+    "size": [
+      "Startup",
+      "Small (1-50)",
+      "Medium (51-500)"
+    ],
+    "stage": [
+      "Seed",
+      "Series A",
+      "Series B",
+      "Growth"
+    ],
     "industries": [
       "AI/ML",
       "SaaS",

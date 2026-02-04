@@ -125,7 +125,7 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
       {/* Hero Section */}
       <div className="relative border-b border-border bg-card">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('https://files.manuscdn.com/user_upload_by_module/session_file/310419663032434087/HlAKdgGrWHZXnMdI.png')] opacity-10 bg-cover bg-center mix-blend-overlay pointer-events-none" />
         <div className="container py-12 md:py-20 relative z-10">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div className="space-y-4 max-w-2xl">
@@ -220,7 +220,7 @@ export default function Home() {
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">Jobs Scraped</div>
                 </CardContent>
               </Card>
-              <Card className="border-l-4 border-l-green-500">
+              <Card className="border-l-4 border-l-primary">
                 <CardContent className="pt-6">
                   <div className="text-2xl font-bold font-mono">{result.stats.filtered}</div>
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">Quality Matches</div>
@@ -313,7 +313,7 @@ export default function Home() {
                             {job.scoreExplanation}
                           </Badge>
                           {job.postedDate && (
-                            <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-200 gap-1">
+                            <Badge variant="outline" className="gap-1">
                               <CheckCircle2 className="h-3 w-3" /> Posted: {new Date(job.postedDate).toLocaleDateString()}
                             </Badge>
                           )}
@@ -335,7 +335,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 opacity-50">
-            <Search className="w-48 h-48 text-muted-foreground/20" />
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310419663032434087/nfcQmeyQQfXMDJUa.png" alt="No results" className="w-64 h-64 object-contain" />
             <div className="space-y-2">
               <h3 className="text-2xl font-bold font-mono uppercase">Ready to Scrape</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
