@@ -60,6 +60,40 @@ export const appRouter = router({
           throw new Error(error.message || "Failed to run scraper");
         }
       }),
+    
+    getProfile: publicProcedure
+      .query(async () => {
+        try {
+          const __filename = fileURLToPath(import.meta.url);
+          const __dirname = dirname(__filename);
+          const profilePath = resolve(__dirname, '../python_scraper/miles_profile.json');
+          
+          const fs = await import('fs/promises');
+          const profileData = await fs.readFile(profilePath, 'utf-8');
+          return JSON.parse(profileData);
+        } catch (error: any) {
+          console.error("Profile read error:", error);
+          throw new Error("Failed to load profile");
+        }
+      }),
+    
+    updateProfile: publicProcedure
+      .input(z.any()) // Accept any profile structure for now
+      .mutation(async ({ input }) => {
+        try {
+          const __filename = fileURLToPath(import.meta.url);
+          const __dirname = dirname(__filename);
+          const profilePath = resolve(__dirname, '../python_scraper/miles_profile.json');
+          
+          const fs = await import('fs/promises');
+          await fs.writeFile(profilePath, JSON.stringify(input, null, 2));
+          
+          return { success: true };
+        } catch (error: any) {
+          console.error("Profile update error:", error);
+          throw new Error("Failed to update profile");
+        }
+      }),
   }),
 });
 

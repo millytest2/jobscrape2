@@ -67,3 +67,22 @@
 - [ ] Verify ghost job detection working on production
 - [ ] Verify landing probability AI working on production
 - [ ] Test end-to-end: Click RUN SCRAPER → 300+ jobs → 20 matches → Click apply link
+
+
+## 🎯 NEW REQUIREMENTS (User Feedback - Feb 3, 2026)
+- [ ] Verify scraper fetches FRESH jobs each run (not cached)
+- [ ] Verify 300+ jobs scraped across all 8 sources
+- [x] Add timestamp to scraper output (ISO format)
+- [x] Display "Last scraped: X minutes ago" on frontend
+- [x] Create profile display UI - Show current profile (roles, salary, location, company values)
+- [x] Create profile editing UI - Allow user to edit profile from frontend
+- [x] Add /profile route and link from homepage
+- [x] Improve company filtering - Only show exciting companies (AI/ML leaders, innovative startups, NOT random manufacturers like Ajax Systems, Quincy Compressor)
+  - Added industry exclusions (manufacturing, industrial equipment, compressor, HVAC, etc.)
+  - Added exciting companies whitelist (OpenAI, Anthropic, Stripe, Databricks, etc.)
+  - Raised mission threshold from 40 to 50 (more selective)
+- [ ] Test end-to-end: RUN SCRAPER → 300+ fresh jobs → filtered to 20 high-probability matches → direct application links work
+- [ ] Verify direct roles (Sales Engineer) + indirect roles (Solutions Engineer, TAM, Demo Engineer, Pre-Sales Engineer) are included
+- [ ] Verify location filtering (LA + Remote) works correctly
+- [ ] Verify ghost job detection works (<30 days old, no reposting, low applicant count)
+- [ ] Verify landing probability scoring ranks highest matches first

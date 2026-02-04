@@ -65,6 +65,27 @@ class MissionDrivenFilter:
         "cold calling only", "telemarketing"
     ]
     
+    # Industry exclusions (traditional/boring industries to avoid)
+    EXCLUDED_INDUSTRIES = [
+        "industrial equipment", "manufacturing", "compressor",
+        "hvac", "plumbing", "construction equipment",
+        "heavy machinery", "automotive parts", "hardware store",
+        "retail", "restaurant", "hospitality",
+        "insurance", "real estate", "mortgage",
+        "traditional banking", "accounting firm",
+        "law firm", "consulting firm"
+    ]
+    
+    # Exciting companies whitelist (always include these)
+    EXCITING_COMPANIES = [
+        "openai", "anthropic", "stripe", "databricks",
+        "snowflake", "figma", "notion", "airtable",
+        "vercel", "supabase", "replicate", "hugging face",
+        "cohere", "mistral", "together ai", "anyscale",
+        "modal", "weights & biases", "langchain",
+        "pinecone", "weaviate", "milvus", "chroma"
+    ]
+    
     def __init__(self):
         """Initialize the filter"""
         pass
@@ -94,6 +115,16 @@ class MissionDrivenFilter:
         for red_flag in self.RED_FLAG_KEYWORDS:
             if red_flag in all_text:
                 return 0.0  # Disqualify
+        
+        # Check for excluded industries (disqualify)
+        for excluded in self.EXCLUDED_INDUSTRIES:
+            if excluded in all_text:
+                return 0.0  # Disqualify boring industries
+        
+        # Whitelist check - exciting companies get bonus points
+        is_exciting_company = any(company in company_name for company in self.EXCITING_COMPANIES)
+        if is_exciting_company:
+            score += 50.0  # Big bonus for exciting companies
         
         # 1. Mission keyword matching (40 points max)
         mission_keyword_count = 0

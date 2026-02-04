@@ -236,10 +236,10 @@ def main(location: str, role: str, profile_path: str, top_n: int = 20):
     role_matched_jobs = role_filter.filter_jobs(all_jobs)
     print(f"Role-matched jobs: {len(role_matched_jobs)} jobs", file=sys.stderr)
     
-    # Apply mission-driven filter (balanced threshold)
-    print(f"Applying mission-driven filter (threshold >= 40)...", file=sys.stderr)
+    # Apply mission-driven filter (stricter threshold for quality)
+    print(f"Applying mission-driven filter (threshold >= 50)...", file=sys.stderr)
     mission_filter = MissionDrivenFilter()
-    mission_jobs = mission_filter.filter_jobs(role_matched_jobs, threshold=40.0)
+    mission_jobs = mission_filter.filter_jobs(role_matched_jobs, threshold=50.0)
     print(f"Mission-driven companies: {len(mission_jobs)} jobs", file=sys.stderr)
     
     # Apply salary filter
@@ -271,8 +271,11 @@ def main(location: str, role: str, profile_path: str, top_n: int = 20):
     print(f"Top {top_n} matches by landing probability", file=sys.stderr)
     
     # Output results
+    from datetime import datetime
+    
     result = {
         "status": "success",
+        "timestamp": datetime.now().isoformat(),
         "params": {
             "location": location,
             "role": role,

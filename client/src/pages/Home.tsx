@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -98,6 +99,11 @@ export default function Home() {
               <p className="text-xl text-muted-foreground max-w-lg">
                 The power tool for job hunting. Scrape 5+ sources, filter ghost jobs, and find hidden gems in seconds.
               </p>
+              <Link href="/profile">
+                <Button variant="outline" className="font-mono">
+                  View Profile
+                </Button>
+              </Link>
             </div>
             
             {/* Search Card */}
@@ -157,6 +163,14 @@ export default function Home() {
       <div className="container py-12">
         {result ? (
           <div className="space-y-8">
+            {/* Timestamp */}
+            {result.timestamp && (
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                Last scraped: {new Date(result.timestamp).toLocaleString()}
+              </div>
+            )}
+            
             {/* Stats Bar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Card className="border-l-4 border-l-primary">
