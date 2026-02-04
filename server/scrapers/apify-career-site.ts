@@ -44,7 +44,8 @@ async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
     );
 
     const runId = runResponse.data.data.id;
-    console.log(`[Apify Career Site] Run started: ${runId}`);
+    console.log(`[Apify Career Site] Run started: ${runId} | Initial status: ${runResponse.data.data.status}`);
+    console.log(`[Apify Career Site] Actor ID: ${APIFY_ACTOR_ID} | Input:`, JSON.stringify({ timeRange: "7d", limit: 100, titleSearch: [role], locationSearch: [location] }));
 
     // Wait for the run to complete (poll every 3 seconds, max 120 seconds)
     let attempts = 0;
@@ -61,7 +62,12 @@ async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
       
       runStatus = statusResponse.data.data.status;
       attempts++;
-      console.log(`[Apify Career Site] Status: ${runStatus} (attempt ${attempts}/${maxAttempts})`);
+      
+      if (statusResponse.data.data.statusMessage) {
+        console.log(`[Apify Career Site] Status: ${runStatus} | Message: ${statusResponse.data.data.statusMessage} (attempt ${attempts}/${maxAttempts})`);
+      } else {
+        console.log(`[Apify Career Site] Status: ${runStatus} (attempt ${attempts}/${maxAttempts})`);
+      }
     }
 
     if (runStatus !== "SUCCEEDED") {

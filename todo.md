@@ -834,3 +834,42 @@
 - [ ] Debug Apify scrapers with retry logic (currently returning 0 - need detailed error logs)
 - [ ] Verify system reaches 400+ jobs per scrape with all 13 sources (currently 255 from 6 sources)
 - [ ] Verify scoring differentiates jobs properly (10+ unique values per dimension)
+
+
+## 🔧 EXPAND & DEBUG SCRAPERS (User Request - Feb 4, 2026)
+- [x] Expand SerpAPI to use multiple search queries (Sales Engineer, Solutions Engineer, Pre-Sales) to get 20+ jobs instead of 1
+- [x] Add detailed error logging to Adzuna scraper to see API response
+- [x] Add detailed error logging to RSS scraper to see what feeds return
+- [x] Add detailed error logging to USAJobs scraper to see API response
+- [x] Add detailed error logging to Apify Career Site scraper to see actor run details
+- [x] Add detailed error logging to Apify LinkedIn scraper to see actor run details
+- [x] Run comprehensive test with all 13 scrapers
+- [x] Analyze logs to identify specific issues for each broken scraper (Apify actors return 0 jobs, need role variations)
+- [ ] Fix identified issues to reach 400+ jobs per scrape (IN PROGRESS - adding role variations)
+
+
+## 🎯 ADD ROLE VARIATIONS TO ALL SCRAPERS (Critical Fix - Feb 4, 2026)
+- [ ] Create role variation helper function (getRoleVariations) that returns both direct and indirect roles
+- [ ] Update Adzuna scraper to search multiple role variations
+- [ ] Update RSS scraper to search multiple role variations
+- [ ] Update USAJobs scraper to search multiple role variations
+- [ ] Update Apify Career Site scraper to search multiple role variations
+- [ ] Update Apify LinkedIn scraper to search multiple role variations
+- [ ] Update all other scrapers to use role variations where applicable
+- [ ] Test with "Sales Engineer" to verify we get 400+ jobs from expanded search
+
+
+## 🎯 ADD ROLE VARIATIONS TO ALL SCRAPERS (Critical Fix - Feb 4, 2026)
+**Role Variations:**
+- Direct: Sales Engineer, Pre-Sales Engineer, Solutions Engineer
+- Indirect: Technical Account Manager, Demo Engineer, Sales Solutions Architect, Customer Engineer
+
+**Tasks:**
+- [x] Create role variation helper function (getRoleVariations) in shared/roleVariations.ts
+- [ ] Update Adzuna scraper to search multiple role variations
+- [ ] Update RSS scraper to search multiple role variations  
+- [ ] Update USAJobs scraper to search multiple role variations
+- [ ] Update Apify Career Site scraper to search multiple role variations
+- [ ] Update Apify LinkedIn scraper to search multiple role variations
+- [ ] SerpAPI already has role variations (just added)
+- [ ] Test with "Sales Engineer" to verify we get 400+ jobs from expanded search

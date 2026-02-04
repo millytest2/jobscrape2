@@ -22,13 +22,19 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       searchLocation = 'Los Angeles, California, United States';
     }
     
-    // Try multiple search strategies to maximize results
-    // Use correct format: "job title jobs in location"
-    const searchStrategies = [
-      { q: `${role} jobs in ${location}`, location: searchLocation },
-      { q: `${role} remote jobs in ${location}`, location: searchLocation },
-      { q: `${role} hybrid jobs in ${location}`, location: searchLocation },
+    // Try multiple search strategies with role variations to maximize results
+    const roleVariations = [
+      role, // Original role (e.g., "Sales Engineer")
+      'Solutions Engineer',
+      'Pre-Sales Engineer',
+      'Technical Account Manager',
+      'Demo Engineer',
     ];
+    
+    const searchStrategies = roleVariations.flatMap(r => [
+      { q: `${r} jobs in ${location}`, location: searchLocation, role: r },
+      { q: `${r} remote`, location: searchLocation, role: r },
+    ]);
     
     const allJobs: Job[] = [];
     
@@ -60,7 +66,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         const jobs = data.jobs_results?.jobs || [];
         console.log(`[SerpAPI] jobs_results.jobs:`, Array.isArray(jobs) ? `${jobs.length} jobs` : 'not an array');
         
-        console.log(`[SerpAPI] Found ${jobs.length} jobs for query: ${strategy.q}`);
+        console.log(`[SerpAPI] Found ${jobs.length} jobs for "${strategy.role}" query: ${strategy.q}`);
         
         // Normalize to our Job interface and add to collection
         const normalized = jobs.map((job: any) => ({
@@ -75,8 +81,11 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
         
         allJobs.push(...normalized);
         
-        // Stop if we have enough jobs
-        if (allJobs.length >= 100) break;
+        // Stop if we have enough jobs (limit to 50 total to avoid using too many API credits)
+        if (allJobs.length >= 50) {
+          console.log(`[SerpAPI] Reached 50 jobs limit, stopping search`);
+          break;
+        }
       } catch (error) {
         console.error(`[SerpAPI] Error for strategy ${strategy.q}:`, error);
         continue;

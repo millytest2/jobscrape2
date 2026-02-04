@@ -53,15 +53,23 @@ async function runScrapersParallel(
       if (result.status === 'fulfilled') {
         const { sourceName, jobs, error } = result.value;
         if (error) {
+          console.error(`[${sourceName}] ❌ Error: ${error}`);
           errorsBySource[sourceName] = error;
           countsBySource[sourceName] = 0;
         } else {
           allJobs.push(...jobs);
           countsBySource[sourceName] = jobs.length;
-          console.log(`[${sourceName}] Scraped ${jobs.length} jobs`);
+          if (jobs.length === 0) {
+            console.warn(`[${sourceName}] ⚠️ Returned 0 jobs (no error thrown)`);
+          } else {
+            console.log(`[${sourceName}] ✅ Scraped ${jobs.length} jobs`);
+          }
         }
       } else {
-        console.error(`[Scraper] Unexpected error:`, result.reason);
+        const sourceName = batch[results.indexOf(result)];
+        console.error(`[${sourceName}] ❌ Unexpected error:`, result.reason);
+        errorsBySource[sourceName] = String(result.reason);
+        countsBySource[sourceName] = 0;
       }
     }
     
@@ -95,6 +103,11 @@ export const appRouter = router({
       arch: process.arch,
       cwd: process.cwd(),
       enabledSources: SCRAPER_NAMES,
+      registeredScrapers: Object.keys(SCRAPERS).map(key => ({
+        key,
+        name: SCRAPERS[key].name,
+        hasScrapeFn: typeof SCRAPERS[key].scrape === 'function'
+      })),
       pythonReferencesFoundInDist: false, // No Python in this version
       pythonReferencesFoundInSrc: false,
       scrapingUsesChildProcess: false, // No child_process for scraping
