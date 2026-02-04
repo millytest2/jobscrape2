@@ -213,3 +213,11 @@
 - [ ] Top 20 list renders with apply links (no missing URLs)
 - [ ] UI never stuck on SCRAPING > 120s
 - [ ] No logs/errors mention python3
+
+
+## 🚨 FIX LOW JOB COUNT & SENIOR ROLES (User Report - Feb 4, 2026)
+- [x] Debug why only 74 jobs returned (scrapers working but some failing - SerpAPI location errors)
+- [x] Check server logs to see which scrapers succeeded/failed
+- [x] Fix senior role filter - added isSeniorRole() function to filter.ts
+- [x] Verify experience level filter is actually being applied (maxExperienceYears: 5 added to filterOptions)
+- [ ] Test and verify 200+ jobs with NO senior roles in results (ready to test)

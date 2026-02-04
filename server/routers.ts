@@ -127,6 +127,7 @@ export const appRouter = router({
               'ai', 'ml', 'machine learning', 'artificial intelligence',
               'saas', 'innovative', 'startup', 'tech', 'developer tools',
             ],
+            maxExperienceYears: 5, // Filter out senior roles (user has 3 years experience)
           };
           
           const top20 = rankJobs(validJobs, filterOptions, 20);

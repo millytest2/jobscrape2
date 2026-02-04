@@ -16,6 +16,52 @@ export interface FilterOptions {
   minSalary?: number;
   maxSalary?: number;
   missionDrivenKeywords?: string[];
+  maxExperienceYears?: number;
+}
+
+/**
+ * Check if a job title indicates a senior role
+ */
+function isSeniorRole(title: string, maxExperienceYears: number = 5): boolean {
+  const titleLower = title.toLowerCase();
+  
+  // Senior-level keywords
+  const seniorKeywords = [
+    'senior', 'sr.', 'sr ', 'lead', 'principal', 'staff',
+    'director', 'vp', 'vice president', 'head of', 'chief',
+    'manager', 'mgr', 'management'
+  ];
+  
+  // Exception: These "manager" roles are actually IC roles
+  const managerExceptions = [
+    'technical account manager', 'account manager', 'tam',
+    'customer success manager', 'csm'
+  ];
+  
+  // Check for exceptions first
+  for (const exception of managerExceptions) {
+    if (titleLower.includes(exception)) {
+      return false; // Not a senior role
+    }
+  }
+  
+  // Check for senior keywords
+  for (const keyword of seniorKeywords) {
+    if (titleLower.includes(keyword)) {
+      return true; // Is a senior role
+    }
+  }
+  
+  // Check for experience requirements in title
+  const experienceMatch = titleLower.match(/(\d+)\+?\s*years?/);
+  if (experienceMatch) {
+    const years = parseInt(experienceMatch[1]);
+    if (years > maxExperienceYears) {
+      return true; // Requires too much experience
+    }
+  }
+  
+  return false;
 }
 
 /**
@@ -128,7 +174,14 @@ export function rankJobs(
   options: FilterOptions,
   topN: number = 20
 ): FilteredJob[] {
-  const scored: FilteredJob[] = jobs.map(job => {
+  // Filter out senior roles if maxExperienceYears is set
+  let filteredJobs = jobs;
+  if (options.maxExperienceYears) {
+    filteredJobs = jobs.filter(job => !isSeniorRole(job.title, options.maxExperienceYears));
+    console.log(`[Filter] Removed ${jobs.length - filteredJobs.length} senior roles (max experience: ${options.maxExperienceYears} years)`);
+  }
+  
+  const scored: FilteredJob[] = filteredJobs.map(job => {
     const roleScore = calculateRoleScore(job, options.targetRoles);
     const locationScore = calculateLocationScore(job, options.targetLocation);
     const missionScore = calculateMissionScore(job, options.missionDrivenKeywords || []);
