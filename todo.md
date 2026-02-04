@@ -86,3 +86,10 @@
 - [ ] Verify location filtering (LA + Remote) works correctly
 - [ ] Verify ghost job detection works (<30 days old, no reposting, low applicant count)
 - [ ] Verify landing probability scoring ranks highest matches first
+
+
+## 🎯 AUTO-POPULATE FROM PROFILE (User Request - Feb 3, 2026)
+- [x] Fix profile page "Profile Not Found" error (wrong path to miles_profile.json - changed from '../python_scraper/' to './python_scraper/')
+- [x] Auto-populate role and location from profile on homepage load
+- [x] Make "RUN SCRAPER" button use profile settings by default (no manual typing needed)
+- [ ] Test: Open homepage → role/location auto-filled → click RUN SCRAPER → results appear

@@ -66,7 +66,7 @@ export const appRouter = router({
         try {
           const __filename = fileURLToPath(import.meta.url);
           const __dirname = dirname(__filename);
-          const profilePath = resolve(__dirname, '../python_scraper/miles_profile.json');
+          const profilePath = resolve(__dirname, './python_scraper/miles_profile.json');
           
           const fs = await import('fs/promises');
           const profileData = await fs.readFile(profilePath, 'utf-8');
@@ -83,7 +83,7 @@ export const appRouter = router({
         try {
           const __filename = fileURLToPath(import.meta.url);
           const __dirname = dirname(__filename);
-          const profilePath = resolve(__dirname, '../python_scraper/miles_profile.json');
+          const profilePath = resolve(__dirname, './python_scraper/miles_profile.json');
           
           const fs = await import('fs/promises');
           await fs.writeFile(profilePath, JSON.stringify(input, null, 2));

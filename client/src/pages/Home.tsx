@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +45,19 @@ export default function Home() {
   const [location, setLocation] = useState("Los Angeles");
   const [role, setRole] = useState("Sales Engineer");
   const [result, setResult] = useState<ScraperResult | null>(null);
+  
+  // Fetch profile to auto-populate fields
+  const profileQuery = trpc.scraper.getProfile.useQuery();
+  
+  useEffect(() => {
+    if (profileQuery.data) {
+      // Auto-populate from profile
+      const primaryRole = profileQuery.data.target_roles?.direct?.[0] || "Sales Engineer";
+      const primaryLocation = profileQuery.data.preferences?.location?.primary || "Los Angeles";
+      setRole(primaryRole);
+      setLocation(primaryLocation);
+    }
+  }, [profileQuery.data]);
 
   const scrapeMutation = trpc.scraper.runScraper.useMutation({
     onSuccess: (data) => {
