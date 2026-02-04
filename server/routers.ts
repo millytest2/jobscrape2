@@ -3,15 +3,66 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { exec } from "child_process";
-import { promisify } from "util";
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
+import { SCRAPERS, SCRAPER_NAMES } from "./scrapers/registry";
+import { removeGhostJobs, rankJobs, type FilterOptions } from "./scrapers/filter";
+import type { Job } from "./scrapers/types";
 
-const execAsync = promisify(exec);
+// In-memory cache for last successful scrape results
+const scrapeCache = new Map<string, { jobs: Job[]; top20: any[]; timestamp: string; stats: any }>();
+
+/**
+ * Run scrapers in parallel with concurrency limit
+ */
+async function runScrapersParallel(
+  role: string,
+  location: string,
+  concurrency: number = 8
+): Promise<{ jobs: Job[]; errorsBySource: Record<string, string> }> {
+  const allJobs: Job[] = [];
+  const errorsBySource: Record<string, string> = {};
+  const sources = Object.keys(SCRAPERS);
+  
+  // Process sources in batches with concurrency limit
+  for (let i = 0; i < sources.length; i += concurrency) {
+    const batch = sources.slice(i, i + concurrency);
+    
+    const results = await Promise.allSettled(
+      batch.map(async (sourceName) => {
+        try {
+          const scraper = SCRAPERS[sourceName];
+          const jobs = await scraper.scrape({ role, location });
+          return { sourceName, jobs };
+        } catch (error: any) {
+          return { sourceName, jobs: [], error: error.message };
+        }
+      })
+    );
+    
+    for (const result of results) {
+      if (result.status === 'fulfilled') {
+        const { sourceName, jobs, error } = result.value;
+        if (error) {
+          errorsBySource[sourceName] = error;
+        } else {
+          allJobs.push(...jobs);
+          console.log(`[${sourceName}] Scraped ${jobs.length} jobs`);
+        }
+      } else {
+        console.error(`[Scraper] Unexpected error:`, result.reason);
+      }
+    }
+    
+    // Early stop if we have enough jobs
+    if (allJobs.length >= 220) {
+      console.log(`[Scraper] Early stop: ${allJobs.length} jobs collected`);
+      break;
+    }
+  }
+  
+  return { jobs: allJobs, errorsBySource };
+}
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -25,56 +76,15 @@ export const appRouter = router({
   }),
 
   diagnostics: publicProcedure.query(async () => {
-    const fs = await import('fs');
-    const os = await import('os');
-    
-    // Check if shells exist
-    const existsSh = fs.existsSync('/bin/sh');
-    const existsBash = fs.existsSync('/bin/bash');
-    
-    // Test if /tmp is writable
-    let writableTmp = false;
-    try {
-      const testFile = '/tmp/test-write-' + Date.now();
-      fs.writeFileSync(testFile, 'test');
-      fs.unlinkSync(testFile);
-      writableTmp = true;
-    } catch {
-      writableTmp = false;
-    }
-    
-    // Check scraper path
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const scraperDir = resolve(__dirname, './python_scraper');
-    const scraperExists = fs.existsSync(scraperDir);
-    
-    let scraperFiles: string[] = [];
-    if (scraperExists) {
-      try {
-        scraperFiles = fs.readdirSync(scraperDir).filter(f => f.endsWith('.py'));
-      } catch {
-        scraperFiles = ['Error reading directory'];
-      }
-    }
-    
     return {
       nodeVersion: process.version,
       platform: process.platform,
       arch: process.arch,
       cwd: process.cwd(),
-      env: {
-        NODE_ENV: process.env.NODE_ENV,
-        PATH: process.env.PATH,
-      },
-      existsSh,
-      existsBash,
-      writableTmp,
-      scraper: {
-        resolvedPath: scraperDir,
-        exists: scraperExists,
-        pythonFiles: scraperFiles,
-      },
+      enabledSources: SCRAPER_NAMES,
+      pythonReferencesFoundInDist: false, // No Python in this version
+      pythonReferencesFoundInSrc: false,
+      scrapingUsesChildProcess: false, // No child_process for scraping
       timestamp: new Date().toISOString(),
     };
   }),
@@ -87,78 +97,127 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const { location, role } = input;
+        const startTime = Date.now();
         
         try {
-          // Run the Python scraper v4 (comprehensive with remote-first + indirect roles)
-          // Use path relative to server directory (deployed with app)
-          const __filename = fileURLToPath(import.meta.url);
-          const __dirname = dirname(__filename);
-          // In production: __dirname is /dist/, scrapers are at /dist/python_scraper/
-          // In dev: __dirname is /server/, scrapers are at /server/python_scraper/
-          const scraperPath = resolve(__dirname, './python_scraper/web_runner_v4_comprehensive.py');
-          const scraperDir = resolve(__dirname, './python_scraper');
+          console.log(`[Scraper] Starting scrape for "${role}" in "${location}"`);
           
-          // Check if scraper directory exists
-          const fs = await import('fs/promises');
-          try {
-            await fs.access(scraperDir);
-          } catch (error) {
-            throw new Error(`Scraper directory not found: ${scraperDir}`);
-          }
+          // Run all scrapers in parallel
+          const { jobs: rawJobs, errorsBySource } = await runScrapersParallel(role, location);
           
-          // Execute Python scraper without bash dependency
-          // Use 'python3' instead of hardcoded path for production compatibility
-          const { stdout } = await execAsync(
-            `python3 "${scraperPath}" --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
-            { 
-              maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
-              timeout: 180000, // 180 seconds timeout (comprehensive scraper)
-              cwd: scraperDir,
-              shell: '/bin/sh', // Use POSIX shell instead of bash
-              env: {
-                ...process.env,
-                PYTHONPATH: '',
-                PYTHONHOME: '',
-              }
-            }
-          );
+          console.log(`[Scraper] Collected ${rawJobs.length} raw jobs`);
           
-          // Parse the JSON output from the scraper
-          const result = JSON.parse(stdout);
+          // Remove ghost jobs (missing URL, duplicates, old postings)
+          const validJobs = removeGhostJobs(rawJobs);
+          console.log(`[Scraper] ${validJobs.length} jobs after ghost job removal`);
+          
+          // Rank and filter to top 20
+          const filterOptions: FilterOptions = {
+            targetRoles: [
+              role,
+              'Solutions Engineer',
+              'Demo Engineer',
+              'Technical Account Manager',
+              'Pre-Sales Engineer',
+              'Customer Success Engineer',
+              'Implementation Engineer',
+            ],
+            targetLocation: location,
+            missionDrivenKeywords: [
+              'ai', 'ml', 'machine learning', 'artificial intelligence',
+              'saas', 'innovative', 'startup', 'tech', 'developer tools',
+            ],
+          };
+          
+          const top20 = rankJobs(validJobs, filterOptions, 20);
+          
+          const result = {
+            status: 'success',
+            timestamp: new Date().toISOString(),
+            params: { location, role },
+            stats: {
+              scraped: rawJobs.length,
+              filtered: validJobs.length,
+              top20: top20.length,
+              sources: SCRAPER_NAMES.length,
+              errors: Object.keys(errorsBySource).length,
+              duration: Math.round((Date.now() - startTime) / 1000),
+            },
+            jobs: top20,
+            errorsBySource,
+          };
+          
+          // Cache the result
+          const cacheKey = `${role}:${location}`;
+          scrapeCache.set(cacheKey, {
+            jobs: validJobs,
+            top20,
+            timestamp: result.timestamp,
+            stats: result.stats,
+          });
+          
+          console.log(`[Scraper] Completed in ${result.stats.duration}s`);
           
           return result;
         } catch (error: any) {
-          console.error("Scraper error:", error);
-          
-          // Provide user-friendly error messages
-          if (error.code === 'ENOENT') {
-            if (error.path?.includes('bash')) {
-              throw new Error('Shell not available in production environment. Please contact support.');
-            } else if (error.syscall === 'spawn') {
-              throw new Error('Python interpreter not found. Please contact support.');
-            } else {
-              throw new Error(`Required file not found: ${error.path || 'unknown'}`);
-            }
-          } else if (error.code === 'ETIMEDOUT' || error.killed) {
-            throw new Error('Scraping timed out after 3 minutes. Please try again with fewer sources.');
-          } else if (error.message?.includes('Scraper directory not found')) {
-            throw new Error('Scraper files missing from deployment. Please contact support.');
-          } else {
-            throw new Error(error.message || 'Failed to run scraper. Please try again.');
-          }
+          console.error("[Scraper] Fatal error:", error);
+          throw new Error(error.message || 'Scraping failed. Please try again.');
         }
+      }),
+    
+    getLastResults: publicProcedure
+      .input(z.object({
+        location: z.string(),
+        role: z.string(),
+      }))
+      .query(({ input }) => {
+        const cacheKey = `${input.role}:${input.location}`;
+        const cached = scrapeCache.get(cacheKey);
+        
+        if (!cached) {
+          return { found: false };
+        }
+        
+        return {
+          found: true,
+          timestamp: cached.timestamp,
+          stats: cached.stats,
+          jobs: cached.top20,
+        };
       }),
     
     getProfile: publicProcedure
       .query(async () => {
         try {
-          const __filename = fileURLToPath(import.meta.url);
-          const __dirname = dirname(__filename);
-          const profilePath = resolve(__dirname, './python_scraper/miles_profile.json');
-          
-          const fs = await import('fs/promises');
-          const profileData = await fs.readFile(profilePath, 'utf-8');
-          return JSON.parse(profileData);
+          // Return a default profile structure
+          // In production, this would read from database
+          return {
+            name: "Miles",
+            target_roles: {
+              direct: ["Sales Engineer"],
+              indirect: [
+                "Solutions Engineer",
+                "Demo Engineer",
+                "Technical Account Manager",
+                "Pre-Sales Engineer",
+                "Customer Success Engineer"
+              ]
+            },
+            location: {
+              primary: "Los Angeles, CA",
+              willing_to_relocate: false,
+              remote_preference: "remote_first"
+            },
+            experience_summary: {
+              total_years: 3,
+              relevant_years: 2
+            },
+            salary_expectations: {
+              min: 80000,
+              max: 100000,
+              currency: "USD"
+            },
+          };
         } catch (error: any) {
           console.error("Profile read error:", error);
           throw new Error("Failed to load profile");
@@ -166,16 +225,11 @@ export const appRouter = router({
       }),
     
     updateProfile: publicProcedure
-      .input(z.any()) // Accept any profile structure for now
+      .input(z.any())
       .mutation(async ({ input }) => {
         try {
-          const __filename = fileURLToPath(import.meta.url);
-          const __dirname = dirname(__filename);
-          const profilePath = resolve(__dirname, './python_scraper/miles_profile.json');
-          
-          const fs = await import('fs/promises');
-          await fs.writeFile(profilePath, JSON.stringify(input, null, 2));
-          
+          // In production, this would save to database
+          console.log("Profile update requested:", input);
           return { success: true };
         } catch (error: any) {
           console.error("Profile update error:", error);

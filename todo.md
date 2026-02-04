@@ -168,3 +168,48 @@
 - [x] Change hardcoded `/usr/bin/python3.11` to `python3` in server/routers.ts
 - [ ] Test in production to verify Python is found
 - [ ] Add fallback to `python` if `python3` not found (will add if needed)
+
+
+## 🚀 COMPLETE NODE MIGRATION (Permanent Fix - In Progress)
+### A) Implement ALL 8 Scrapers (NO STUBS)
+- [x] Create TypeScript scraper types (Job, ScrapeParams, Scraper interfaces)
+- [x] Port RemoteOK scraper to TypeScript (API)
+- [x] Port WeWorkRemotely scraper to TypeScript (RSS)
+- [x] Complete Remotive scraper implementation
+- [x] Implement Arbeitnow scraper (API)
+- [x] Implement Jooble scraper (API with env var key)
+- [x] Implement SerpAPI scraper (API with env var key, location normalization)
+- [x] Implement Craigslist scraper (HTML scraping)
+- [x] Implement The Muse scraper (API)
+
+### B) Filtering & Ranking for Top 20
+- [x] Remove ghost jobs (missing URL, duplicates, old postings)
+- [x] Match role titles (direct + indirect roles)
+- [x] Match location (LA region proximity)
+- [x] Apply profile preferences (salary, mission-driven)
+- [x] Rank and return top 20 with score explanations
+
+### C) Scrape Endpoint with Parallel Execution
+- [ ] Create scraper registry (explicit imports)
+- [ ] Parallel execution with concurrency limit 6-10
+- [ ] Early stop after 220+ jobs collected
+- [ ] Deduplicate during ingest
+- [ ] Cache last successful results (memory store)
+- [ ] Return partial results if some sources fail
+
+### D) UI Timeout Handling
+- [ ] Add 120s client-side timeout
+- [ ] Show "Still processing, click Refresh Results" on timeout
+- [ ] Add Refresh Results button
+- [ ] Backend endpoint to return cached results
+
+### E) Remove Python Completely
+- [ ] Remove all Python execution paths from server/routers.ts
+- [ ] Remove python_scraper directory from build output
+- [ ] Verify zero references to python3, python_scraper, .py
+
+### F) Acceptance Tests
+- [ ] Search "Sales Engineer" + "Los Angeles, CA" returns 200+ jobs
+- [ ] Top 20 list renders with apply links (no missing URLs)
+- [ ] UI never stuck on SCRAPING > 120s
+- [ ] No logs/errors mention python3

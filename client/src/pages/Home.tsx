@@ -13,12 +13,12 @@ interface Job {
   company: string;
   location: string;
   url: string;
-  final_score: number;
-  landing_probability?: number;  // NEW: Probability of landing (0-100)
   source: string;
-  ghost_risk: number;
-  ghost_factors?: string[];  // NEW: Ghost job risk factors
-  excitement_factors: string[];
+  postedDate?: string;
+  salary?: string;
+  description?: string;
+  score: number;
+  scoreExplanation: string;
 }
 
 interface ScraperResult {
@@ -32,11 +32,11 @@ interface ScraperResult {
   };
   stats: {
     scraped: number;
-    unique: number;
-    mission_driven: number;
-    salary_match: number;
-    top_matches: number;
-    filtered?: number;  // For backward compatibility
+    filtered: number;
+    top20: number;
+    sources: number;
+    errors: number;
+    duration: number;
   };
   jobs: Job[];
 }
@@ -53,7 +53,7 @@ export default function Home() {
     if (profileQuery.data) {
       // Auto-populate from profile
       const primaryRole = profileQuery.data.target_roles?.direct?.[0] || "Sales Engineer";
-      const primaryLocation = profileQuery.data.preferences?.location?.primary || "Los Angeles";
+      const primaryLocation = profileQuery.data.location?.primary || "Los Angeles";
       setRole(primaryRole);
       setLocation(primaryLocation);
     }
@@ -67,7 +67,7 @@ export default function Home() {
       setResult(data);
       setScrapeStartTime(null);
       setShowTimeoutMessage(false);
-      const jobCount = data.stats.top_matches || data.stats.filtered || data.jobs.length;
+      const jobCount = data.stats.top20 || data.stats.filtered || data.jobs.length;
       toast.success(`Found ${jobCount} high-quality matches!`);
     },
     onError: (error) => {
@@ -101,7 +101,7 @@ export default function Home() {
     const csvContent = "data:text/csv;charset=utf-8," 
       + "Title,Company,Location,Score,Source,URL\n"
       + result.jobs.map(job => 
-          `"${job.title}","${job.company}","${job.location}",${job.final_score},${job.source},"${job.url}"`
+          `"${job.title}","${job.company}","${job.location}",${job.score},${job.source},"${job.url}"`
         ).join("\n");
     
     const encodedUri = encodeURI(csvContent);
@@ -258,13 +258,13 @@ export default function Home() {
                           </div>
                           <div className="flex flex-col items-end gap-2">
                             <Badge 
-                              variant={job.landing_probability && job.landing_probability > 80 ? "default" : "secondary"} 
+                              variant={job.score > 80 ? "default" : "secondary"} 
                               className="font-mono text-lg px-3 py-1"
                             >
-                              {Math.round(job.landing_probability || job.final_score)}%
+                              {Math.round(job.score)}%
                             </Badge>
                             <span className="text-xs text-muted-foreground font-mono uppercase">
-                              {job.landing_probability ? "Landing Probability" : "Match Score"}
+                              Match Score
                             </span>
                           </div>
                         </div>
@@ -273,20 +273,14 @@ export default function Home() {
                           <Badge variant="outline" className="font-mono text-xs uppercase">
                             {job.source}
                           </Badge>
-                          {job.ghost_risk < 20 ? (
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
+                            {job.scoreExplanation}
+                          </Badge>
+                          {job.postedDate && (
                             <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-200 gap-1">
-                              <CheckCircle2 className="h-3 w-3" /> Verified Active
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="bg-yellow-500/10 text-yellow-600 border-yellow-200 gap-1">
-                              <AlertCircle className="h-3 w-3" /> Ghost Risk: {job.ghost_risk}%
+                              <CheckCircle2 className="h-3 w-3" /> Posted: {new Date(job.postedDate).toLocaleDateString()}
                             </Badge>
                           )}
-                          {job.excitement_factors?.map((factor, j) => (
-                            <Badge key={j} variant="secondary" className="bg-primary/5 text-primary border-primary/10">
-                              {factor}
-                            </Badge>
-                          ))}
                         </div>
                       </div>
                       
