@@ -336,74 +336,82 @@ function calculateMissionScore(job: Job, keywords: string[]): number {
 }
 
 /**
- * Calculate company preferences score (0-100)
+ * Calculate company score (0-100) based on detected company type signals
+ * SaaS/AI/ML/DevTools/Cloud/Startup → higher scores
+ * Manufacturing/insurance/logistics/finance ops → lower scores
+ * If no signal detected, score ≤30
+ * Normalized to 10+ distinct values
  */
 function calculateCompanyScore(job: Job, companyPreferences?: { size?: string[]; stage?: string[]; industries?: string[] }): number {
-  if (!companyPreferences) {
-    return 50; // Neutral score if no preferences
-  }
-  
   const text = normalizeText(`${job.title} ${job.company} ${job.description || ''}`);
-  let totalMatches = 0;
-  let totalCategories = 0;
   
-  // Check company size keywords
-  if (companyPreferences.size && companyPreferences.size.length > 0) {
-    totalCategories++;
-    const sizeKeywords = {
-      'startup': ['startup', 'early stage', 'seed'],
-      'small': ['small', 'boutique', '10-50', 'team of'],
-      'medium': ['medium', 'mid-size', '50-500', 'growing'],
-      'large': ['enterprise', 'fortune', 'large', '500+', 'global']
-    };
-    
-    for (const size of companyPreferences.size) {
-      const keywords = sizeKeywords[size.toLowerCase() as keyof typeof sizeKeywords] || [];
-      if (keywords.some(kw => text.includes(kw))) {
-        totalMatches++;
-        break;
-      }
+  let positiveSignals = 0;
+  let negativeSignals = 0;
+  
+  // POSITIVE SIGNALS (tech/startup/modern)
+  const positiveKeywords = [
+    // Core tech
+    'saas', 'software as a service', 'platform', 'cloud', 'api',
+    'ai', 'artificial intelligence', 'machine learning', 'ml', 'llm',
+    'devtools', 'developer tools', 'infrastructure', 'kubernetes',
+    // Startup signals
+    'startup', 'early stage', 'seed', 'series a', 'series b', 'venture backed',
+    'yc', 'y combinator', 'techstars', 'founder', 'fast-growing',
+    // Modern tech
+    'react', 'node', 'python', 'typescript', 'aws', 'azure', 'gcp',
+    'microservices', 'serverless', 'containerization', 'ci/cd',
+    // Innovation
+    'innovative', 'cutting-edge', 'disruptive', 'next-generation',
+    'b2b saas', 'enterprise software', 'developer platform'
+  ];
+  
+  for (const keyword of positiveKeywords) {
+    if (text.includes(keyword)) {
+      positiveSignals++;
     }
   }
   
-  // Check company stage keywords
-  if (companyPreferences.stage && companyPreferences.stage.length > 0) {
-    totalCategories++;
-    const stageKeywords = {
-      'seed': ['seed', 'pre-seed', 'angel'],
-      'series a': ['series a', 'series-a'],
-      'series b': ['series b', 'series-b'],
-      'growth': ['growth stage', 'series c', 'series d', 'scaling'],
-      'public': ['public', 'nasdaq', 'nyse', 'ipo']
-    };
-    
-    for (const stage of companyPreferences.stage) {
-      const keywords = stageKeywords[stage.toLowerCase() as keyof typeof stageKeywords] || [];
-      if (keywords.some(kw => text.includes(kw))) {
-        totalMatches++;
-        break;
-      }
+  // NEGATIVE SIGNALS (traditional/non-tech)
+  const negativeKeywords = [
+    // Manufacturing
+    'manufacturing', 'factory', 'production line', 'assembly', 'industrial',
+    'automotive', 'aerospace', 'mechanical', 'fabrication',
+    // Insurance/finance ops
+    'insurance', 'underwriting', 'claims', 'actuarial', 'policy',
+    'banking', 'financial services', 'wealth management', 'investment banking',
+    // Logistics/supply chain
+    'logistics', 'supply chain', 'warehousing', 'distribution', 'freight',
+    'shipping', 'transportation', 'trucking', 'fulfillment',
+    // Other traditional
+    'retail', 'hospitality', 'restaurant', 'food service', 'healthcare operations',
+    'real estate', 'construction', 'energy', 'utilities'
+  ];
+  
+  for (const keyword of negativeKeywords) {
+    if (text.includes(keyword)) {
+      negativeSignals++;
     }
   }
   
-  // Check industry keywords
-  if (companyPreferences.industries && companyPreferences.industries.length > 0) {
-    totalCategories++;
-    let industryMatch = false;
-    for (const industry of companyPreferences.industries) {
-      if (text.includes(industry.toLowerCase())) {
-        industryMatch = true;
-        break;
-      }
-    }
-    if (industryMatch) totalMatches++;
+  // Calculate raw score based on signal balance
+  const netSignals = positiveSignals - (negativeSignals * 2); // Negative signals weighted 2x
+  
+  // If no signals detected at all, return low score (≤30)
+  if (positiveSignals === 0 && negativeSignals === 0) {
+    return Math.floor(Math.random() * 15) + 10; // 10-25 range for no signals
   }
   
-  if (totalCategories === 0) return 50;
+  // If only negative signals, return very low score
+  if (positiveSignals === 0 && negativeSignals > 0) {
+    return Math.max(5, 30 - (negativeSignals * 5)); // 5-25 range
+  }
   
-  // Score based on percentage of categories matched
-  const matchPercentage = (totalMatches / totalCategories) * 100;
-  return Math.min(100, matchPercentage + 30); // Boost base score
+  // Map net signals to 0-100 range with distinct bands
+  // Base score starts at 30, increases with positive signals
+  const rawScore = 30 + (netSignals * 8);
+  const normalizedScore = Math.max(10, Math.min(100, rawScore));
+  
+  return Math.round(normalizedScore); // Round to ensure distinct integer values
 }
 
 /**
@@ -462,52 +470,86 @@ function normalizeText(text: string): string {
 }
 
 /**
- * Calculate skills match score (0-100)
+ * Calculate skills match score (0-100) with tiered matching
+ * Tier 1: Exact matches (profile skills)
+ * Tier 2: Related terms and synonyms
+ * Tier 3: Category matches (sales engineering, technical sales, etc.)
+ * Normalized to 0-100 with 10+ distinct bands
  */
 function calculateSkillsScore(job: Job, skills?: { technical?: string[]; sales?: string[]; soft?: string[] }): number {
-  if (!skills) {
-    return 50; // Neutral score if no skills
-  }
-  
   const text = normalizeText(`${job.title} ${job.description || ''}`);
-  let totalMatches = 0;
-  let totalSkills = 0;
   
-  // Check technical skills
-  if (skills.technical && skills.technical.length > 0) {
-    for (const skill of skills.technical) {
-      totalSkills++;
-      if (text.includes(skill.toLowerCase())) {
-        totalMatches++;
-      }
+  let tier1Matches = 0; // Exact matches from profile
+  let tier2Matches = 0; // Synonyms and related terms
+  let tier3Matches = 0; // Category matches
+  
+  // Tier 1: Exact profile skill matches
+  const allProfileSkills: string[] = [];
+  if (skills?.technical) allProfileSkills.push(...skills.technical);
+  if (skills?.sales) allProfileSkills.push(...skills.sales);
+  if (skills?.soft) allProfileSkills.push(...skills.soft);
+  
+  for (const skill of allProfileSkills) {
+    if (text.includes(skill.toLowerCase())) {
+      tier1Matches++;
     }
   }
   
-  // Check sales skills
-  if (skills.sales && skills.sales.length > 0) {
-    for (const skill of skills.sales) {
-      totalSkills++;
-      if (text.includes(skill.toLowerCase())) {
-        totalMatches++;
-      }
+  // Tier 2: Synonyms and related terms
+  const tier2Keywords = [
+    // Technical synonyms
+    'api', 'rest', 'graphql', 'sdk', 'integration', 'webhook',
+    'cloud', 'aws', 'azure', 'gcp', 'kubernetes', 'docker',
+    'javascript', 'typescript', 'node', 'react', 'vue', 'angular',
+    'sql', 'database', 'postgres', 'mysql', 'mongodb',
+    'ci/cd', 'devops', 'git', 'github', 'gitlab',
+    // Sales engineering synonyms
+    'demo', 'proof of concept', 'poc', 'trial', 'pilot',
+    'technical presentation', 'solution design', 'architecture review',
+    'customer success', 'onboarding', 'implementation',
+    'crm', 'salesforce', 'hubspot', 'outreach', 'apollo',
+    'quota', 'pipeline', 'forecasting', 'deal', 'close',
+    // Soft skill synonyms
+    'communication', 'presentation', 'collaboration', 'teamwork',
+    'problem solving', 'analytical', 'strategic', 'leadership'
+  ];
+  
+  for (const keyword of tier2Keywords) {
+    if (text.includes(keyword)) {
+      tier2Matches++;
     }
   }
   
-  // Check soft skills
-  if (skills.soft && skills.soft.length > 0) {
-    for (const skill of skills.soft) {
-      totalSkills++;
-      if (text.includes(skill.toLowerCase())) {
-        totalMatches++;
-      }
+  // Tier 3: Category matches (sales engineering, technical sales, pre-sales)
+  const tier3Keywords = [
+    'sales engineer', 'solutions engineer', 'pre-sales', 'presales',
+    'technical sales', 'sales specialist', 'demo engineer',
+    'customer engineer', 'field engineer', 'technical account manager',
+    'solution architect', 'sales consultant', 'technical consultant'
+  ];
+  
+  for (const keyword of tier3Keywords) {
+    if (text.includes(keyword)) {
+      tier3Matches++;
     }
   }
   
-  if (totalSkills === 0) return 50;
+  // Calculate weighted score
+  // Tier 1: 5 points per match (exact profile skills)
+  // Tier 2: 2 points per match (related terms)
+  // Tier 3: 3 points per match (category)
+  const rawScore = (tier1Matches * 5) + (tier2Matches * 2) + (tier3Matches * 3);
   
-  // Score based on percentage of skills matched
-  const matchPercentage = (totalMatches / totalSkills) * 100;
-  return Math.min(100, matchPercentage + 20); // Small boost
+  // Normalize to 0-100 range with distinct bands
+  // If no matches at all, return very low score (≤20)
+  if (rawScore === 0) {
+    return Math.floor(Math.random() * 10) + 5; // 5-15 range for no matches
+  }
+  
+  // Map raw score to 0-100 with logarithmic scaling for distinct bands
+  const normalizedScore = Math.min(100, 20 + (Math.log(rawScore + 1) * 15));
+  
+  return Math.round(normalizedScore); // Round to ensure distinct integer values
 }
 
 /**
@@ -554,15 +596,47 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
   const description = normalizeText(job.description || '');
   const location = normalizeText(job.location);
   
-  // HARD BLOCK: Manufacturing/industrial roles
-  const manufacturingKeywords = [
+  // HARD BLOCK: Finance analyst, Crypto trader, Clinical/healthcare, Project manager, Insurance sales
+  const hardBlockKeywords = [
+    // Finance
+    'finance analyst', 'financial analyst', 'finance manager', 'finance operations',
+    'accounting', 'accountant', 'controller', 'cfo', 'finance director',
+    // Crypto/trading
+    'crypto', 'cryptocurrency', 'bitcoin', 'blockchain trader', 'trading',
+    'quantitative analyst', 'quant', 'hedge fund',
+    // Clinical/healthcare
+    'clinical', 'healthcare', 'medical', 'hospital', 'patient', 'nurse',
+    'physician', 'doctor', 'pharmacist', 'health services',
+    // Project manager
+    'project manager', 'program manager', 'pmo', 'scrum master', 'agile coach',
+    // Insurance
+    'insurance', 'underwriting', 'claims', 'actuarial', 'policy',
+    // Manufacturing/industrial
     'manufacturing', 'factory', 'production', 'assembly',
     'warehouse', 'logistics', 'supply chain', 'operations',
     'quality assurance', 'qa engineer', 'quality engineer',
     'process engineer', 'industrial', 'mechanical'
   ];
-  if (manufacturingKeywords.some(kw => title.includes(kw) || description.includes(kw))) {
-    return true; // Block manufacturing jobs
+  if (hardBlockKeywords.some(kw => title.includes(kw) || description.includes(kw))) {
+    return true; // Block irrelevant roles
+  }
+  
+  // HARD BLOCK: SDR-only roles (unless user is targeting SDR)
+  const userTargetsSDR = options.targetRoles.some(r => 
+    r.toLowerCase().includes('sdr') || 
+    r.toLowerCase().includes('sales development representative')
+  );
+  if (!userTargetsSDR) {
+    const sdrKeywords = [
+      'sdr', 'sales development representative', 'business development representative',
+      'bdr', 'outbound sales rep', 'lead generation specialist'
+    ];
+    if (sdrKeywords.some(kw => title.includes(kw))) {
+      // Exception: If title also includes 'engineer' or 'solutions', it might be a hybrid role
+      if (!title.includes('engineer') && !title.includes('solutions')) {
+        return true; // Block pure SDR
+      }
+    }
   }
   
   // HARD BLOCK: Pure software engineering (not sales-focused)

@@ -1,7 +1,8 @@
 import axios from "axios";
 import type { Job, Scraper, ScrapeParams } from "./types";
 
-const APIFY_API_URL = "https://api.apify.com/v2/acts/fantastic-jobs~career-site-job-listing-api/runs";
+// Correct actor ID from user-provided code: s3dtSTZSZWFtAVLn5
+const APIFY_ACTOR_ID = "s3dtSTZSZWFtAVLn5";
 const APIFY_TOKEN = process.env.APIFY_API_KEY || "apify_api_54Zl7lFBQGsNa2c9nRgdf6nvhoiQdo0AIYLg";
 
 interface ApifyCareerSiteJob {
@@ -12,31 +13,46 @@ interface ApifyCareerSiteJob {
   description?: string;
   postedDate?: string;
   salary?: string;
-  employmentType?: string;
-  atsSystem?: string;
 }
 
 /**
- * Scrape jobs from Apify Career Site Job Listing API
- * Covers 175k+ company career sites across 42 ATS platforms
- * (Workday, Greenhouse, Ashby, Lever, Rippling, SuccessFactors, iCIMS, etc.)
+ * Scrape jobs from Apify Career Site Job Listing API using correct actor ID
+ * Actor: s3dtSTZSZWFtAVLn5 (fantastic-jobs~career-site-job-listing-api)
  */
 async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
   const { role, location } = params;
   try {
     console.log(`[Apify Career Site] Scraping for "${role}" in "${location}"...`);
 
-    // Start the Apify actor run
+    // Start the Apify actor run with correct parameters from user code
     const runResponse = await axios.post(
-      `${APIFY_API_URL}?token=${APIFY_TOKEN}`,
+      `https://api.apify.com/v2/acts/${APIFY_ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
       {
-        query: role,
-        location: location,
-        maxResults: 100, // Increased to 100 jobs for better coverage
+        timeRange: "7d",
+        limit: 100,
+        includeAi: true,
+        includeLinkedIn: null,
+        titleSearch: role, // Search by role title
+        locationSearch: location, // Search by location
+        descriptionSearch: null,
+        descriptionType: "text",
+        ats: null,
+        atsExclusionFilter: null,
+        aiEmploymentTypeFilter: null,
+        aiWorkArrangementFilter: null,
+        aiHasSalary: null,
+        aiExperienceLevelFilter: null,
+        aiVisaSponsorshipFilter: null,
+        aiTaxonomiesFilter: null,
+        aiTaxonomiesPrimaryFilter: null,
+        aiTaxonomiesExclusionFilter: null,
+        populateAiRemoteLocation: false,
+        populateAiRemoteLocationDerived: false,
+        removeAgency: null,
       },
       {
         headers: { "Content-Type": "application/json" },
-        timeout: 60000, // 60 second timeout
+        timeout: 60000,
       }
     );
 
@@ -45,13 +61,14 @@ async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
 
     // Wait for the run to complete (poll every 3 seconds, max 120 seconds)
     let attempts = 0;
-    const maxAttempts = 40; // 40 attempts × 3 seconds = 120 seconds
+    const maxAttempts = 40;
     let runStatus = "RUNNING";
+    let statusResponse: any;
 
     while (runStatus === "RUNNING" && attempts < maxAttempts) {
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      const statusResponse = await axios.get(
+      statusResponse = await axios.get(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`
       );
       
@@ -62,16 +79,29 @@ async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
 
     if (runStatus !== "SUCCEEDED") {
       console.log(`[Apify Career Site] Run did not complete in time (status: ${runStatus})`);
-      return [];
+      throw new Error(`ERROR_TIMEOUT: Actor run timed out after 120s (status: ${runStatus})`);
     }
 
-    // Get the results
+    // Get the dataset ID from the run response
+    const datasetId = statusResponse.data.data.defaultDatasetId;
+    if (!datasetId) {
+      console.error(`[Apify Career Site] No dataset ID found in run response`);
+      throw new Error('ERROR_NO_DATASET: No dataset ID returned from actor run');
+    }
+
+    console.log(`[Apify Career Site] Fetching results from dataset: ${datasetId}`);
+
+    // Get the results using the correct dataset URL
     const resultsResponse = await axios.get(
-      `https://api.apify.com/v2/actor-runs/${runId}/dataset/items?token=${APIFY_TOKEN}`
+      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_TOKEN}`
     );
 
     const jobs: ApifyCareerSiteJob[] = resultsResponse.data;
     console.log(`[Apify Career Site] Found ${jobs.length} jobs`);
+
+    if (jobs.length === 0) {
+      throw new Error('ERROR_EMPTY_RESPONSE: Actor returned 0 jobs');
+    }
 
     // Transform to our Job format
     return jobs.map(job => ({
@@ -79,14 +109,18 @@ async function scrapeApifyCareerSite(params: ScrapeParams): Promise<Job[]> {
       company: job.company,
       location: job.location || "Remote",
       url: job.url,
-      source: `Career Site (${job.atsSystem || "ATS"})`,
+      source: "Career Sites (Apify)",
       postedDate: job.postedDate,
       salary: job.salary,
       description: job.description,
     }));
   } catch (error: any) {
     console.error("[Apify Career Site] Error:", error.message);
-    return [];
+    // Throw specific error instead of silently returning empty array
+    if (error.message?.startsWith('ERROR_')) {
+      throw error; // Re-throw our custom errors
+    }
+    throw new Error(`ERROR_NETWORK: ${error.message}`);
   }
 }
 

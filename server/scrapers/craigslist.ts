@@ -75,9 +75,13 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     }
     
     return jobs;
-  } catch (error) {
+  } catch (error: any) {
     console.error('[Craigslist] Scrape error:', error);
-    return [];
+    // Throw specific error instead of silently returning empty array
+    if (error.message?.includes('blocked') || error.message?.includes('403')) {
+      throw new Error('ERROR_BLOCKED_403: Craigslist bot detection blocking requests');
+    }
+    throw new Error(`ERROR_NETWORK: ${error.message}`);
   }
 }
 

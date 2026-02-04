@@ -678,3 +678,82 @@
 - [x] Apply to calculateSkillsScore, calculateMissionScore, calculateCompanyScore, hasRedFlags, shouldExcludeJob
 - [ ] Test scraper and verify Skills/Company scores are no longer constant
 - [ ] Verify scores reflect actual skill matches in descriptions
+
+
+## 🐛 DEBUG 4 BROKEN SOURCES (Feb 4, 2026 21:56)
+**Problem:** WeWorkRemotely, Craigslist, Apify Career Site, Apify LinkedIn all return 0 jobs
+
+**WeWorkRemotely (0 jobs):**
+- [ ] Test RSS feed URL directly: curl https://weworkremotely.com/remote-jobs.rss
+- [ ] Check if feed returns data
+- [ ] Check if filtering is too aggressive (blocking all jobs)
+- [ ] Add logging to see how many jobs found BEFORE filtering
+
+**Craigslist (0 jobs):**
+- [ ] Test Craigslist URL directly with curl
+- [ ] Check if bot detection is blocking requests
+- [ ] Try different User-Agent headers
+- [ ] Check if HTML structure changed
+
+**Apify Career Site (0 jobs):**
+- [ ] Check if API token is valid
+- [ ] Test API directly with curl
+- [ ] Check if actor is timing out (current timeout: 120s)
+- [ ] Check if dataset is empty after run completes
+- [ ] Verify input parameters are correct
+
+**Apify LinkedIn (0 jobs):**
+- [ ] Check if API token is valid
+- [ ] Test API directly with curl
+- [ ] Check if actor is timing out (current timeout: 120s)
+- [ ] Check if dataset is empty after run completes
+- [ ] Verify input parameters are correct
+
+
+## 🎯 COMPREHENSIVE FIX PER USER REQUIREMENTS (Feb 4, 2026 22:01)
+
+### 1. Fix Skills Scoring (10+ distinct values required)
+- [ ] Implement tiered matching: Tier 1 (exact), Tier 2 (synonyms), Tier 3 (category)
+- [ ] Normalize to 0-100 with 10+ distinct bands
+- [ ] If no skills detected, score ≤20 (not defaulted to 20+)
+- [ ] Test: verify 10+ unique skills scores in single run
+
+### 2. Fix Company Scoring (10+ distinct values required)
+- [ ] Remove fixed defaults
+- [ ] Detect company type signals: SaaS/AI/ML/DevTools/Cloud/Startup → higher
+- [ ] Manufacturing/insurance/logistics/finance ops → lower
+- [ ] If no signal detected, score ≤30
+- [ ] Test: verify 10+ unique company scores in single run
+
+### 3. Hard Pre-Ranking Rejection Filter
+- [ ] Exclude BEFORE ranking: Finance analyst, Crypto trader, Clinical/healthcare, Project manager, Insurance sales, SDR-only
+- [ ] Acceptance: Top 20 must have 15+/20 in Sales Engineer/Solutions/Pre-Sales/TAM cluster
+
+### 4. Fix Apify Scrapers Dataset URL Bug
+- [ ] Extract defaultDatasetId from run response
+- [ ] Use correct URL: `https://api.apify.com/v2/datasets/${datasetId}/items`
+- [ ] Add tiered role search: Sales Engineer, Solutions Engineer, Pre-Sales, TAM, Customer Engineer, Demo Engineer
+
+### 5. Add Tiered Role Search to ALL Scrapers
+- [ ] RemoteOK: add related role keywords
+- [ ] Jooble: add related role keywords
+- [ ] SerpAPI: add related role keywords
+- [ ] The Muse: add related role keywords
+- [ ] Remotive: add related role keywords
+- [ ] Arbeitnow: add related role keywords
+- [ ] WeWorkRemotely: already has broad matching
+- [ ] Craigslist: mark as "Blocked" with specific error
+
+### 6. Specific Error Reporting for 0-Job Sources
+- [ ] WeWorkRemotely: log item count before filtering
+- [ ] Craigslist: log HTTP status, mark as "Blocked" if 403
+- [ ] Apify Career Site: log actorId, runId, dataset item count
+- [ ] Apify LinkedIn: log actorId, runId, dataset item count
+- [ ] No source allowed to silently return 0
+
+### 7. Final Acceptance Test
+- [ ] Total jobs scraped ~200
+- [ ] Jobs per source + error reason if 0
+- [ ] Count of unique skills score values (must be 10+)
+- [ ] Count of unique company score values (must be 10+)
+- [ ] Top 20 roles with role cluster classification (15+/20 in target cluster)
