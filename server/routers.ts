@@ -145,9 +145,9 @@ export const appRouter = router({
               'saas', 'innovative', 'startup', 'tech', 'developer tools',
             ],
             maxExperienceYears: profile.experience_summary?.total_years || 5,
-            companyPreferences: profile.company_preferences,
-            redFlags: profile.red_flags,
-            skills: profile.skills,
+            companyPreferences: profile.company_preferences || {},
+            redFlags: profile.red_flags || [],
+            skills: profile.skills || {},
           };
           
           const top20 = rankJobs(validJobs, filterOptions, 20);

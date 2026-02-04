@@ -482,3 +482,9 @@
 - [x] Profile path wrong - looking for `miles.json` but file is `miles-tipton.json` - Fixed
 - [ ] Filter updates (company preferences, red flags, skills) not being applied - Need to test after restart
 - [x] Cache not cleared between runs - Fixed: Cache cleared on every scrape
+
+
+## 🚨 CRITICAL ERROR - redFlags not iterable (Feb 4, 2026 20:54) - FIXED
+- [x] Fix "redFlags is not iterable" error in filter.ts or routers.ts - Added safety checks
+- [x] Check if profile.red_flags is undefined or not an array - Added `|| []` fallback
+- [x] Add safety check: `profile.red_flags || []` - Done
