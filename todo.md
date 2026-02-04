@@ -162,3 +162,9 @@
 - [x] Special case: Allow "Technical Account Manager" and "Account Manager" (not manager roles)
 - [ ] Test scraper and verify NO senior roles in results
 - [x] Make system work for others with different experience levels (configurable via profile - reads from experience_summary.total_years)
+
+
+## 🚨 FIX PYTHON PATH FOR PRODUCTION (User Report - Feb 4, 2026)
+- [x] Change hardcoded `/usr/bin/python3.11` to `python3` in server/routers.ts
+- [ ] Test in production to verify Python is found
+- [ ] Add fallback to `python` if `python3` not found (will add if needed)

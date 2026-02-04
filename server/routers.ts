@@ -107,8 +107,9 @@ export const appRouter = router({
           }
           
           // Execute Python scraper without bash dependency
+          // Use 'python3' instead of hardcoded path for production compatibility
           const { stdout } = await execAsync(
-            `/usr/bin/python3.11 "${scraperPath}" --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
+            `python3 "${scraperPath}" --location "${location}" --role "${role}" --profile miles_profile.json --top 20`,
             { 
               maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large outputs
               timeout: 180000, // 180 seconds timeout (comprehensive scraper)
