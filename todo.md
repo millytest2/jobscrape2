@@ -757,3 +757,12 @@
 - [ ] Count of unique skills score values (must be 10+)
 - [ ] Count of unique company score values (must be 10+)
 - [ ] Top 20 roles with role cluster classification (15+/20 in target cluster)
+
+
+## ✅ SERPAPI FIXED (Feb 4, 2026 22:17)
+- [x] Check if SERPAPI_KEY env var is set (YES - 65/250 searches remaining)
+- [x] Test SerpAPI directly with curl to verify API key works (WORKING)
+- [x] Found issue: Using wrong endpoint (engine=google_jobs returns 0, base search returns 4)
+- [x] Fixed scraper to use correct format: "Sales Engineer jobs in Los Angeles"
+- [x] Verified fix: Base search endpoint returns 4 jobs, google_jobs engine returns 0
+- [ ] Test full scrape to verify SerpAPI now contributes jobs

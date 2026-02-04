@@ -23,22 +23,22 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     }
     
     // Try multiple search strategies to maximize results
+    // Use correct format: "job title jobs in location"
     const searchStrategies = [
-      { q: role, location: searchLocation },
-      { q: `${role} remote`, location: searchLocation },
-      { q: `${role} hybrid`, location: searchLocation },
+      { q: `${role} jobs in ${location}`, location: searchLocation },
+      { q: `${role} remote jobs in ${location}`, location: searchLocation },
+      { q: `${role} hybrid jobs in ${location}`, location: searchLocation },
     ];
     
     const allJobs: Job[] = [];
     
     for (const strategy of searchStrategies) {
       try {
-        const url = new URL('https://serpapi.com/search');
-        url.searchParams.set('engine', 'google_jobs');
+        const url = new URL('https://serpapi.com/search.json');
+        // Don't use engine=google_jobs, just use base search with formatted query
         url.searchParams.set('q', strategy.q);
         url.searchParams.set('location', strategy.location);
         url.searchParams.set('api_key', apiKey);
-        url.searchParams.set('num', '40'); // Increased limit per strategy
         
         const response = await fetch(url.toString(), {
           headers: {
