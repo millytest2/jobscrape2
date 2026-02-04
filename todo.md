@@ -265,3 +265,56 @@
 
 ### 7. Test & Report
 - [ ] Run one scrape and report: total jobs, per-source counts, top 20 with parsedLocation/isRemote/requiredYears/score breakdown
+
+
+## 🚨 CRITICAL BUGS FOUND IN PRODUCTION (Feb 4, 2026 - Live Testing)
+**Tested:** Clicked RUN SCRAPER on dev site, reviewed actual results
+
+### A) Senior Role Filter COMPLETELY BROKEN
+- ❌ "Senior Machine Learning Engineer AI Foundry" showing with 72% match
+- ❌ isSeniorRole() function exists but NOT being called
+- ❌ Filter is checking title but not blocking senior roles
+- **Fix:** Debug why filter.ts isSeniorRole check is not working
+
+### B) Role Matching WAY TOO LOOSE
+- ❌ "Hardcore Software Engineer" matching "Sales Engineer" (completely wrong)
+- ❌ "Machine Learning Engineer" matching "Sales Engineer" (different field entirely)
+- ❌ "AI Automation Engineer" matching "Sales Engineer" (wrong)
+- **Fix:** Implement strict role matching - ONLY allow exact matches or close variants (Solutions Engineer, Pre-Sales Engineer, TAM, Demo Engineer)
+
+### C) Location Validation COMPLETELY BROKEN
+- ❌ "Remote, Canada" showing as match for "Los Angeles, CA"
+- ❌ isUSLocation() exists but not being enforced
+- ❌ No penalty for international locations
+- **Fix:** Hard block non-US locations unless job is Remote (then allow)
+
+### D) 5 Out of 8 Scrapers FAILING (62% failure rate)
+- ❌ WeWorkRemotely: 0 jobs (should return 20-30)
+- ❌ Jooble: 0 jobs (API key missing or wrong?)
+- ❌ SerpAPI: 0 jobs (API key missing or wrong?)
+- ❌ Craigslist: 0 jobs (HTML scraping broken?)
+- ❌ The Muse: 0 jobs (API broken?)
+- ✅ RemoteOK: 50 jobs (working)
+- ✅ Remotive: 12 jobs (working)
+- ✅ Arbeitnow: 12 jobs (working)
+- **Fix:** Debug each failing scraper individually
+
+### E) Scores STILL INFLATED (Sanity Checks Not Working)
+- ❌ "Senior Machine Learning Engineer" = 72% for Sales Engineer role (should be <40%)
+- ❌ Wrong roles getting 70%+ scores
+- ❌ Sanity check function exists but not being applied
+- **Fix:** Enforce score caps - if role/location/experience don't match, max score = 40%
+
+### F) Only 74 Jobs Total (Target: 200+)
+- Current: 74 jobs (37% of target)
+- Target: 200+ jobs
+- **Root cause:** 5 scrapers failing + filters too strict
+- **Fix:** Fix failing scrapers first, then adjust filters
+
+**ACCEPTANCE CRITERIA:**
+- [ ] NO senior roles in top 20 (0 out of 20)
+- [ ] NO wrong roles in top 20 (only Sales Engineer, Solutions Engineer, Pre-Sales Engineer, TAM, Demo Engineer)
+- [ ] NO international locations unless Remote (max 3 out of 20 can be Remote international)
+- [ ] 200+ jobs scraped total
+- [ ] Realistic scores (30-60% range, NOT 70-90%)
+- [ ] All 8 scrapers returning jobs (min 10 jobs per scraper)

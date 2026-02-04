@@ -144,31 +144,47 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
 }
 
 /**
- * Calculate role match score (0-100)
+ * Calculate role match score (0-100) - STRICT matching only
  */
 function calculateRoleScore(job: Job, targetRoles: string[]): number {
   const title = job.title.toLowerCase();
-  let score = 0;
-  
-  // Target role clusters
   const roleCluster = targetRoles.map(r => r.toLowerCase());
   
+  // Exact match or very close variant
   for (const role of roleCluster) {
+    // Exact match
+    if (title === role) {
+      return 100;
+    }
+    
+    // Very close match (all words present)
     const roleWords = role.split(' ');
+    const allWordsPresent = roleWords.every(word => title.includes(word));
+    if (allWordsPresent) {
+      return 95;
+    }
+  }
+  
+  // Allowed variants for Sales Engineer
+  if (roleCluster.some(r => r.includes('sales engineer'))) {
+    if (title.includes('solutions engineer') || title.includes('solution engineer')) return 90;
+    if (title.includes('pre-sales') || title.includes('presales')) return 85;
+    if (title.includes('demo engineer')) return 80;
+    if (title.includes('technical account manager') || title.includes('tam')) return 75;
+    if (title.includes('customer engineer')) return 70;
+    if (title.includes('field engineer')) return 65;
+  }
+  
+  // Partial match (some words present) - but penalize heavily
+  let partialScore = 0;
+  for (const role of roleCluster) {
+    const roleWords = role.split(' ').filter(w => w !== 'engineer' && w !== 'manager'); // Ignore generic words
     const matchedWords = roleWords.filter(word => title.includes(word));
-    const matchRatio = matchedWords.length / roleWords.length;
-    score = Math.max(score, matchRatio * 100);
+    const matchRatio = matchedWords.length / Math.max(roleWords.length, 1);
+    partialScore = Math.max(partialScore, matchRatio * 40); // Cap at 40% for partial matches
   }
   
-  // Penalize if "Account Manager" or "TAM" but not in target roles
-  const isAccountManager = title.includes('account manager') || title.includes('tam');
-  const targetIncludesAM = roleCluster.some(r => r.includes('account manager') || r.includes('tam'));
-  
-  if (isAccountManager && !targetIncludesAM) {
-    score = Math.max(0, score - 30); // Reduce score for non-target account manager roles
-  }
-  
-  return score;
+  return partialScore;
 }
 
 /**
@@ -178,9 +194,13 @@ function calculateLocationScore(job: Job, targetLocation: string): number {
   const parsed = parseLocation(job.location);
   const targetParsed = parseLocation(targetLocation);
   
-  // If job is remote, high score
+  // If job is remote, check if it's US-based or international
   if (parsed.isRemote) {
-    return 100;
+    // If target is US and job is international remote, reduce score
+    if (targetParsed.country === 'US' && parsed.country !== 'US') {
+      return 60; // Allow international remote but lower priority
+    }
+    return 100; // US remote or unknown remote
   }
   
   // Hard penalty: US target + non-US job = 0 score
@@ -305,6 +325,42 @@ function applySanityChecks(
 }
 
 /**
+ * Check if job should be excluded based on hard filters
+ */
+function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
+  const senioritySignals = detectSenioritySignals(job);
+  const requiredYears = extractRequiredYears(job);
+  const maxYears = options.maxExperienceYears || 5;
+  
+  // Hard block: Senior title + high experience requirement
+  if (senioritySignals.length > 0 && requiredYears && requiredYears >= 7) {
+    return true; // Definitely too senior
+  }
+  
+  // Hard block: Senior title in specific positions (not IC roles like TAM)
+  const title = job.title.toLowerCase();
+  const isSeniorNonIC = (
+    (title.includes('senior') || title.includes('sr.') || title.includes('sr ')) &&
+    !title.includes('account manager') &&
+    !title.includes('tam')
+  );
+  
+  if (isSeniorNonIC && maxYears < 5) {
+    return true; // Block senior roles for junior candidates
+  }
+  
+  // Hard block: Lead, Principal, Staff, Director, VP
+  const hardSeniorKeywords = ['lead', 'principal', 'staff', 'director', 'vp', 'vice president', 'head of', 'chief'];
+  for (const keyword of hardSeniorKeywords) {
+    if (title.includes(keyword)) {
+      return true; // Always block these titles
+    }
+  }
+  
+  return false; // Don't exclude
+}
+
+/**
  * Rank and filter jobs, return top N
  */
 export function rankJobs(
@@ -312,7 +368,9 @@ export function rankJobs(
   options: FilterOptions,
   topN: number = 20
 ): FilteredJob[] {
-  const scored: FilteredJob[] = jobs.map(job => {
+  // First, hard filter out excluded jobs
+  const filtered = jobs.filter(job => !shouldExcludeJob(job, options));
+  const scored: FilteredJob[] = filtered.map(job => {
     const parsed = parseLocation(job.location);
     const requiredYears = extractRequiredYears(job);
     const senioritySignals = detectSenioritySignals(job);
