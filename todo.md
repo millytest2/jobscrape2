@@ -452,3 +452,15 @@
   - Red flags: (none mentioned)
 - [ ] Fix auto-refresh issue (don't refresh when leaving page, only when clicking RUN SCRAPER)
 - [ ] Test multi-user system with both profiles
+
+
+## 🎯 IMPROVE COMPANY FILTERING (Feb 4, 2026)
+- [x] Swap bottom icon to preferred version (the other image generated) - Using cyberpunk empty-state.png with cyan glow
+- [ ] Add company size filtering (startup/small/medium vs large/enterprise)
+- [ ] Add company stage filtering (seed/series A/B vs growth/public)
+- [ ] Add company industry filtering (AI/ML/SaaS vs other industries)
+- [ ] Add company culture filtering (mission-driven, remote-first, etc.)
+- [ ] Test improved filtering with Miles profile
+- [ ] Verify results are more aligned with company preferences
+
+- [x] Fix auto-refresh issue - Prevent page from refreshing when navigating away (only refresh on manual RUN SCRAPER click) - Disabled refetchOnWindowFocus, refetchOnMount, refetchOnReconnect
