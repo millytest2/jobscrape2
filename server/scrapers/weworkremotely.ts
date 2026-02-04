@@ -6,27 +6,39 @@
 import type { Job, ScrapeParams, Scraper } from './types';
 
 async function scrape(params: ScrapeParams): Promise<Job[]> {
+  const url = 'https://weworkremotely.com/remote-jobs.rss';
+  console.log(`[WeWorkRemotely] SOURCE_START url=${url}`);
+  
   try {
     const { role } = params;
     
-    // WeWorkRemotely RSS feed
-    const url = 'https://weworkremotely.com/remote-jobs.rss';
-    
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; JobScraperBot/1.0)',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
       },
+      signal: AbortSignal.timeout(15000), // 15s timeout
     });
     
+    console.log(`[WeWorkRemotely] HTTP ${response.status}`);
+    
     if (!response.ok) {
-      console.error(`[WeWorkRemotely] HTTP ${response.status}`);
-      return [];
+      const bodyPreview = await response.text().then(t => t.substring(0, 200)).catch(() => '');
+      console.error(`[WeWorkRemotely] ERROR_HTTP_${response.status} body=${bodyPreview}`);
+      throw new Error(`ERROR_HTTP_${response.status}`);
     }
     
     const xml = await response.text();
     
     // Simple XML parsing for RSS (looking for <item> tags)
     const items = xml.match(/<item>[\s\S]*?<\/item>/g) || [];
+    console.log(`[WeWorkRemotely] Found ${items.length} items in RSS feed BEFORE filtering`);
+    
+    if (items.length === 0) {
+      console.error(`[WeWorkRemotely] ERROR_EMPTY_RESPONSE - RSS feed has no items`);
+      throw new Error('ERROR_EMPTY_RESPONSE');
+    }
     
     const jobs: Job[] = [];
     
@@ -70,17 +82,24 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
           location: 'Remote',
           url,
           source: 'WeWorkRemotely',
-          description: description.replace(/<[^>]*>/g, '').substring(0, 200),
+          description: description.replace(/<[^>]*>/g, ''),
         });
       }
       
       if (jobs.length >= 100) break;
     }
     
+    console.log(`[WeWorkRemotely] SOURCE_END jobsReturned=${jobs.length} (filtered from ${items.length} items)`);
+    
+    if (jobs.length === 0 && items.length > 0) {
+      console.warn(`[WeWorkRemotely] WARNING: Filter too aggressive - ${items.length} items but 0 jobs after filtering`);
+    }
+    
     return jobs;
-  } catch (error) {
-    console.error('[WeWorkRemotely] Scrape error:', error);
-    return [];
+  } catch (error: any) {
+    const errorMessage = error.message || String(error);
+    console.error(`[WeWorkRemotely] SOURCE_END error=${errorMessage}`);
+    throw error; // Re-throw so router can capture it
   }
 }
 

@@ -611,3 +611,56 @@
 - [ ] Check server logs for per-source execution
 - [ ] Verify filtering runs and top 20 regenerates
 - [ ] Verify UI shows all metadata clearly
+
+
+## 🚨 COMPREHENSIVE SCRAPER FIX (Feb 4, 2026 21:35)
+**Problem:** Sources returning 0 with no errors, scoring using default values, no diversity in top 20
+
+**Logging & Error Reporting:**
+- [ ] Add SOURCE_START log with runId, sourceName, requestUrl
+- [ ] Add SOURCE_END log with runId, sourceName, durationMs, jobsReturned, errorMessage, statusCode
+- [ ] For 0-result sources, return explicit error codes: ERROR_MISSING_API_KEY, ERROR_BLOCKED_403, ERROR_PARSING_CHANGED, ERROR_TIMEOUT, ERROR_EMPTY_RESPONSE
+- [ ] Log raw HTTP status code and first 200 chars of response body for debugging
+
+**Fix WeWorkRemotely (0 jobs):**
+- [ ] Validate RSS feed URL returns 200
+- [ ] Log item count found BEFORE filtering
+- [ ] If item count >0 but output 0, fix aggressive filter
+- [ ] Return explicit error if feed fails
+
+**Fix Craigslist (0 jobs):**
+- [ ] Add realistic User-Agent header
+- [ ] Add Accept and Accept-Language headers
+- [ ] Add retry with backoff
+- [ ] Log HTTP status codes
+- [ ] Mark as ERROR_BLOCKED_403 if blocked, don't pretend it ran
+
+**Fix Apify Scrapers (0 jobs):**
+- [ ] Check APIFY_TOKEN exists, show ERROR_MISSING_API_KEY if missing
+- [ ] Log Apify run ID and dataset item count
+- [ ] Verify awaiting dataset fetch
+- [ ] If dataset empty, log run input and actor output summary
+- [ ] Return explicit errors in errorsBySource
+
+**Fix Scoring Pipeline (constant values):**
+- [x] Skills score: match profile keywords in description (logic already implemented)
+- [x] Company score: mission alignment signals (logic already implemented)
+- [x] Location score: parsed location + remote flag (logic already implemented)
+- [x] Experience score: parse required years vs profile (logic already implemented)
+- [x] Fix profile data extraction to use correct field names (soft_skills, mission_driven_keywords)
+- [x] Remove description truncation (was 200 chars, now full descriptions)
+- [ ] Add scoreBreakdown debug field: parsedLocation, isRemote, requiredYears, detectedSeniority, matchedKeywordsCount, missionSignals
+
+**Add Diversity Constraints:**
+- [ ] Max 6 jobs from any single source in top 20
+- [ ] Min 8 jobs in target role cluster (Sales Engineer, Solutions Engineer, Solutions Consultant, Pre-Sales, Demo Engineer, TAM)
+- [ ] Exclude pure SDR roles unless user role includes SDR
+
+**Acceptance Test:**
+- [ ] Run scrape: role="Sales Engineer", location="Los Angeles, CA"
+- [ ] Report runId, per-source counts with status codes
+- [ ] Report total jobs, unique jobs, top 20 with debug breakdown
+- [ ] Verify: WeWorkRemotely non-zero OR real error
+- [ ] Verify: Craigslist non-zero OR real error
+- [ ] Verify: Apify sources non-zero OR real error
+- [ ] Verify: Score breakdown NOT constant values

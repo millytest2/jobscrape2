@@ -177,15 +177,31 @@ export const appRouter = router({
               ...(profile.target_roles?.indirect || []),
             ],
             targetLocation: location,
-            missionDrivenKeywords: [
+            missionDrivenKeywords: profile.company_preferences?.mission_driven_keywords || [
               'ai', 'ml', 'machine learning', 'artificial intelligence',
               'saas', 'innovative', 'startup', 'tech', 'developer tools',
             ],
             maxExperienceYears: profile.experience_summary?.total_years || 5,
-            companyPreferences: profile.company_preferences || {},
+            companyPreferences: {
+              size: profile.company_preferences?.size || [],
+              stage: profile.company_preferences?.stage || [],
+              industries: profile.company_preferences?.industries || [],
+            },
             redFlags: Array.isArray(profile.red_flags) ? profile.red_flags : (profile.red_flags?.avoid || []),
-            skills: profile.skills || {},
+            skills: {
+              technical: profile.skills?.technical || [],
+              sales: profile.skills?.sales || [],
+              soft: profile.skills?.soft_skills || [], // Note: profile has 'soft_skills' not 'soft'
+            },
           };
+          
+          console.log(`[Scraper] Filter options:`, {
+            targetRoles: filterOptions.targetRoles.length,
+            missionKeywords: filterOptions.missionDrivenKeywords?.length,
+            technicalSkills: filterOptions.skills?.technical?.length,
+            salesSkills: filterOptions.skills?.sales?.length,
+            softSkills: filterOptions.skills?.soft?.length,
+          });
           
           const top20 = rankJobs(validJobs, filterOptions, 20);
           

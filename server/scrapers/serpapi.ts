@@ -64,7 +64,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
           url: job.apply_link || job.share_link || '',
           source: 'SerpAPI',
           postedDate: job.detected_extensions?.posted_at || undefined,
-          description: job.description ? job.description.substring(0, 200) : undefined,
+          description: job.description ? job.description : undefined,
         }));
         
         allJobs.push(...normalized);

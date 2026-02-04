@@ -70,7 +70,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       url: job.refs?.landing_page || '',
       source: 'The Muse',
       postedDate: job.publication_date || undefined,
-      description: job.contents ? job.contents.substring(0, 200) : undefined,
+      description: job.contents ? job.contents : undefined,
     }));
   } catch (error) {
     console.error('[The Muse] Scrape error:', error);

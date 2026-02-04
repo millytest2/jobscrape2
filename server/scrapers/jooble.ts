@@ -48,7 +48,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       source: 'Jooble',
       postedDate: job.updated || undefined,
       salary: job.salary || undefined,
-      description: job.snippet ? job.snippet.substring(0, 200) : undefined,
+      description: job.snippet ? job.snippet : undefined,
     }));
   } catch (error) {
     console.error('[Jooble] Scrape error:', error);

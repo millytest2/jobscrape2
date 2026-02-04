@@ -55,7 +55,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       url: job.url || '',
       source: 'Arbeitnow',
       postedDate: job.created_at || undefined,
-      description: job.description ? job.description.substring(0, 200) : undefined,
+      description: job.description ? job.description : undefined,
     }));
   } catch (error) {
     console.error('[Arbeitnow] Scrape error:', error);
