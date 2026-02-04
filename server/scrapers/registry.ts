@@ -11,6 +11,8 @@ import { joobleScraper } from './jooble';
 import { serpAPIScraper } from './serpapi';
 import { craigslistScraper } from './craigslist';
 import { theMuseScraper } from './themuse';
+import { apifyCareerSiteScraper } from './apify-career-site';
+import { apifyLinkedInScraper } from './apify-linkedin';
 
 import type { ScraperRegistry } from './types';
 
@@ -23,6 +25,8 @@ export const SCRAPERS: ScraperRegistry = {
   serpapi: serpAPIScraper,
   craigslist: craigslistScraper,
   themuse: theMuseScraper,
+  'apify-career-site': apifyCareerSiteScraper,
+  'apify-linkedin': apifyLinkedInScraper,
 };
 
 export const SCRAPER_NAMES = Object.keys(SCRAPERS);

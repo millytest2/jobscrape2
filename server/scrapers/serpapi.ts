@@ -85,7 +85,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       return true;
     });
     
-    return unique.slice(0, 50);
+    return unique.slice(0, 100);
   } catch (error) {
     console.error('[SerpAPI] Scrape error:', error);
     return [];

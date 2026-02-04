@@ -40,7 +40,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     const jobs = data.jobs || [];
     
     // Normalize to our Job interface
-    return jobs.slice(0, 50).map((job: any) => ({
+    return jobs.slice(0, 100).map((job: any) => ({
       title: job.title || 'Unknown Title',
       company: job.company || 'Unknown Company',
       location: job.location || location,

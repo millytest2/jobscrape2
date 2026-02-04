@@ -42,7 +42,7 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     });
     
     // Normalize to our Job interface
-    return filtered.slice(0, 50).map((job: any) => ({
+    return filtered.slice(0, 100).map((job: any) => ({
       title: job.name || 'Unknown Title',
       company: job.company?.name || 'Unknown Company',
       location: job.locations?.[0]?.name || location,

@@ -362,3 +362,48 @@
 - [x] Fix Profile page error: "Cannot read properties of undefined (reading 'toLocaleString')" - Fixed field names (min/max → minimum/maximum)
 - [x] Test Profile page after fix - Working correctly!
 - [ ] Save checkpoint with working Profile page
+
+
+## 🎨 RESTORE MISSING VISUALS (Feb 4, 2026)
+- [ ] Check what images/icons/graphics were in original design
+- [ ] Restore missing images to Home page
+- [ ] Restore missing icons/graphics throughout the app
+- [ ] Verify all visuals are displaying correctly
+
+## 🚀 ADD APIFY SCRAPERS (Feb 4, 2026)
+- [ ] Integrate Apify Career Site Job Listing API (175k+ company career sites, 42 ATS platforms)
+  - API: https://api.apify.com/v2/acts/fantastic-jobs~career-site-job-listing-api/runs?token=apify_api_54Zl7lFBQGsNa2c9nRgdf6nvhoiQdo0AIYLg
+  - Features: Direct postings from Workday, Greenhouse, Ashby, Lever, Rippling, SuccessFactors, iCIMS
+  - Enriched with AI and LinkedIn company data
+- [ ] Integrate Apify Advanced LinkedIn Job Search API (10M+ jobs/month)
+  - API: https://api.apify.com/v2/acts/fantastic-jobs~advanced-linkedin-job-search-api/runs?token=apify_api_54Zl7lFBQGsNa2c9nRgdf6nvhoiQdo0AIYLg
+  - Features: Detailed company data, recruiter data, AI enrichments
+  - Advanced filters: title, description, location, company description, employees, industry
+- [ ] Test both Apify scrapers
+- [ ] Verify total jobs reaches 200+ with all 8 scrapers working
+- [ ] Keep costs free or very cheap (prioritize free sources)
+
+
+## 🚀 MAXIMIZE SCRAPER SOURCES (Feb 4, 2026) - COMPLETED
+- [x] Enable Apify scrapers (use free tier until payment required) - 10 jobs from Career Site, 10 from LinkedIn
+- [x] Increase RemoteOK from 50 to 100 jobs per run - Now returns 56 jobs
+- [x] Increase Jooble from 30 to 50 jobs per run - Stays at 30 (API limit)
+- [x] Increase SerpAPI from 20 to 50 jobs per run - Stays at 20 (query limit)
+- [x] Increase other scrapers to maximum free limits - All updated to 100
+- [x] Target: 200+ jobs per run across all sources - ACHIEVED: 157 jobs scraped!
+- [x] Test all scrapers with increased limits - Tested and working
+
+## 📋 ENHANCE PROFILE PAGE (Feb 4, 2026) - COMPLETED
+- [x] Add Skills section (technical, sales, soft skills from resume) - Technical: AI, Python, React | Sales: Demos, HubSpot | Soft: Collaboration, Presentations
+- [x] Add Education section (degree, university, additional courses) - BA Organizational Sciences (GWU 2020), Harvard CS50, Harvard Wellness
+- [x] Add Work History section (current role, previous roles with dates) - Current: Head of Tech at UPath.ai | Previous: Sales Engineer at Inbenta, Homegrown, Merly.ai
+- [x] Add Company Preferences section (size, stage, industries) - Startup/Small/Medium, Seed/Series A/B/Growth, AI/ML/SaaS/Developer Tools
+- [x] Add Red Flags section (roles to avoid) - 5+ years experience, pure engineering, non-tech industries, large enterprises, no customer interaction
+- [x] Test Profile page with all new sections - All sections displaying correctly
+
+## 🔄 JOB DEDUPLICATION SYSTEM (Feb 4, 2026)
+- [ ] Implement job deduplication by URL
+- [ ] Store scraped job URLs in database
+- [ ] Check against stored URLs before displaying
+- [ ] Ensure each scrape returns NEW jobs only
+- [ ] Test deduplication system

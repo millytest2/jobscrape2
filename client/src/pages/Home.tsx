@@ -125,7 +125,7 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
       {/* Hero Section */}
       <div className="relative border-b border-border bg-card">
-        <div className="absolute inset-0 bg-[url('/images/hero-background.png')] opacity-10 bg-cover bg-center mix-blend-overlay pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 pointer-events-none" />
         <div className="container py-12 md:py-20 relative z-10">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div className="space-y-4 max-w-2xl">
@@ -335,7 +335,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 opacity-50">
-            <div className="w-48 h-48 bg-[url('/images/empty-state.png')] bg-contain bg-center bg-no-repeat" />
+            <Search className="w-48 h-48 text-muted-foreground/20" />
             <div className="space-y-2">
               <h3 className="text-2xl font-bold font-mono uppercase">Ready to Scrape</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
