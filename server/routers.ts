@@ -8,6 +8,7 @@ import { promises as fs } from "fs";
 import { SCRAPERS, SCRAPER_NAMES } from "./scrapers/registry";
 import { removeGhostJobs, rankJobs, type FilterOptions } from "./scrapers/filter";
 import type { Job } from "./scrapers/types";
+import { logToFile } from "./utils/logger";
 
 // In-memory cache for last successful scrape results
 const scrapeCache = new Map<string, { runId: string; jobs: Job[]; top20: any[]; timestamp: string; stats: any }>();
@@ -35,6 +36,11 @@ async function runScrapersParallel(
   const countsBySource: Record<string, number> = {};
   const sources = Object.keys(SCRAPERS);
   
+  // FILE LOGGING - runScrapersParallel START
+  logToFile(`\n🚀 runScrapersParallel START runId=${runId}`);
+  logToFile(`📋 Total scrapers registered: ${sources.length}`);
+  logToFile(`📝 Names: [${sources.join(', ')}]`);
+  
   console.log(`🚀 RUN_START ${runId} role="${role}" location="${location}"`);
   console.log(`📋 SCRAPERS_TOTAL ${runId} count=${sources.length}`);
   console.log(`📝 ENABLED_LIST ${runId} names=[${sources.join(', ')}]`);
@@ -47,6 +53,7 @@ async function runScrapersParallel(
       batch.map(async (sourceName) => {
         const sourceStartTime = Date.now();
         const sourceStartedAt = new Date().toISOString();
+        logToFile(`▶️  CALL ${sourceName}`);
         console.log(`▶️  CALL_START ${runId} name=${sourceName}`);
         
         try {
@@ -63,12 +70,14 @@ async function runScrapersParallel(
           ]);
           
           const durationMs = Date.now() - sourceStartTime;
+          logToFile(`✅ ${sourceName}: ${jobs.length} jobs in ${durationMs}ms`);
           console.log(`✅ CALL_END ${runId} name=${sourceName} jobs=${jobs.length} duration=${durationMs}ms`);
           return { sourceName, jobs, durationMs, startedAt: sourceStartedAt };
         } catch (error: any) {
           const durationMs = Date.now() - sourceStartTime;
           const errorMsg = error.message || 'Unknown error';
           const stackTop = error.stack?.split('\n')[0] || '';
+          logToFile(`❌ ${sourceName}: ERROR ${errorMsg}`);
           console.error(`❌ CALL_ERROR ${runId} name=${sourceName} duration=${durationMs}ms error="${errorMsg}" stack="${stackTop}"`);
           return { sourceName, jobs: [], error: errorMsg };
         }
@@ -99,14 +108,13 @@ async function runScrapersParallel(
       }
     }
     
-    // Early stop if we have enough jobs
-    if (allJobs.length >= 220) {
-      console.log(`[Scraper] Early stop: ${allJobs.length} jobs collected`);
-      break;
-    }
+    // Removed early stop logic - let all scrapers run to get maximum coverage
   }
   
-  console.log(`🏁 RUN_END ${runId} totalJobs=${allJobs.length} sources=${sources.length}`);
+  // FILE LOGGING - runScrapersParallel END
+  logToFile(`🏁 runScrapersParallel END: ${allJobs.length} total jobs`);
+  
+  console.log(`🏁 RUN_END ${runId} totalJobs=${allJobs.length} errors=${Object.keys(errorsBySource).length}\n`);
   
   return { jobs: allJobs, errorsBySource, countsBySource };
 }
@@ -260,6 +268,19 @@ export const appRouter = router({
         results
       };
     }),
+    
+    getDebugLog: publicProcedure
+      .query(async () => {
+        const { readLogFile } = await import('./utils/logger');
+        return { log: readLogFile() };
+      }),
+    
+    clearDebugLog: publicProcedure
+      .mutation(async () => {
+        const { clearLogFile } = await import('./utils/logger');
+        clearLogFile();
+        return { success: true };
+      }),
   
   scraper: router({
     runScraper: publicProcedure
@@ -276,6 +297,10 @@ export const appRouter = router({
         const startTime = Date.now();
         const startedAt = new Date().toISOString();
         
+        // FILE LOGGING - START
+        logToFile(`\n🔑 MUTATION_START runId=${runId} role="${role}" location="${location}"`);
+        logToFile(`🔑 forceFresh=${forceFresh} (type: ${typeof forceFresh})`);
+        
         console.log(`[Scraper] ========== NEW RUN: ${runId} ==========`);
         console.log(`[Scraper] Role: "${role}", Location: "${location}"`);
         console.log(`🔑 forceFresh INPUT VALUE: ${forceFresh} (type: ${typeof forceFresh})`);
@@ -285,6 +310,12 @@ export const appRouter = router({
         try {
           // Check cache only if forceFresh is false
           const cacheKey = `${role}:${location}`;
+          
+          // FILE LOGGING - CACHE CHECK
+          logToFile(`🗄️ cacheKey="${cacheKey}"`);
+          logToFile(`🗄️ cache.has(${cacheKey})=${scrapeCache.has(cacheKey)}`);
+          logToFile(`🗄️ cache.size=${scrapeCache.size}`);
+          
           console.log(`🗄️ CACHE KEY: "${cacheKey}"`);
           console.log(`🗄️ CACHE HAS KEY: ${scrapeCache.has(cacheKey)}`);
           console.log(`🗄️ WILL USE CACHE: ${!forceFresh && scrapeCache.has(cacheKey)}`);
@@ -292,6 +323,12 @@ export const appRouter = router({
           if (!forceFresh && scrapeCache.has(cacheKey)) {
             const cached = scrapeCache.get(cacheKey)!;
             const cachedAgeSeconds = Math.round((Date.now() - new Date(cached.timestamp).getTime()) / 1000);
+            
+            // FILE LOGGING - RETURNING CACHED
+            logToFile(`⚠️ RETURNING_CACHED_RESULTS for key="${cacheKey}"`);
+            logToFile(`⚠️ cached.stats.scraped=${cached.stats.scraped}`);
+            logToFile(`⚠️ cached.stats.filtered=${cached.stats.filtered}`);
+            
             console.log(`[Scraper] Returning CACHED results (age: ${cachedAgeSeconds}s)`);
             
             return {
@@ -311,6 +348,15 @@ export const appRouter = router({
           }
           
           // Force fresh scrape
+          // FILE LOGGING - CACHE CLEARING
+          logToFile(`✅ forceFresh=true, calling cache.delete("${cacheKey}")`);
+          const hadCache = scrapeCache.has(cacheKey);
+          scrapeCache.delete(cacheKey);
+          const nowHas = scrapeCache.has(cacheKey);
+          logToFile(`🗑️ cache.delete() called, hadCache=${hadCache}, nowHas=${nowHas}`);
+          logToFile(`🗑️ cache.size after delete=${scrapeCache.size}`);
+          logToFile(`🚀 CALLING runScrapersParallel()`);
+          
           console.log(`✅ BYPASSING CACHE - forceFresh=${forceFresh}`);
           const hadCachedData = scrapeCache.has(cacheKey);
           scrapeCache.delete(cacheKey);
@@ -418,6 +464,11 @@ export const appRouter = router({
             timestamp: result.timestamp,
             stats: result.stats,
           });
+          
+          // FILE LOGGING - CACHE STORAGE
+          logToFile(`💾 STORING_TO_CACHE key="${cacheKey}" totalJobs=${validJobs.length}`);
+          logToFile(`💾 cache.set() called, cache.size=${scrapeCache.size}`);
+          logToFile(`🏁 MUTATION_END runId=${runId} duration=${result.stats.duration}s\n`);
           
           console.log(`[Scraper] Completed in ${result.stats.duration}s`);
           

@@ -905,3 +905,65 @@
 3. ✅ Frontend passes forceFresh=true correctly
 4. ❌ Console logs NOT captured by webdev_check_status or journalctl
 5. ❌ testAllScrapers endpoint exists but tRPC query format needs fixing
+
+
+## 📝 IMPLEMENT FILE-BASED LOGGING TO DEBUG CACHING (Feb 4, 2026 7:45 PM)
+**CRITICAL:** Add file logging to see actual runtime values and prove whether forceFresh is working
+
+- [ ] Create `server/utils/logger.ts` with logToFile(), clearLogFile(), readLogFile() functions
+- [ ] Add logging to runScraper mutation at cache check points (line 287)
+- [ ] Log forceFresh value, cacheKey, cache.has(), cache.size BEFORE cache check
+- [ ] Log which branch is taken (RETURNING_CACHED_RESULTS vs calling runScrapersParallel)
+- [ ] Log cache.delete() call and verify cache is actually cleared
+- [ ] Log cache.set() call after storing results
+- [ ] Add logging to runScrapersParallel function (START, enabled scrapers, each scraper call, END)
+- [ ] Add getDebugLog tRPC endpoint to read /tmp/scraper-debug.log
+- [ ] Add clearDebugLog tRPC endpoint to clear /tmp/scraper-debug.log
+- [ ] Run Test 1: Clear log, scrape once from UI, read log via curl
+- [ ] Run Test 2: Scrape again without clearing, read log again
+- [ ] Analyze both logs to identify exact issue (forceFresh false? cache not clearing? scrapers not called?)
+- [ ] Fix identified issue based on log analysis
+- [ ] Verify fix with fresh test showing different job counts
+
+
+
+## ✅ SOLVED: 255-JOB CACHING MYSTERY (Feb 4, 2026 8:50 PM)
+**PROBLEM:** Scraper returned exactly 255 jobs 15+ times in a row - statistically impossible
+
+**INVESTIGATION:**
+- [x] Created file-based logger (logToFile, readLogFile, clearLogFile)
+- [x] Added logging to all cache check points (forceFresh, cache.has, cache.delete, cache.set)
+- [x] Added logging to runScrapersParallel (START, CALL each scraper, END)
+- [x] Added getDebugLog and clearDebugLog tRPC endpoints
+- [x] Ran test scrape and analyzed debug log
+
+**ROOT CAUSE IDENTIFIED:**
+Early stop logic at line 112 in routers.ts:
+```typescript
+if (allJobs.length >= 220) {
+  console.log(`[Scraper] Early stop: ${allJobs.length} jobs collected`);
+  break;
+}
+```
+This stopped scraping after 255 jobs, preventing the last 5 scrapers from executing:
+- apify-career-site ❌
+- apify-linkedin ❌
+- adzuna ❌
+- rss ❌
+- usajobs ❌
+
+**FIX APPLIED:**
+Removed early stop logic to allow all 13 scrapers to run
+
+**RESULT:**
+- ✅ 326 jobs (up from 255 = +71 jobs = 28% increase)
+- ✅ Adzuna: 47 jobs (was 0)
+- ✅ RSS: 24 jobs (was 0)
+- ✅ USAJobs: 0 jobs (ran but no gov Sales Engineer jobs)
+- ✅ All 13 scrapers now execute
+- ❌ Apify scrapers still fail (ERROR_EMPTY_RESPONSE)
+
+**NEXT STEPS:**
+- [ ] Debug Apify scrapers (Career Site + LinkedIn) to get more jobs
+- [ ] Expand SerpAPI to use multiple queries (currently only 1 job)
+- [ ] Add role variations to working scrapers to reach 400+ jobs
