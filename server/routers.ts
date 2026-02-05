@@ -59,9 +59,9 @@ async function runScrapersParallel(
         try {
           const scraper = SCRAPERS[sourceName];
           
-          // Add 20-second timeout to prevent hanging
+          // Add 40-second timeout to prevent hanging (SerpAPI needs more time)
           const timeoutPromise = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error('TIMEOUT')), 20000)
+            setTimeout(() => reject(new Error('TIMEOUT')), 40000)
           );
           
           const jobs = await Promise.race([

@@ -22,75 +22,55 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
       searchLocation = 'Los Angeles, California, United States';
     }
     
-    // Try multiple search strategies with role variations to maximize results
-    const roleVariations = [
-      role, // Original role (e.g., "Sales Engineer")
-      'Solutions Engineer',
-      'Pre-Sales Engineer',
-      'Technical Account Manager',
-      'Demo Engineer',
-    ];
-    
-    const searchStrategies = roleVariations.flatMap(r => [
-      { q: `${r} jobs in ${location}`, location: searchLocation, role: r },
-      { q: `${r} remote`, location: searchLocation, role: r },
-    ]);
-    
+    // Use single query to avoid timeout (was timing out with multiple role variations)
     const allJobs: Job[] = [];
     
-    for (const strategy of searchStrategies) {
-      try {
-        const url = new URL('https://serpapi.com/search.json');
-        // Use engine=google_jobs as shown in SerpAPI documentation
-        url.searchParams.set('engine', 'google_jobs');
-        url.searchParams.set('q', `${strategy.role} ${location}`);
-        url.searchParams.set('hl', 'en'); // English language
-        url.searchParams.set('api_key', apiKey);
-        
-        console.log(`[SerpAPI] Fetching: ${url.toString()}`);
-        
-        const response = await fetch(url.toString(), {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; JobScraperBot/1.0)',
-          },
-        });
-        
-        if (!response.ok) {
-          console.error(`[SerpAPI] HTTP ${response.status} for query: ${strategy.q}`);
-          continue;
-        }
-        
-        const data = await response.json();
-        console.log(`[SerpAPI] Response keys:`, Object.keys(data));
-        
-        // jobs_results is an object with a 'jobs' array inside
-        const jobs = data.jobs_results?.jobs || [];
-        console.log(`[SerpAPI] jobs_results.jobs:`, Array.isArray(jobs) ? `${jobs.length} jobs` : 'not an array');
-        
-        console.log(`[SerpAPI] Found ${jobs.length} jobs for "${strategy.role}" query: ${strategy.q}`);
-        
-        // Normalize to our Job interface and add to collection
-        const normalized = jobs.map((job: any) => ({
-          title: job.title || 'Unknown Title',
-          company: job.company_name || 'Unknown Company',
-          location: job.location || strategy.location,
-          url: job.apply_link || job.share_link || '',
-          source: 'SerpAPI',
-          postedDate: job.detected_extensions?.posted_at || undefined,
-          description: job.description ? job.description : undefined,
-        }));
-        
-        allJobs.push(...normalized);
-        
-        // Stop if we have enough jobs (limit to 50 total to avoid using too many API credits)
-        if (allJobs.length >= 50) {
-          console.log(`[SerpAPI] Reached 50 jobs limit, stopping search`);
-          break;
-        }
-      } catch (error) {
-        console.error(`[SerpAPI] Error for strategy ${strategy.q}:`, error);
-        continue;
+    try {
+      const url = new URL('https://serpapi.com/search.json');
+      // Use engine=google_jobs as shown in SerpAPI documentation
+      url.searchParams.set('engine', 'google_jobs');
+      url.searchParams.set('q', `${role} ${location}`);
+      url.searchParams.set('hl', 'en'); // English language
+      url.searchParams.set('num', '50'); // Request up to 50 results
+      url.searchParams.set('api_key', apiKey);
+      
+      console.log(`[SerpAPI] Fetching: ${url.toString()}`);
+      
+      const response = await fetch(url.toString(), {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; JobScraperBot/1.0)',
+        },
+      });
+      
+      if (!response.ok) {
+        console.error(`[SerpAPI] HTTP ${response.status}`);
+        return [];
       }
+      
+      const data = await response.json();
+      console.log(`[SerpAPI] Response keys:`, Object.keys(data));
+      
+      // jobs_results is an array at the top level
+      const jobs = data.jobs_results || [];
+      console.log(`[SerpAPI] jobs_results:`, Array.isArray(jobs) ? `${jobs.length} jobs` : 'not an array');
+      
+      console.log(`[SerpAPI] Found ${jobs.length} jobs for "${role}" in "${location}"`);
+      
+      // Normalize to our Job interface and add to collection
+      const normalized = jobs.map((job: any) => ({
+        title: job.title || 'Unknown Title',
+        company: job.company_name || 'Unknown Company',
+        location: job.location || searchLocation,
+        url: job.apply_link || job.share_link || job.related_links?.[0]?.link || '',
+        source: 'SerpAPI',
+        postedDate: job.detected_extensions?.posted_at || undefined,
+        description: job.description ? job.description : undefined,
+      }));
+      
+      allJobs.push(...normalized);
+    } catch (error) {
+      console.error(`[SerpAPI] Error:`, error);
+      return [];
     }
     
     // Deduplicate by URL

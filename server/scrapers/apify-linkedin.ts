@@ -57,7 +57,7 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
       `https://api.apify.com/v2/acts/${APIFY_ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
       {
         timeRange: "7d",
-        limit: 100,
+        limit: 50,
         includeAi: true,
         titleSearch: roleVariations, // Search ALL role variations
         locationSearch: [normalizedLocation, "United States"], // Broader search with full state names

@@ -77,7 +77,7 @@ function extractCompany(item: any): string {
   const contentMatch = item.contentSnippet?.match(/Company:\s*([^\n]+)/i);
   if (contentMatch) return contentMatch[1].trim();
   
-  return 'Unknown';
+  return 'Unknown Company';
 }
 
 function extractLocation(item: any, searchLocation: string): string {

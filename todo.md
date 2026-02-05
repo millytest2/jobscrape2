@@ -1051,3 +1051,12 @@ Removed early stop logic to allow all 13 scrapers to run
 - [x] Test View All Jobs feature with vitest (4/4 tests passed)
 - [ ] Fix Apify Career Site scraper (still returning 0 jobs despite location normalization)
 - [ ] Save final checkpoint with all features working
+
+
+## 🚨 FIX SCRAPER ISSUES (Feb 4, 2026 8:30 PM)
+- [x] Fix missing company names - Fixed RSS aggregator to return 'Unknown Company' instead of 'Unknown'
+- [x] Debug SerpAPI scraper - Increased timeout to 40s and simplified to single query (was timing out with multiple role variations)
+- [x] Reduce Apify LinkedIn limit from 100 to 50 (save credits)
+- [x] Reduce Apify Career Site limit from 100 to 50 (save credits)
+- [x] Verify allJobs field contains ALL 438 quality matches (confirmed: line 434 ranks all validJobs)
+- [x] Frontend correctly uses allJobs field for View All feature (line 346 in Home.tsx)
