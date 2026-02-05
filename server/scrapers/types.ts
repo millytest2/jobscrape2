@@ -12,6 +12,8 @@ export interface Job {
   postedDate?: string;
   salary?: string;
   description?: string;
+  score?: number; // Added by rankJobs() function
+  scoreExplanation?: string; // Added by rankJobs() function
 }
 
 export interface ScrapeParams {

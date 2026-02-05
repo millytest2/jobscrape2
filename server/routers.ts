@@ -341,6 +341,7 @@ export const appRouter = router({
               params: { location, role },
               stats: cached.stats,
               jobs: cached.top20,
+              allJobs: cached.jobs || [], // Return all jobs from cache
               sourceBreakdown: [],
               errorsBySource: {},
               countsBySource: {},
@@ -429,6 +430,9 @@ export const appRouter = router({
           console.log(`[Scraper] Per-source counts:`, countsBySource);
           console.log(`[Scraper] Errors:`, errorsBySource);
           
+          // Rank ALL jobs (not just top 20) so user can see hidden gems
+          const allRankedJobs = rankJobs(validJobs, filterOptions, validJobs.length);
+          
           const result = {
             status: 'success',
             runId,
@@ -447,6 +451,7 @@ export const appRouter = router({
               durationMs,
             },
             jobs: top20,
+            allJobs: allRankedJobs, // NEW: Return ALL ranked jobs for "View All" feature
             errorsBySource,
             countsBySource,
             sourceBreakdown: SCRAPER_NAMES.map(name => ({

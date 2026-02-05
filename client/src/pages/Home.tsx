@@ -17,8 +17,8 @@ interface Job {
   postedDate?: string;
   salary?: string;
   description?: string;
-  score: number;
-  scoreExplanation: string;
+  score?: number; // Optional - added by rankJobs()
+  scoreExplanation?: string; // Optional - added by rankJobs()
 }
 
 interface SourceBreakdown {
@@ -52,17 +52,20 @@ interface ScraperResult {
     durationMs?: number;
   };
   jobs: Job[];
+  allJobs?: Job[]; // NEW: All ranked jobs for "View All" feature
   sourceBreakdown?: SourceBreakdown[];
   errorsBySource?: Record<string, string>;
   countsBySource?: Record<string, number>;
 }
 
 export default function Home() {
-  const [location, setLocation] = useState("Los Angeles");
+  const [location, setLocation] = useState("Los Angeles, CA");
   const [role, setRole] = useState("Sales Engineer");
   const [result, setResult] = useState<ScraperResult | null>(null);
-  
-  // Fetch profile to auto-populate fields (only once, no auto-refetch)
+  const [showTimeoutMessage, setShowTimeoutMessage] = useState(false);
+  const [viewAllJobs, setViewAllJobs] = useState(false); // NEW: Toggle for viewing all jobs
+  const [currentPage, setCurrentPage] = useState(1); // NEW: Pagination for all jobs
+  const jobsPerPage = 50; // NEW: Show 50 jobs per page to prevent overwhelm
   const profileQuery = trpc.scraper.getProfile.useQuery(undefined, {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -81,7 +84,6 @@ export default function Home() {
   }, [profileQuery.data]);
 
   const [scrapeStartTime, setScrapeStartTime] = useState<number | null>(null);
-  const [showTimeoutMessage, setShowTimeoutMessage] = useState(false);
 
   const scrapeMutation = trpc.scraper.runScraper.useMutation({
     onSuccess: (data) => {
@@ -325,17 +327,19 @@ export default function Home() {
                               <span>{job.location}</span>
                             </div>
                           </div>
-                          <div className="flex flex-col items-end gap-2">
-                            <Badge 
-                              variant={job.score > 80 ? "default" : "secondary"} 
-                              className="font-mono text-lg px-3 py-1"
-                            >
-                              {Math.round(job.score)}%
-                            </Badge>
-                            <span className="text-xs text-muted-foreground font-mono uppercase">
-                              Match Score
-                            </span>
-                          </div>
+                          {job.score !== undefined && (
+                            <div className="flex flex-col items-end gap-2">
+                              <Badge 
+                                variant={job.score > 80 ? "default" : "secondary"} 
+                                className="font-mono text-lg px-3 py-1"
+                              >
+                                {Math.round(job.score)}%
+                              </Badge>
+                              <span className="text-xs text-muted-foreground font-mono uppercase">
+                                Match Score
+                              </span>
+                            </div>
+                          )}
                         </div>
                         
                         <div className="flex flex-wrap gap-2 mt-4">

@@ -1008,3 +1008,46 @@ Removed early stop logic to allow all 13 scrapers to run
 - [ ] Update frontend source breakdown to hide sources with 0 jobs or "Failed" status
 - [ ] Test save/unsave functionality works correctly
 - [ ] Verify saved jobs persist across sessions
+
+
+## 🎯 VIEW ALL JOBS + EASY PROFILE EDITING (User Request - Feb 4, 2026 8:10 PM)
+### A) View All 425+ Jobs Feature
+- [ ] Add "View All Jobs" toggle button on results page
+- [ ] When toggled ON: Show ALL scraped jobs (not just top 20) with their scores
+- [ ] Display score breakdown for each job (role, location, experience, skills, company, mission subscores)
+- [ ] Add Save button to each job card so user can bookmark hidden gems
+- [ ] Add sorting options: By Score (default), By Source, By Posted Date
+- [ ] Add filtering: By Source, By Score Range, By Location
+- [ ] Show total count: "Showing 425 jobs from 12 sources"
+
+### B) Easy Profile Editing Throughout App
+- [ ] Add floating "Edit Profile" button (bottom-right corner, always visible)
+- [ ] Clicking floating button opens profile edit modal (no navigation needed)
+- [ ] Add inline editing on homepage: Click role/location fields to edit directly
+- [ ] Save changes immediately (no "Save" button needed - auto-save on blur)
+- [ ] Show success toast: "Profile updated" after each change
+
+### C) Fix Apify Career Site Scraper
+- [ ] Read debug logs to see exact error from Apify Career Site actor
+- [ ] Check if actor ID is correct (s3dtSTZSZWFtAVLn5)
+- [ ] Verify input parameters match actor's expected schema
+- [ ] Test with broader search terms if location normalization isn't enough
+- [ ] Add detailed request/response logging to identify exact failure point
+- [ ] If actor is broken, consider switching to alternative career site scraper
+
+### D) Acceptance Tests
+- [ ] Click "View All Jobs" → See 425+ jobs with scores
+- [ ] Click Save on any job → Job appears in Saved Jobs page
+- [ ] Click floating Edit Profile → Modal opens with current profile
+- [ ] Edit role on homepage → Change saves immediately
+- [ ] Apify Career Site returns >0 jobs (target: 20-50 jobs)
+
+
+## 🎯 UPDATE TAGLINE + COMPLETE VIEW ALL JOBS (Feb 4, 2026 8:15 PM)
+- [ ] Update tagline from "Scrape 5+ sources" to "Scrape 10+ sources" on frontend
+- [ ] Complete View All Jobs toggle button UI
+- [ ] Add pagination controls for viewing all 425+ jobs (50 per page)
+- [ ] Add score filtering UI (e.g., "Show jobs with score > 60")
+- [ ] Test View All Jobs feature with real data
+- [ ] Fix Apify Career Site scraper (still returning 0 jobs despite location normalization)
+- [ ] Save final checkpoint with all features working
