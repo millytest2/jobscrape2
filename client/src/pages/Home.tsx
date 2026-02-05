@@ -30,6 +30,7 @@ interface SourceBreakdown {
 interface ScraperResult {
   status: string;
   runId?: string;
+  scrapeId?: number; // NEW: Database ID for premium boost feature
   usedCache?: boolean;
   cachedRunId?: string;
   cachedAgeSeconds?: number;

@@ -152,7 +152,8 @@ function detectSenioritySignals(job: Job): string[] {
  * Remove ghost jobs (missing URL, duplicates, very old postings)
  */
 export function removeGhostJobs(jobs: Job[]): Job[] {
-  const seen = new Set<string>();
+  const seenUrls = new Set<string>();
+  const seenTitleCompany = new Set<string>();
   const filtered: Job[] = [];
   
   // Scam/spam keywords to detect fake jobs
@@ -168,11 +169,20 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
       continue;
     }
     
-    // Deduplicate by URL
-    if (seen.has(job.url)) {
+    // Deduplicate by URL (primary method)
+    if (seenUrls.has(job.url)) {
       continue;
     }
-    seen.add(job.url);
+    
+    // Deduplicate by title+company (backup method for same job on different boards)
+    const titleCompanyKey = `${job.title.toLowerCase().trim()}|||${job.company.toLowerCase().trim()}`;
+    if (seenTitleCompany.has(titleCompanyKey)) {
+      console.log(`[Ghost Filter] Rejected duplicate job (same title+company): "${job.title}" at ${job.company}`);
+      continue;
+    }
+    
+    seenUrls.add(job.url);
+    seenTitleCompany.add(titleCompanyKey);
     
     // Check for scam patterns in title
     const titleLower = job.title.toLowerCase();

@@ -1273,3 +1273,23 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 - [x] Add boost endpoint that agent can call to inject 10-20 premium jobs (premiumBoost router in routers.ts)
 - [ ] Frontend refreshes after boost to show combined results (needs polling or manual refresh)
 - [ ] Test two-step flow: scrape (13 sources) → boost (agent search) → combined results
+
+
+## 🚨 NEW ISSUES REPORTED (Feb 5, 2026 - After Premium Boost Implementation)
+
+### Issue 1: Boost Button Not Showing - FIXED
+- [x] Debug why "Boost with Premium Jobs" button doesn't appear after scraping
+- [x] Check if scrapeId is being set correctly in frontend state
+- [x] Verify button conditional rendering logic (line 379 in Home.tsx checks `scrapeId`)
+- [x] Check if scraper endpoint is returning scrapeId in response
+- [x] **ROOT CAUSE:** scrapeId field was missing from ScraperResult TypeScript interface
+- [x] **FIX:** Added `scrapeId?: number` to interface (line 33 in Home.tsx)
+
+### Issue 2: Repetitive Results Again - FIXED
+- [x] Investigate why job results are showing duplicates again
+- [x] Review deduplication logic in filter.ts (shouldExcludeJob function)
+- [x] Check if URL normalization is working correctly
+- [x] Consider adding title+company deduplication as backup to URL-based dedup
+- [x] Check if different scrapers are returning same jobs with slightly different URLs
+- [x] **ROOT CAUSE:** Different job boards return same job with different URLs (RemoteOK vs LinkedIn vs company site)
+- [x] **FIX:** Added title+company deduplication as backup (line 177-182 in filter.ts)
