@@ -153,7 +153,7 @@ export default function Home() {
                 <span className="text-muted-foreground">.exe</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-lg">
-                The power tool for job hunting. Scrape 5+ sources, filter ghost jobs, and find hidden gems in seconds.
+                The power tool for job hunting. Scrape 10+ sources, filter ghost jobs, and find hidden gems in seconds.
               </p>
               <Link href="/profile">
                 <Button variant="outline" className="font-mono">
@@ -307,9 +307,51 @@ export default function Home() {
               </Card>
             )}
 
+            {/* View All Jobs Toggle */}
+            {result.allJobs && result.allJobs.length > result.jobs.length && (
+              <Card className="bg-muted/30">
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-bold font-mono uppercase tracking-wider">
+                        {viewAllJobs ? `Viewing All ${result.allJobs.length} Jobs` : `Viewing Top ${result.jobs.length} Jobs`}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {viewAllJobs 
+                          ? `Browse all ${result.allJobs.length} ranked jobs to find hidden gems` 
+                          : `${result.allJobs.length - result.jobs.length} more jobs available with lower match scores`
+                        }
+                      </p>
+                    </div>
+                    <Button 
+                      variant={viewAllJobs ? "default" : "outline"}
+                      size="lg"
+                      onClick={() => {
+                        setViewAllJobs(!viewAllJobs);
+                        setCurrentPage(1); // Reset to page 1 when toggling
+                      }}
+                      className="font-mono uppercase tracking-wider min-w-[200px]"
+                    >
+                      {viewAllJobs ? "Show Top Jobs Only" : "View All Jobs"}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Job List */}
             <div className="grid gap-4">
-              {result.jobs.map((job, i) => (
+              {(() => {
+                // Determine which jobs to display
+                const jobsToDisplay = viewAllJobs && result.allJobs ? result.allJobs : result.jobs;
+                
+                // Calculate pagination
+                const startIndex = (currentPage - 1) * jobsPerPage;
+                const endIndex = startIndex + jobsPerPage;
+                const paginatedJobs = jobsToDisplay.slice(startIndex, endIndex);
+                const totalPages = Math.ceil(jobsToDisplay.length / jobsPerPage);
+                
+                return paginatedJobs.map((job, i) => (
                 <Card key={i} className="group hover:border-primary/50 transition-colors duration-200">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row gap-4 justify-between items-start">
@@ -367,8 +409,70 @@ export default function Home() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              ));
+              })()}
             </div>
+
+            {/* Pagination Controls */}
+            {viewAllJobs && result.allJobs && result.allJobs.length > jobsPerPage && (() => {
+              const jobsToDisplay = result.allJobs;
+              const totalPages = Math.ceil(jobsToDisplay.length / jobsPerPage);
+              const startIndex = (currentPage - 1) * jobsPerPage;
+              const endIndex = Math.min(startIndex + jobsPerPage, jobsToDisplay.length);
+              
+              return (
+                <Card className="bg-muted/30">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                      <div className="text-sm text-muted-foreground font-mono">
+                        Showing {startIndex + 1}-{endIndex} of {jobsToDisplay.length} jobs
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(1)}
+                          disabled={currentPage === 1}
+                          className="font-mono"
+                        >
+                          First
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="font-mono"
+                        >
+                          Previous
+                        </Button>
+                        <div className="flex items-center gap-2 px-4">
+                          <span className="text-sm font-mono">Page {currentPage} of {totalPages}</span>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="font-mono"
+                        >
+                          Next
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(totalPages)}
+                          disabled={currentPage === totalPages}
+                          className="font-mono"
+                        >
+                          Last
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 opacity-50">
