@@ -1069,3 +1069,14 @@ Removed early stop logic to allow all 13 scrapers to run
 - [ ] Implement savedJobs.save mutation on heart click (placeholder toast added)
 - [x] Add Saved Jobs section to Profile page showing bookmarked jobs
 - [x] Add unsave functionality (remove from saved list)
+
+
+## 🎯 STRENGTHEN FILTERING & SCORING (Feb 4, 2026 9:00 PM)
+- [x] Strengthen shouldExcludeJob() - Expanded international keywords list (50+ cities/countries)
+- [x] Add role matching against profile.target_roles (direct + indirect) - Line 712-732
+- [x] Block jobs that don't match ANY target role keywords - Line 725-731
+- [x] Add minimum score threshold (65%+) to filter out low-quality matches - Line 910-917
+- [x] Improve location scoring - Penalize non-LA/Remote from 20→10, Unknown from 50→40
+- [x] Improve role scoring - Raised all variant scores by 5 points, expanded reject list
+- [x] Add profile red_flags checking in shouldExcludeJob() - Already exists via hasRedFlags()
+- [x] Test with fresh scrape to verify only high-quality jobs (65%+) appear - SUCCESS: 11 jobs, 67-82% scores, all Sales Engineer variants

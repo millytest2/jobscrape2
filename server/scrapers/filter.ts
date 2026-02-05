@@ -187,21 +187,23 @@ function calculateRoleScore(job: Job, targetRoles: string[]): number {
   
   // Allowed variants for Sales Engineer (EXPLICIT whitelist only)
   if (roleCluster.some(r => r.includes('sales engineer') || r.includes('sales') || r.includes('solutions'))) {
-    // High match: Direct sales/solutions roles
-    if (title.includes('solutions engineer') || title.includes('solution engineer')) return 90;
-    if (title.includes('pre-sales') || title.includes('presales')) return 85;
-    if (title.includes('demo engineer') || title.includes('technical demo')) return 80;
-    if (title.includes('technical account manager') || title.includes('tam')) return 75;
-    if (title.includes('customer engineer') || title.includes('customer success engineer')) return 70;
-    if (title.includes('field engineer') && title.includes('sales')) return 65;
-    if (title.includes('sales development') || title.includes('technical sales')) return 85;
+    // High match: Direct sales/solutions roles (STRENGTHENED - higher scores for closer matches)
+    if (title.includes('solutions engineer') || title.includes('solution engineer')) return 95; // Raised from 90
+    if (title.includes('pre-sales') || title.includes('presales')) return 90; // Raised from 85
+    if (title.includes('demo engineer') || title.includes('technical demo')) return 85; // Raised from 80
+    if (title.includes('technical account manager') || title.includes('tam')) return 80; // Raised from 75
+    if (title.includes('customer engineer') || title.includes('customer success engineer')) return 75; // Raised from 70
+    if (title.includes('field engineer') && title.includes('sales')) return 70; // Raised from 65
+    if (title.includes('sales development') || title.includes('technical sales')) return 90; // Raised from 85
     
-    // Reject: Pure engineering roles (NOT sales-related)
+    // Reject: Pure engineering roles (NOT sales-related) + EXPANDED LIST
     const rejectKeywords = [
       'software engineer', 'backend', 'frontend', 'full stack', 'fullstack',
       'machine learning', 'ml engineer', 'data scientist', 'data engineer',
       'devops', 'platform engineer', 'infrastructure', 'security engineer',
-      'qa engineer', 'test engineer', 'research engineer'
+      'qa engineer', 'test engineer', 'research engineer', 'sdet',
+      'account manager', 'account executive', 'customer service', 'supervisor',
+      'operations', 'project manager', 'product manager', 'marketing'
     ];
     
     for (const reject of rejectKeywords) {
@@ -261,14 +263,14 @@ function calculateLocationScore(job: Job, targetLocation: string): number {
     return 90;
   }
   
-  // If hybrid/onsite and not in LA region, low score
+  // If hybrid/onsite and not in LA region, very low score (STRENGTHENED)
   if (!parsed.isRemote && !isInLARegion) {
-    return 20;
+    return 10; // Changed from 20 to 10 - penalize harder
   }
   
-  // Unknown location parsing = neutral score
+  // Unknown location parsing = low score (STRENGTHENED)
   if (parsed.country === 'Unknown') {
-    return 50;
+    return 40; // Changed from 50 to 40 - be more cautious
   }
   
   // Partial match
@@ -656,17 +658,28 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
     }
   }
   
-  // HARD BLOCK: International locations for US searches
-  if (options.targetLocation.toLowerCase().includes('los angeles') || 
-      options.targetLocation.toLowerCase().includes('california')) {
-    const internationalKeywords = [
-      'mexico', 'guadalajara', 'canada', 'toronto', 'vancouver',
-      'uk', 'london', 'europe', 'asia', 'india', 'bangalore',
-      'australia', 'brazil', 'argentina', 'colombia'
-    ];
-    if (internationalKeywords.some(kw => location.includes(kw))) {
-      return true; // Block international for US searches
-    }
+  // HARD BLOCK: International locations for US searches (STRENGTHENED)
+  const internationalKeywords = [
+    // Asia
+    'india', 'bangalore', 'bengaluru', 'mumbai', 'delhi', 'hyderabad', 'pune', 'chennai',
+    'china', 'beijing', 'shanghai', 'singapore', 'hong kong', 'taiwan', 'japan', 'tokyo',
+    'philippines', 'manila', 'vietnam', 'thailand', 'bangkok', 'malaysia', 'indonesia',
+    // Europe
+    'uk', 'united kingdom', 'london', 'manchester', 'europe', 'germany', 'berlin',
+    'france', 'paris', 'spain', 'madrid', 'italy', 'netherlands', 'amsterdam',
+    'poland', 'ireland', 'dublin', 'sweden', 'denmark', 'norway', 'finland',
+    // Americas (non-US)
+    'mexico', 'guadalajara', 'mexico city', 'canada', 'toronto', 'vancouver', 'montreal',
+    'brazil', 'sao paulo', 'argentina', 'buenos aires', 'colombia', 'bogota', 'chile',
+    // Oceania
+    'australia', 'sydney', 'melbourne', 'new zealand', 'auckland',
+    // Middle East
+    'israel', 'tel aviv', 'dubai', 'uae', 'saudi arabia'
+  ];
+  
+  // Block if ANY international keyword found in location
+  if (internationalKeywords.some(kw => location.includes(kw))) {
+    return true; // Block all international locations
   }
   
   // HARD BLOCK: Any senior keyword in title (no exceptions for TAM/Account Manager)
@@ -693,9 +706,31 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
     }
   }
   
-  // Hard block: Required years >= 7 (clearly too senior)
+  // HARD BLOCK: Required years >= 7 (clearly too senior)
   if (requiredYears && requiredYears >= 7) {
     return true;
+  }
+  
+  // HARD BLOCK: Jobs that don't match ANY target role keywords (NEW)
+  const targetRoles = options.targetRoles.map(r => normalizeText(r));
+  const roleKeywords = [
+    'sales engineer', 'solutions engineer', 'solution engineer',
+    'pre-sales', 'presales', 'demo engineer', 'technical demo',
+    'technical account manager', 'tam', 'customer engineer',
+    'field engineer', 'sales development engineer'
+  ];
+  
+  // Check if title matches ANY target role or role keyword
+  const matchesTargetRole = targetRoles.some(tr => title.includes(tr));
+  const matchesRoleKeyword = roleKeywords.some(rk => title.includes(rk));
+  
+  if (!matchesTargetRole && !matchesRoleKeyword) {
+    // Exception: If title includes 'sales' + 'engineer' separately, allow it
+    const hasSales = title.includes('sales');
+    const hasEngineer = title.includes('engineer') || title.includes('technical');
+    if (!(hasSales && hasEngineer)) {
+      return true; // Block jobs that don't match target roles
+    }
   }
   
   return false; // Don't exclude
@@ -872,8 +907,17 @@ export function rankJobs(
   // Sort by score descending
   scored.sort((a, b) => b.score - a.score);
   
-  // Apply diversity constraints
-  const diversified = applyDiversityConstraints(scored, options.targetRoles, topN);
+  // FILTER OUT LOW-QUALITY MATCHES (NEW - minimum 65% score)
+  const MIN_SCORE_THRESHOLD = 65;
+  const highQualityJobs = scored.filter(job => job.score >= MIN_SCORE_THRESHOLD);
+  
+  console.log(`[FILTER] Score threshold: ${scored.length} jobs → ${highQualityJobs.length} jobs above ${MIN_SCORE_THRESHOLD}%`);
+  
+  // If we have fewer than topN high-quality jobs, lower threshold to 60%
+  const jobsToRank = highQualityJobs.length >= topN ? highQualityJobs : scored.filter(job => job.score >= 60);
+  
+  // Apply diversity constraints to high-quality jobs only
+  const diversified = applyDiversityConstraints(jobsToRank, options.targetRoles, topN);
   
   return diversified;
 }
