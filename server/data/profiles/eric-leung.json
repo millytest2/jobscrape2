@@ -6,26 +6,31 @@
       "Data Scientist",
       "Applied Scientist",
       "Machine Learning Engineer",
-      "Product Manager"
+      "Product Manager",
+      "Research Scientist",
+      "Computational Biologist"
     ],
     "indirect": [
-      "Research Scientist",
       "ML Researcher",
-      "Data Science Manager",
-      "Analytics Manager",
-      "Senior Data Scientist",
+      "Data Engineer",
+      "Analytics Engineer",
+      "Biostatistician",
+      "Quantitative Researcher",
+      "Software Engineer (Data)",
       "Staff Data Scientist",
       "Principal Data Scientist"
     ]
   },
   "experience_summary": {
     "total_years": 7,
-    "current_role": "Research Data Scientist (Former Disney)",
+    "current_role": "Software Engineer / Biomedical Data Scientist (Former Disney)",
     "highlights": [
       "5 years at Disney (FTE + contract)",
       "Marketing measurement across tens of KPIs and sports leagues",
       "Randomized testing and causal inference",
-      "Computational biologist solving complex biomedical problems",
+      "Computational biologist solving complex biomedical problems with advanced statistical techniques",
+      "Software engineer at heart with biomedical data science training",
+      "Marketing analytics in media and entertainment",
       "Data science mentor teaching data wrangling and analysis"
     ]
   },
@@ -68,12 +73,13 @@
     "size": ["Startup", "Mid-size", "Enterprise"],
     "stage": ["Series A", "Series B", "Series C", "Public"],
     "industries": [
-      "Media & Entertainment",
       "Healthcare/Biotech",
+      "Computational Biology",
+      "Media & Entertainment",
       "Technology",
-      "E-commerce",
-      "Fintech",
-      "SaaS"
+      "SaaS",
+      "Research/Academia",
+      "Pharmaceuticals"
     ],
     "mission_driven_keywords": [
       "data-driven",
@@ -115,5 +121,5 @@
     "remote": true,
     "willing_to_relocate": false
   },
-  "notes": "Former Disney data scientist laid off due to staffing cuts. Passionate about helping others solve computational, productivity, and learning bottlenecks. Prefers open-source software and sharing/documenting knowledge. Looking for teams that reference Statistical Rethinking, Causal Inference for the Brave and True, or Trustworthy Online Controlled Experiments."
+  "notes": "Software engineer at heart, trained as biomedical data scientist, now doing marketing analytics in media and entertainment. Former Disney data scientist (5 years) laid off due to staffing cuts. Mission: Connect people to data insights, automate boring work, and tear down barriers to learning. Philosophy: 'Docendo discimus' (By teaching, we learn). Passionate about open-source, reproducible research, documentation, and collaborative learning. Looking for teams that reference Statistical Rethinking, Causal Inference for the Brave and True, or Trustworthy Online Controlled Experiments."
 }

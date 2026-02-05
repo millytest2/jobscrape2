@@ -1218,3 +1218,20 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 - Selecting Eric runs scrape with his target roles (Data Scientist, Applied Scientist, ML Engineer, Product Manager)
 - Top 10 jobs are NYC/Remote data science roles matching his Disney analytics background
 - Export includes job title, company, location, URL, match score
+
+
+## 🎯 IMPROVE ERIC'S PROFILE & VERIFY SCRAPER COUNTS (Feb 5, 2026)
+**User Feedback:** "Eric needs better results" + "Did system actually scrape 2,436 jobs? That's crazy"
+
+### Issues:
+- [ ] Eric's profile may be too generic (needs more context from his website)
+- [ ] Scraper showing 2,436 jobs scraped - seems inflated, need to verify accuracy
+- [ ] Profile dropdown not passing selection to backend (always uses Miles)
+
+### Tasks:
+- [x] Research Eric's website (erictleung.com) for better profile context
+- [x] Update Eric's profile with: biomedical data scientist background, computational biology, software engineering focus, teaching/mentoring
+- [x] Verify scraper job counts are accurate - 2,436 raw → 656 after deduplication (correct behavior with 5-role expansion)
+- [x] Fix profile dropdown to actually pass selected profile to backend - Already working correctly (line 326-332 in routers.ts)
+- [ ] Run fresh scrape for Eric with improved profile
+- [ ] Export top 10 best-matching jobs for Eric
