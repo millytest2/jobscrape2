@@ -59,3 +59,19 @@ export const savedJobs = mysqlTable("saved_jobs", {
 
 export type SavedJob = typeof savedJobs.$inferSelect;
 export type InsertSavedJob = typeof savedJobs.$inferInsert;
+
+/**
+ * Seen jobs table - tracks which jobs user has already viewed across scrape runs
+ * Prevents showing the same jobs repeatedly
+ */
+export const seenJobs = mysqlTable("seen_jobs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Foreign key to users table
+  jobUrl: text("jobUrl").notNull(), // Unique identifier for the job
+  jobTitle: text("jobTitle"),
+  company: text("company"),
+  seenAt: timestamp("seenAt").defaultNow().notNull(),
+});
+
+export type SeenJob = typeof seenJobs.$inferSelect;
+export type InsertSeenJob = typeof seenJobs.$inferInsert;

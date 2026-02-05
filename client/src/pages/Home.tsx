@@ -66,6 +66,14 @@ export default function Home() {
   const [viewAllJobs, setViewAllJobs] = useState(false); // NEW: Toggle for viewing all jobs
   const [currentPage, setCurrentPage] = useState(1); // NEW: Pagination for all jobs
   const jobsPerPage = 50; // NEW: Show 50 jobs per page to prevent overwhelm
+  const [hideSeenJobs, setHideSeenJobs] = useState(false); // NEW: Toggle to hide already seen jobs
+  
+  // Fetch seen job URLs
+  const seenJobsQuery = trpc.seenJobs.getSeenUrls.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    staleTime: 60000, // Cache for 1 minute
+  });
+  const seenUrls = new Set(seenJobsQuery.data || []);
   const profileQuery = trpc.scraper.getProfile.useQuery(undefined, {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -323,17 +331,30 @@ export default function Home() {
                         }
                       </p>
                     </div>
-                    <Button 
-                      variant={viewAllJobs ? "default" : "outline"}
-                      size="lg"
-                      onClick={() => {
-                        setViewAllJobs(!viewAllJobs);
-                        setCurrentPage(1); // Reset to page 1 when toggling
-                      }}
-                      className="font-mono uppercase tracking-wider min-w-[200px]"
-                    >
-                      {viewAllJobs ? "Show Top Jobs Only" : "View All Jobs"}
-                    </Button>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button 
+                        variant={viewAllJobs ? "default" : "outline"}
+                        size="lg"
+                        onClick={() => {
+                          setViewAllJobs(!viewAllJobs);
+                          setCurrentPage(1); // Reset to page 1 when toggling
+                        }}
+                        className="font-mono uppercase tracking-wider min-w-[200px]"
+                      >
+                        {viewAllJobs ? "Show Top Jobs Only" : "View All Jobs"}
+                      </Button>
+                      <Button 
+                        variant={hideSeenJobs ? "default" : "outline"}
+                        size="lg"
+                        onClick={() => {
+                          setHideSeenJobs(!hideSeenJobs);
+                          setCurrentPage(1); // Reset to page 1 when toggling
+                        }}
+                        className="font-mono uppercase tracking-wider min-w-[200px]"
+                      >
+                        {hideSeenJobs ? "Show All Jobs" : "Hide Already Seen"}
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -343,7 +364,12 @@ export default function Home() {
             <div className="grid gap-4">
               {(() => {
                 // Determine which jobs to display
-                const jobsToDisplay = viewAllJobs && result.allJobs ? result.allJobs : result.jobs;
+                let jobsToDisplay = viewAllJobs && result.allJobs ? result.allJobs : result.jobs;
+                
+                // Filter out seen jobs if toggle is enabled
+                if (hideSeenJobs) {
+                  jobsToDisplay = jobsToDisplay.filter(job => !seenUrls.has(job.url));
+                }
                 
                 // Calculate pagination
                 const startIndex = (currentPage - 1) * jobsPerPage;
@@ -369,19 +395,26 @@ export default function Home() {
                               <span>{job.location}</span>
                             </div>
                           </div>
-                          {job.score !== undefined && (
-                            <div className="flex flex-col items-end gap-2">
-                              <Badge 
-                                variant={job.score > 80 ? "default" : "secondary"} 
-                                className="font-mono text-lg px-3 py-1"
-                              >
-                                {Math.round(job.score)}%
+                          <div className="flex flex-col items-end gap-2">
+                            {seenUrls.has(job.url) && (
+                              <Badge variant="outline" className="bg-muted text-muted-foreground border-muted-foreground/30">
+                                Already Seen
                               </Badge>
-                              <span className="text-xs text-muted-foreground font-mono uppercase">
-                                Match Score
-                              </span>
-                            </div>
-                          )}
+                            )}
+                            {job.score !== undefined && (
+                              <>
+                                <Badge 
+                                  variant={job.score > 80 ? "default" : "secondary"} 
+                                  className="font-mono text-lg px-3 py-1"
+                                >
+                                  {Math.round(job.score)}%
+                                </Badge>
+                                <span className="text-xs text-muted-foreground font-mono uppercase">
+                                  Match Score
+                                </span>
+                              </>
+                            )}
+                          </div>
                         </div>
                         
                         <div className="flex flex-wrap gap-2 mt-4">

@@ -133,6 +133,13 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
   const seen = new Set<string>();
   const filtered: Job[] = [];
   
+  // Scam/spam keywords to detect fake jobs
+  const scamKeywords = [
+    'work from home', 'make money online', 'earn from home', 'no experience required',
+    'easy money', 'get paid to', 'click here', 'limited time offer', 'act now',
+    'urgently hiring', 'immediate start', 'no interview', 'guaranteed income'
+  ];
+  
   for (const job of jobs) {
     // Must have URL
     if (!job.url || job.url.trim() === '') {
@@ -145,6 +152,22 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
     }
     seen.add(job.url);
     
+    // Check for scam patterns in title
+    const titleLower = job.title.toLowerCase();
+    const isScam = scamKeywords.some(keyword => titleLower.includes(keyword));
+    if (isScam) {
+      console.log(`[Ghost Filter] Rejected scam job: "${job.title}"`);
+      continue;
+    }
+    
+    // Check for generic/vague titles
+    const genericTitles = ['job', 'position', 'opening', 'opportunity', 'hiring'];
+    const isGeneric = genericTitles.some(word => titleLower === word || titleLower === word + 's');
+    if (isGeneric) {
+      console.log(`[Ghost Filter] Rejected generic title: "${job.title}"`);
+      continue;
+    }
+    
     // Check if posting is very old (if date available)
     if (job.postedDate) {
       const posted = new Date(job.postedDate);
@@ -153,6 +176,7 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
       
       // Skip jobs older than 60 days
       if (daysSincePosted > 60) {
+        console.log(`[Ghost Filter] Rejected old job (${Math.round(daysSincePosted)} days): "${job.title}"`);
         continue;
       }
     }
@@ -160,6 +184,7 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
     filtered.push(job);
   }
   
+  console.log(`[Ghost Filter] ${jobs.length} jobs → ${filtered.length} after ghost removal (removed ${jobs.length - filtered.length})`);
   return filtered;
 }
 

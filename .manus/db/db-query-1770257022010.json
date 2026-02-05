@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `seen_jobs` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `userId` int NOT NULL,\n  `jobUrl` text NOT NULL,\n  `jobTitle` text,\n  `company` text,\n  `seenAt` timestamp NOT NULL DEFAULT (now()),\n  CONSTRAINT `seen_jobs_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 47Axgy1pV22JT8Q.388a20bfd7a3 --database QdHoCedzFSojLFS7jiVk9j --execute CREATE TABLE IF NOT EXISTS `seen_jobs` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `userId` int NOT NULL,\n  `jobUrl` text NOT NULL,\n  `jobTitle` text,\n  `company` text,\n  `seenAt` timestamp NOT NULL DEFAULT (now()),\n  CONSTRAINT `seen_jobs_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 581
+}

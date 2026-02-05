@@ -1080,3 +1080,24 @@ Removed early stop logic to allow all 13 scrapers to run
 - [x] Improve role scoring - Raised all variant scores by 5 points, expanded reject list
 - [x] Add profile red_flags checking in shouldExcludeJob() - Already exists via hasRedFlags()
 - [x] Test with fresh scrape to verify only high-quality jobs (65%+) appear - SUCCESS: 11 jobs, 67-82% scores, all Sales Engineer variants
+
+
+## 🎯 FINAL POLISH - DUPLICATE TRACKING & URL FIXES (Feb 4, 2026 9:15 PM)
+- [ ] Track previously seen jobs across runs - Mark with "Already Seen" badge
+- [ ] Store seen job URLs in database with user ID and timestamp
+- [ ] Add "Hide Already Seen" toggle to filter out duplicate jobs
+- [ ] Extract direct company URLs from ZipRecruiter redirects
+- [ ] Extract direct company URLs from other aggregator sites (Indeed, LinkedIn, etc.)
+- [ ] Verify ghost job detection is working (removeGhostJobs function)
+- [ ] Strengthen ghost job detection if needed
+- [ ] Test with fresh scrape to verify all fixes work
+
+
+## 🎯 FINAL POLISH - DUPLICATES, ZIPRECRUITER, GHOST JOBS (Feb 4, 2026 9:15 PM)
+- [x] Implement duplicate job tracking - Mark jobs as seen when displayed (backend complete)
+- [x] Add "Already Seen" badge to job cards for previously viewed jobs
+- [x] Add "Hide Already Seen" toggle to filter out duplicate jobs
+- [ ] Extract direct company URLs from ZipRecruiter redirect links (deferred - need example URLs)
+- [x] Verify ghost job detection is working correctly
+- [x] Strengthen ghost job detection with scam/spam patterns (added 12 scam keywords + generic title filter)
+- [ ] Test all fixes with fresh scrape

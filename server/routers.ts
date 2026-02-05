@@ -283,13 +283,13 @@ export const appRouter = router({
       }),
   
   scraper: router({
-    runScraper: publicProcedure
+    runScraper: protectedProcedure
       .input(z.object({
         location: z.string(),
         role: z.string(),
         forceFresh: z.boolean().optional().default(true),
       }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
         const { location, role, forceFresh } = input;
         
         // Generate unique runId for this scrape
@@ -469,6 +469,42 @@ export const appRouter = router({
             timestamp: result.timestamp,
             stats: result.stats,
           });
+          
+          // Mark top 20 jobs as seen (if user is authenticated)
+          if (ctx.user) {
+            try {
+              const { getDb } = await import('./db');
+              const { seenJobs } = await import('../drizzle/schema');
+              const { and, eq } = await import('drizzle-orm');
+              
+              const db = await getDb();
+              if (db) {
+                // Insert seen jobs (ignore duplicates)
+                for (const job of top20) {
+                  const existing = await db.select()
+                    .from(seenJobs)
+                    .where(and(
+                      eq(seenJobs.userId, ctx.user.id),
+                      eq(seenJobs.jobUrl, job.url)
+                    ))
+                    .limit(1);
+                  
+                  if (existing.length === 0) {
+                    await db.insert(seenJobs).values({
+                      userId: ctx.user.id,
+                      jobUrl: job.url,
+                      jobTitle: job.title,
+                      company: job.company,
+                    });
+                  }
+                }
+                console.log(`[Scraper] Marked ${top20.length} jobs as seen for user ${ctx.user.id}`);
+              }
+            } catch (error) {
+              console.error('[Scraper] Error marking jobs as seen:', error);
+              // Don't fail the whole request if seen tracking fails
+            }
+          }
           
           // FILE LOGGING - CACHE STORAGE
           logToFile(`💾 STORING_TO_CACHE key="${cacheKey}" totalJobs=${validJobs.length}`);
@@ -663,6 +699,78 @@ export const appRouter = router({
           .limit(1);
         
         return { isSaved: saved.length > 0, id: saved[0]?.id };
+      }),
+  }),
+  
+  // Seen Jobs Router - tracks which jobs user has already viewed across runs
+  seenJobs: router({
+    markAsSeen: protectedProcedure
+      .input(z.object({
+        jobUrl: z.string(),
+        jobTitle: z.string().optional(),
+        company: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { seenJobs } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+        
+        // Check if already marked as seen
+        const existing = await db.select()
+          .from(seenJobs)
+          .where(and(
+            eq(seenJobs.userId, ctx.user.id),
+            eq(seenJobs.jobUrl, input.jobUrl)
+          ))
+          .limit(1);
+        
+        if (existing.length > 0) {
+          return { success: true, alreadySeen: true };
+        }
+        
+        // Insert new seen job
+        await db.insert(seenJobs).values({
+          userId: ctx.user.id,
+          jobUrl: input.jobUrl,
+          jobTitle: input.jobTitle,
+          company: input.company,
+        });
+        
+        return { success: true, alreadySeen: false };
+      }),
+    
+    getSeenUrls: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getDb } = await import('./db');
+        const { seenJobs } = await import('../drizzle/schema');
+        const { eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) return [];
+        
+        const seen = await db.select({ jobUrl: seenJobs.jobUrl })
+          .from(seenJobs)
+          .where(eq(seenJobs.userId, ctx.user.id));
+        
+        return seen.map(s => s.jobUrl);
+      }),
+    
+    clearAll: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const { getDb } = await import('./db');
+        const { seenJobs } = await import('../drizzle/schema');
+        const { eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+        
+        await db.delete(seenJobs)
+          .where(eq(seenJobs.userId, ctx.user.id));
+        
+        return { success: true };
       }),
   }),
 });
