@@ -1,0 +1,119 @@
+{
+  "name": "Eric Leung",
+  "email": "eric@erictleung.com",
+  "target_roles": {
+    "direct": [
+      "Data Scientist",
+      "Applied Scientist",
+      "Machine Learning Engineer",
+      "Product Manager"
+    ],
+    "indirect": [
+      "Research Scientist",
+      "ML Researcher",
+      "Data Science Manager",
+      "Analytics Manager",
+      "Senior Data Scientist",
+      "Staff Data Scientist",
+      "Principal Data Scientist"
+    ]
+  },
+  "experience_summary": {
+    "total_years": 7,
+    "current_role": "Research Data Scientist (Former Disney)",
+    "highlights": [
+      "5 years at Disney (FTE + contract)",
+      "Marketing measurement across tens of KPIs and sports leagues",
+      "Randomized testing and causal inference",
+      "Computational biologist solving complex biomedical problems",
+      "Data science mentor teaching data wrangling and analysis"
+    ]
+  },
+  "skills": {
+    "technical": [
+      "Statistical Analysis",
+      "Causal Inference",
+      "Machine Learning",
+      "Python",
+      "R",
+      "SQL",
+      "Databricks",
+      "Tableau",
+      "SymPy",
+      "RMarkdown",
+      "Quarto",
+      "Statistical Rethinking",
+      "Advanced Statistical Methods",
+      "Randomized Testing",
+      "A/B Testing"
+    ],
+    "data_science": [
+      "Marketing Analytics",
+      "Data-Driven Marketing Strategies",
+      "Business Insights",
+      "Analytical Skills",
+      "Reproducible Data Analyses",
+      "Documentation",
+      "Open-Source Advocacy"
+    ],
+    "soft_skills": [
+      "Collaborative Learning",
+      "Teaching/Mentoring",
+      "Problem Solving",
+      "Communication",
+      "Stakeholder Management"
+    ]
+  },
+  "company_preferences": {
+    "size": ["Startup", "Mid-size", "Enterprise"],
+    "stage": ["Series A", "Series B", "Series C", "Public"],
+    "industries": [
+      "Media & Entertainment",
+      "Healthcare/Biotech",
+      "Technology",
+      "E-commerce",
+      "Fintech",
+      "SaaS"
+    ],
+    "mission_driven_keywords": [
+      "data-driven",
+      "analytics",
+      "machine learning",
+      "causal inference",
+      "statistical modeling",
+      "experimentation",
+      "A/B testing",
+      "marketing analytics",
+      "open-source",
+      "reproducible research"
+    ],
+    "values": [
+      "Reproducible data analyses",
+      "Good documentation",
+      "Collaborative collective learning",
+      "Open-source software"
+    ],
+    "books_of_interest": [
+      "Statistical Rethinking",
+      "Causal Inference for the Brave and True",
+      "Trustworthy Online Controlled Experiments"
+    ]
+  },
+  "red_flags": {
+    "avoid": [
+      "No documentation culture",
+      "Siloed teams",
+      "No version control",
+      "Poor data quality",
+      "No testing/experimentation",
+      "Proprietary-only tools",
+      "No learning opportunities"
+    ]
+  },
+  "location_preferences": {
+    "primary": ["New York City", "NYC", "New York", "Manhattan", "Brooklyn"],
+    "remote": true,
+    "willing_to_relocate": false
+  },
+  "notes": "Former Disney data scientist laid off due to staffing cuts. Passionate about helping others solve computational, productivity, and learning bottlenecks. Prefers open-source software and sharing/documenting knowledge. Looking for teams that reference Statistical Rethinking, Causal Inference for the Brave and True, or Trustworthy Online Controlled Experiments."
+}

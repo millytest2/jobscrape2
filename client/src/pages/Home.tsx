@@ -59,6 +59,7 @@ interface ScraperResult {
 }
 
 export default function Home() {
+  const [profile, setProfile] = useState("miles-tipton"); // NEW: Profile selection
   const [location, setLocation] = useState("Los Angeles, CA");
   const [role, setRole] = useState("Sales Engineer");
   const [result, setResult] = useState<ScraperResult | null>(null);
@@ -81,15 +82,16 @@ export default function Home() {
     staleTime: Infinity, // Never consider data stale
   });
   
+  // Auto-populate role and location when profile changes
   useEffect(() => {
-    if (profileQuery.data) {
-      // Auto-populate from profile
-      const primaryRole = profileQuery.data.target_roles?.direct?.[0] || "Sales Engineer";
-      const primaryLocation = profileQuery.data.location?.primary || "Los Angeles";
-      setRole(primaryRole);
-      setLocation(primaryLocation);
+    if (profile === 'miles-tipton') {
+      setRole('Sales Engineer');
+      setLocation('Los Angeles, CA');
+    } else if (profile === 'eric-leung') {
+      setRole('Data Scientist');
+      setLocation('New York City');
     }
-  }, [profileQuery.data]);
+  }, [profile]);
 
   const [scrapeStartTime, setScrapeStartTime] = useState<number | null>(null);
 
@@ -120,10 +122,9 @@ export default function Home() {
   }, [scrapeStartTime]);
 
   const handleScrape = () => {
-    setResult(null);
     setScrapeStartTime(Date.now());
     setShowTimeoutMessage(false);
-    scrapeMutation.mutate({ location, role, forceFresh: true });
+    scrapeMutation.mutate({ location, role, profile, forceFresh: true });
   };
 
   const handleExport = () => {
@@ -178,6 +179,18 @@ export default function Home() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Profile Selector */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Profile</label>
+                  <select
+                    value={profile}
+                    onChange={(e) => setProfile(e.target.value)}
+                    className="w-full h-10 px-3 font-mono border-2 rounded-md bg-background text-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:border-primary"
+                  >
+                    <option value="miles-tipton">Miles Tipton (Sales Engineer)</option>
+                    <option value="eric-leung">Eric Leung (Data Scientist)</option>
+                  </select>
+                </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Role</label>
                   <div className="relative">

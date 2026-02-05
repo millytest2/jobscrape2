@@ -1190,3 +1190,31 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 - Scrapes 500+ jobs across all variants from 13 sources
 - Top 20 are Sales Engineer-type roles (not retail/insurance)
 - Profile match score 70%+ for all top 20 jobs
+
+
+## 🎯 MULTI-PROFILE SUPPORT - CREATE ERIC'S PROFILE (Feb 5, 2026 1:10 PM)
+**User Request:** "I want to run a scrape for my friend Eric and send him 10 really good jobs"
+
+### Eric Leung Profile:
+- **Current Role:** Research Data Scientist at Disney (laid off due to staffing cuts)
+- **Experience:** 7+ years data-related experience, 5 years at Disney
+- **Target Roles:** Data Scientist, Applied Scientist, Machine Learning Engineer, Product Manager
+- **Location:** NYC or Remote
+- **Skills:** Statistical Analysis, Causal Inference, Marketing Analytics, R, Python, SQL, Databricks, Tableau
+- **Values:** Reproducible data analyses, good documentation, collaborative learning, open-source
+- **Books:** Statistical Rethinking, Causal Inference for the Brave and True, Trustworthy Online Controlled Experiments
+- **Background:** Former computational biologist, data science mentor, advanced statistical techniques
+
+### Implementation:
+- [ ] Create eric-leung.json profile in server/data/profiles/
+- [ ] Add profile dropdown to Home page (Miles Tipton | Eric Leung)
+- [ ] Update backend to accept profile parameter and load correct profile
+- [ ] Run scrape for Eric: Data Scientist, Applied Scientist, ML Engineer, Product Manager in NYC/Remote
+- [ ] Export top 10 jobs to shareable format (CSV or PDF)
+- [ ] Test profile switching works correctly
+
+### Success Criteria:
+- Profile dropdown shows "Miles Tipton" and "Eric Leung"
+- Selecting Eric runs scrape with his target roles (Data Scientist, Applied Scientist, ML Engineer, Product Manager)
+- Top 10 jobs are NYC/Remote data science roles matching his Disney analytics background
+- Export includes job title, company, location, URL, match score

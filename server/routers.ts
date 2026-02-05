@@ -296,10 +296,11 @@ export const appRouter = router({
       .input(z.object({
         location: z.string(),
         role: z.string(),
+        profile: z.string().optional().default('miles-tipton'), // NEW: Profile selection
         forceFresh: z.boolean().optional().default(true),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { location, role, forceFresh } = input;
+        const { location, role, profile: profileName, forceFresh } = input;
         
         // Generate unique runId for this scrape
         const runId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -322,13 +323,16 @@ export const appRouter = router({
           logToFile(`🚀 FRESH SCRAPE FORCED - cache disabled`);
           
           // Load profile to get company preferences, red flags, and skills
-          const profilePath = path.join(process.cwd(), 'server', 'data', 'profiles', 'miles-tipton.json');
+          const profilePath = path.join(process.cwd(), 'server', 'data', 'profiles', `${profileName}.json`);
           let profile: any = {};
           try {
             const profileData = await fs.readFile(profilePath, 'utf-8');
             profile = JSON.parse(profileData);
+            console.log(`[Scraper] 👤 Loaded profile: ${profileName}`);
+            logToFile(`👤 PROFILE_LOADED name="${profileName}"`);
           } catch (error) {
-            console.warn('[Scraper] Could not load profile, using defaults');
+            console.warn(`[Scraper] Could not load profile "${profileName}", using defaults`);
+            logToFile(`⚠️ PROFILE_ERROR name="${profileName}" error="${error}"`);
           }
           
           // INTELLIGENT SEARCH EXPANSION: Combine user input + profile roles
