@@ -24,12 +24,15 @@ export function clearScrapeCache() {
 
 /**
  * Run scrapers in parallel with concurrency limit
+ * Supports multiple role queries for intelligent search expansion
  */
 async function runScrapersParallel(
-  role: string,
+  roles: string | string[], // Can be single role or array of roles
   location: string,
   concurrency: number = 8
 ): Promise<{ jobs: Job[]; errorsBySource: Record<string, string>; countsBySource: Record<string, number> }> {
+  // Normalize roles to array
+  const roleList = Array.isArray(roles) ? roles : [roles];
   const runId = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
   const allJobs: Job[] = [];
   const errorsBySource: Record<string, string> = {};
@@ -41,7 +44,7 @@ async function runScrapersParallel(
   logToFile(`📋 Total scrapers registered: ${sources.length}`);
   logToFile(`📝 Names: [${sources.join(', ')}]`);
   
-  console.log(`🚀 RUN_START ${runId} role="${role}" location="${location}"`);
+  console.log(`🚀 RUN_START ${runId} roles="${roleList.join(', ')}" location="${location}"`);
   console.log(`📋 SCRAPERS_TOTAL ${runId} count=${sources.length}`);
   console.log(`📝 ENABLED_LIST ${runId} names=[${sources.join(', ')}]`);
   
@@ -64,10 +67,16 @@ async function runScrapersParallel(
             setTimeout(() => reject(new Error('TIMEOUT')), 40000)
           );
           
-          const jobs = await Promise.race([
-            scraper.scrape({ role, location }),
-            timeoutPromise
-          ]);
+          // Run scraper for each role and combine results
+          const jobsByRole: Job[][] = await Promise.all(
+            roleList.map(role => 
+              Promise.race([
+                scraper.scrape({ role, location }),
+                timeoutPromise
+              ])
+            )
+          );
+          const jobs = jobsByRole.flat();
           
           const durationMs = Date.now() - sourceStartTime;
           logToFile(`✅ ${sourceName}: ${jobs.length} jobs in ${durationMs}ms`);
@@ -322,8 +331,28 @@ export const appRouter = router({
             console.warn('[Scraper] Could not load profile, using defaults');
           }
           
-          // Run all scrapers in parallel
-          const { jobs: rawJobs, errorsBySource, countsBySource } = await runScrapersParallel(role, location);
+          // INTELLIGENT SEARCH EXPANSION: Combine user input + profile roles
+          const expandedRoles = new Set<string>();
+          expandedRoles.add(role); // User input
+          
+          // Add profile direct roles
+          if (profile.target_roles?.direct) {
+            profile.target_roles.direct.forEach((r: string) => expandedRoles.add(r));
+          }
+          
+          // Add profile indirect roles
+          if (profile.target_roles?.indirect) {
+            profile.target_roles.indirect.forEach((r: string) => expandedRoles.add(r));
+          }
+          
+          const roleList = Array.from(expandedRoles);
+          console.log(`[Scraper] 🧠 INTELLIGENT SEARCH EXPANSION:`);
+          console.log(`[Scraper]   User input: "${role}"`);
+          console.log(`[Scraper]   Expanded to ${roleList.length} roles: ${roleList.join(', ')}`);
+          logToFile(`🧠 SEARCH_EXPANSION user="${role}" expanded=${roleList.length} roles=[${roleList.join(', ')}]`);
+          
+          // Run all scrapers in parallel with expanded role search
+          const { jobs: rawJobs, errorsBySource, countsBySource } = await runScrapersParallel(roleList, location);
           
           console.log(`[Scraper] Collected ${rawJobs.length} raw jobs`);
           

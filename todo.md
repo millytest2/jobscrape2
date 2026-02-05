@@ -1153,3 +1153,40 @@ Removed early stop logic to allow all 13 scrapers to run
 - Top 20 = highest scoring jobs for THIS USER
 - View All shows all 500+ ranked by score
 - Different users get different top 20 for same search
+
+
+## 🚀 INTELLIGENT SEARCH EXPANSION (Feb 5, 2026 10:15 AM)
+**User Feedback:** "Typed 'Sales' but got low-quality jobs that don't align with profile"
+
+### Problem:
+- Scrapers search for literal user input only ("Sales")
+- Get generic sales jobs (retail, insurance, telemarketing)
+- Profile ranking can't fix garbage input → garbage output
+
+### Solution: Smart Search Expansion
+**User types "Sales" + Profile has "Sales Engineer"**
+
+System expands search to:
+1. "Sales" (user input)
+2. "Sales Engineer" (profile direct role)
+3. "Solutions Engineer" (profile indirect role)
+4. "Pre-Sales Engineer" (profile indirect role)
+5. "Technical Account Manager" (profile indirect role)
+
+Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
+
+### Implementation:
+- [x] Create expandRoleSearch() function to combine user input + profile roles (line 325-343)
+- [x] Read profile target_roles (direct + indirect) (line 330-337)
+- [x] Generate role variants based on user input + profile (line 339)
+- [x] Modify runScrapersParallel() to accept multiple role queries (line 29-35)
+- [x] Each scraper searches for ALL expanded roles (line 71-79)
+- [x] Deduplicate results after scraping (removeGhostJobs handles duplicates)
+- [ ] Test: "Sales" → should find Sales Engineer, Solutions Engineer, Pre-Sales, TAM, etc.
+- [ ] Verify top 20 are high-quality profile matches (not generic sales jobs)
+
+### Success Criteria:
+- User types "Sales" → System expands to 5+ role variants
+- Scrapes 500+ jobs across all variants from 13 sources
+- Top 20 are Sales Engineer-type roles (not retail/insurance)
+- Profile match score 70%+ for all top 20 jobs
