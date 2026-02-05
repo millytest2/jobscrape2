@@ -398,6 +398,48 @@ function calculateMissionScore(job: Job, keywords: string[]): number {
  */
 function calculateCompanyScore(job: Job, companyPreferences?: { size?: string[]; stage?: string[]; industries?: string[] }): number {
   const text = normalizeText(`${job.title} ${job.company} ${job.description || ''}`);
+  const companyName = normalizeText(job.company);
+  
+  // PREMIUM COMPANY TIER BONUS
+  // Load premium companies list
+  let premiumCompanies: any = {};
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const premiumPath = path.join(process.cwd(), 'server', 'data', 'premium-companies.json');
+    premiumCompanies = JSON.parse(fs.readFileSync(premiumPath, 'utf-8'));
+  } catch (error) {
+    // If file doesn't exist, continue without premium bonus
+  }
+  
+  // Check if company is in premium tiers
+  let tierBonus = 0;
+  const allTiers = [
+    { tier: 'tier1_faang', bonus: 100 },
+    { tier: 'tier1_unicorns', bonus: 95 },
+    { tier: 'tier1_finance', bonus: 95 },
+    { tier: 'tier1_media', bonus: 90 },
+    { tier: 'tier2_established_tech', bonus: 80 },
+    { tier: 'tier2_healthcare_biotech', bonus: 80 },
+    { tier: 'tier2_nyc_tech', bonus: 75 },
+    { tier: 'tier3_well_funded_startups', bonus: 70 }
+  ];
+  
+  for (const { tier, bonus } of allTiers) {
+    const companies = premiumCompanies[tier] || [];
+    for (const premiumCompany of companies) {
+      if (companyName.includes(normalizeText(premiumCompany))) {
+        tierBonus = bonus;
+        break;
+      }
+    }
+    if (tierBonus > 0) break;
+  }
+  
+  // If premium company detected, return tier bonus immediately
+  if (tierBonus > 0) {
+    return tierBonus;
+  }
   
   let positiveSignals = 0;
   let negativeSignals = 0;

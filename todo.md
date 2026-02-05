@@ -1235,3 +1235,22 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 - [x] Fix profile dropdown to actually pass selected profile to backend - Already working correctly (line 326-332 in routers.ts)
 - [ ] Run fresh scrape for Eric with improved profile
 - [ ] Export top 10 best-matching jobs for Eric
+
+
+## 🎯 FIND PREMIUM JOBS FOR ERIC (Feb 5, 2026)
+**User Feedback:** "Results are poor - Eric is coming from Disney, needs top-tier companies"
+
+### Issues:
+- [ ] Current scrapers pulling from generic job boards (not premium roles)
+- [ ] Eric deserves Disney-level or better companies (FAANG, unicorns, established tech)
+- [ ] Need to manually search for top 10 premium Data Scientist jobs
+- [ ] Scrapers need company tier filtering (Fortune 500, unicorns, well-funded startups)
+
+### Tasks:
+- [x] Search for Data Scientist jobs at FAANG (Google, Meta, Amazon, Apple, Netflix, Microsoft)
+- [x] Search for Data Scientist jobs at unicorns (Stripe, Databricks, Snowflake, etc.)
+- [x] Search for Data Scientist jobs at top NYC tech companies (Bloomberg, Two Sigma, Jane Street)
+- [x] Search for Data Scientist jobs at media/entertainment (Netflix, Spotify, Warner Bros, NBCUniversal)
+- [x] Manually curate top 10 best matches for Eric (see /home/ubuntu/eric-top-10-jobs.md)
+- [x] Add company tier filtering to scrapers (premium-companies.json with 8 tiers, 100-70pt bonus)
+- [x] Export top 10 jobs to shareable format for Eric (eric-top-10-jobs.md)
