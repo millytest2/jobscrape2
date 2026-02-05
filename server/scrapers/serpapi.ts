@@ -41,9 +41,10 @@ async function scrape(params: ScrapeParams): Promise<Job[]> {
     for (const strategy of searchStrategies) {
       try {
         const url = new URL('https://serpapi.com/search.json');
-        // Don't use engine=google_jobs, just use base search with formatted query
-        url.searchParams.set('q', strategy.q);
-        url.searchParams.set('location', strategy.location);
+        // Use engine=google_jobs as shown in SerpAPI documentation
+        url.searchParams.set('engine', 'google_jobs');
+        url.searchParams.set('q', `${strategy.role} ${location}`);
+        url.searchParams.set('hl', 'en'); // English language
         url.searchParams.set('api_key', apiKey);
         
         console.log(`[SerpAPI] Fetching: ${url.toString()}`);

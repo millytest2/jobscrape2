@@ -25,4 +25,37 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Saved jobs table - allows users to bookmark jobs from scrape results
+ * Stores job metadata so users can review all 425+ jobs and save the best ones
+ */
+export const savedJobs = mysqlTable("saved_jobs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Foreign key to users table
+  
+  // Job metadata from scrape results
+  title: text("title").notNull(),
+  company: text("company").notNull(),
+  location: text("location").notNull(),
+  url: text("url").notNull(),
+  source: varchar("source", { length: 64 }).notNull(), // e.g., "Adzuna", "LinkedIn (Apify)"
+  
+  // Scoring data
+  finalScore: int("finalScore"), // Total match score (0-100)
+  experienceScore: int("experienceScore"),
+  roleScore: int("roleScore"),
+  locationScore: int("locationScore"),
+  skillsScore: int("skillsScore"),
+  companyScore: int("companyScore"),
+  missionScore: int("missionScore"),
+  
+  // Additional metadata
+  description: text("description"),
+  postedDate: varchar("postedDate", { length: 64 }),
+  salary: varchar("salary", { length: 128 }),
+  
+  savedAt: timestamp("savedAt").defaultNow().notNull(),
+});
+
+export type SavedJob = typeof savedJobs.$inferSelect;
+export type InsertSavedJob = typeof savedJobs.$inferInsert;

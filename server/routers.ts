@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as path from "path";
 import { promises as fs } from "fs";
@@ -549,6 +549,115 @@ export const appRouter = router({
           console.error("Profile update error:", error);
           throw new Error("Failed to update profile");
         }
+      }),
+  }),
+  
+  // Saved Jobs Router - allows users to bookmark jobs from scrape results
+  savedJobs: router({
+    save: protectedProcedure
+      .input(z.object({
+        title: z.string(),
+        company: z.string(),
+        location: z.string(),
+        url: z.string(),
+        source: z.string(),
+        finalScore: z.number().optional(),
+        experienceScore: z.number().optional(),
+        roleScore: z.number().optional(),
+        locationScore: z.number().optional(),
+        skillsScore: z.number().optional(),
+        companyScore: z.number().optional(),
+        missionScore: z.number().optional(),
+        description: z.string().optional(),
+        postedDate: z.string().optional(),
+        salary: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { savedJobs } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+        
+        // Check if job is already saved by this user (by URL)
+        const existing = await db.select()
+          .from(savedJobs)
+          .where(and(
+            eq(savedJobs.userId, ctx.user.id),
+            eq(savedJobs.url, input.url)
+          ))
+          .limit(1);
+        
+        if (existing.length > 0) {
+          return { success: true, alreadySaved: true, id: existing[0].id };
+        }
+        
+        // Insert new saved job
+        const result = await db.insert(savedJobs).values({
+          userId: ctx.user.id,
+          ...input,
+        });
+        
+        return { success: true, alreadySaved: false, id: result[0].insertId };
+      }),
+    
+    getAll: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getDb } = await import('./db');
+        const { savedJobs } = await import('../drizzle/schema');
+        const { eq, desc } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) return [];
+        
+        const jobs = await db.select()
+          .from(savedJobs)
+          .where(eq(savedJobs.userId, ctx.user.id))
+          .orderBy(desc(savedJobs.savedAt));
+        
+        return jobs;
+      }),
+    
+    unsave: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { savedJobs } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+        
+        // Only allow users to delete their own saved jobs
+        await db.delete(savedJobs)
+          .where(and(
+            eq(savedJobs.id, input.id),
+            eq(savedJobs.userId, ctx.user.id)
+          ));
+        
+        return { success: true };
+      }),
+    
+    isSaved: protectedProcedure
+      .input(z.object({ url: z.string() }))
+      .query(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { savedJobs } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) return { isSaved: false };
+        
+        const saved = await db.select()
+          .from(savedJobs)
+          .where(and(
+            eq(savedJobs.userId, ctx.user.id),
+            eq(savedJobs.url, input.url)
+          ))
+          .limit(1);
+        
+        return { isSaved: saved.length > 0, id: saved[0]?.id };
       }),
   }),
 });

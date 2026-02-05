@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `saved_jobs` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int NOT NULL,\n\t`title` text NOT NULL,\n\t`company` text NOT NULL,\n\t`location` text NOT NULL,\n\t`url` text NOT NULL,\n\t`source` varchar(64) NOT NULL,\n\t`finalScore` int,\n\t`experienceScore` int,\n\t`roleScore` int,\n\t`locationScore` int,\n\t`skillsScore` int,\n\t`companyScore` int,\n\t`missionScore` int,\n\t`description` text,\n\t`postedDate` varchar(64),\n\t`salary` varchar(128),\n\t`savedAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `saved_jobs_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 47Axgy1pV22JT8Q.388a20bfd7a3 --database QdHoCedzFSojLFS7jiVk9j --execute CREATE TABLE IF NOT EXISTS `saved_jobs` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int NOT NULL,\n\t`title` text NOT NULL,\n\t`company` text NOT NULL,\n\t`location` text NOT NULL,\n\t`url` text NOT NULL,\n\t`source` varchar(64) NOT NULL,\n\t`finalScore` int,\n\t`experienceScore` int,\n\t`roleScore` int,\n\t`locationScore` int,\n\t`skillsScore` int,\n\t`companyScore` int,\n\t`missionScore` int,\n\t`description` text,\n\t`postedDate` varchar(64),\n\t`salary` varchar(128),\n\t`savedAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `saved_jobs_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1247
+}

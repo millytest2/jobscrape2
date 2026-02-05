@@ -1,0 +1,21 @@
+CREATE TABLE `saved_jobs` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`userId` int NOT NULL,
+	`title` text NOT NULL,
+	`company` text NOT NULL,
+	`location` text NOT NULL,
+	`url` text NOT NULL,
+	`source` varchar(64) NOT NULL,
+	`finalScore` int,
+	`experienceScore` int,
+	`roleScore` int,
+	`locationScore` int,
+	`skillsScore` int,
+	`companyScore` int,
+	`missionScore` int,
+	`description` text,
+	`postedDate` varchar(64),
+	`salary` varchar(128),
+	`savedAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `saved_jobs_id` PRIMARY KEY(`id`)
+);

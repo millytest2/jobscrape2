@@ -987,3 +987,24 @@ Removed early stop logic to allow all 13 scrapers to run
 - [ ] Verify Apify LinkedIn returns 10-20 jobs
 - [ ] Verify Apify Career Site returns 10-20 jobs
 - [ ] Target: 350+ jobs from all 13 sources
+
+
+## 🎯 FIX SERPAPI + ADD SAVE JOBS FEATURE (Feb 4, 2026 8:05 PM)
+
+**USER REQUEST:**
+1. Fix SerpAPI using GET request format (not POST)
+2. Add "Save Job" feature to bookmark best jobs from all 425 results (not just top 20)
+3. Update frontend source breakdown to show only working sources (not all 13)
+
+**TASKS:**
+- [ ] Fix SerpAPI scraper - use GET request format: `https://serpapi.com/search.json?engine=google_jobs&q=${role}+${location}&hl=en&api_key=${key}`
+- [ ] Test SerpAPI returns jobs (should get 10+ results per search)
+- [ ] Add saved_jobs table to database schema (job_id, user_id, title, company, location, url, score, source, saved_at)
+- [ ] Add saveJob tRPC mutation (takes job data, saves to database)
+- [ ] Add getSavedJobs tRPC query (returns all saved jobs for current user)
+- [ ] Add unsaveJob tRPC mutation (removes saved job)
+- [ ] Add "Save" button/icon to each job card in frontend
+- [ ] Add "Saved Jobs" page/tab to view all bookmarked jobs
+- [ ] Update frontend source breakdown to hide sources with 0 jobs or "Failed" status
+- [ ] Test save/unsave functionality works correctly
+- [ ] Verify saved jobs persist across sessions
