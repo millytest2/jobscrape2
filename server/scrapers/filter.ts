@@ -41,11 +41,33 @@ export interface FilterOptions {
 }
 
 // LA region cities for location matching
+// Expanded LA region - all Southern California cities within ~30 mile radius
 const LA_REGION = [
-  'los angeles', 'santa monica', 'venice', 'culver city', 'el segundo',
-  'west hollywood', 'beverly hills', 'downtown la', 'pasadena', 'burbank',
-  'glendale', 'long beach', 'torrance', 'manhattan beach', 'playa vista',
-  'irvine', 'orange county'
+  // Core LA
+  'los angeles', 'la', 'downtown la', 'dtla',
+  // Westside
+  'santa monica', 'venice', 'marina del rey', 'culver city', 'el segundo',
+  'playa vista', 'playa del rey', 'westchester', 'mar vista', 'palms',
+  // Hollywood/West Hollywood
+  'hollywood', 'west hollywood', 'weho', 'beverly hills', 'century city',
+  // Valley
+  'burbank', 'glendale', 'pasadena', 'studio city', 'sherman oaks',
+  'van nuys', 'north hollywood', 'noho', 'encino', 'woodland hills',
+  'calabasas', 'canoga park',
+  // South Bay
+  'torrance', 'manhattan beach', 'hermosa beach', 'redondo beach',
+  'el segundo', 'hawthorne', 'inglewood', 'gardena', 'carson',
+  // Long Beach
+  'long beach', 'signal hill', 'lakewood', 'cerritos',
+  // Orange County (nearby)
+  'irvine', 'orange county', 'oc', 'newport beach', 'costa mesa',
+  'huntington beach', 'anaheim', 'fullerton', 'tustin',
+  // East LA
+  'alhambra', 'monterey park', 'arcadia', 'monrovia', 'azusa',
+  // South LA
+  'compton', 'lynwood', 'paramount', 'downey', 'norwalk',
+  // General Southern California
+  'southern california', 'socal', 'so cal', 'california'
 ];
 
 /**

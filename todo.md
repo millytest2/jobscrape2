@@ -1101,3 +1101,23 @@ Removed early stop logic to allow all 13 scrapers to run
 - [x] Verify ghost job detection is working correctly
 - [x] Strengthen ghost job detection with scam/spam patterns (added 12 scam keywords + generic title filter)
 - [ ] Test all fixes with fresh scrape
+
+
+## 🚨 CRITICAL: FORCE FRESH SCRAPING EVERY TIME (Feb 4, 2026 9:30 PM)
+**User Report:** "Haven't applied to 1 job - system showing cached results, not fresh jobs"
+
+### Issues:
+- [x] Cache is being used instead of fresh scraping every time
+- [x] User clicks RUN SCRAPER but gets old cached results
+- [ ] Not finding jobs worth applying to (quality issue)
+- [x] Location matching too strict (should accept surrounding areas like Santa Monica when searching Los Angeles)
+- [x] Need to verify all 13 scrapers are actually running and returning fresh jobs
+
+### Fixes:
+- [x] Remove cache completely from scraper endpoint (deleted all cache checks and cache.set)
+- [x] Force forceFresh=true by default (removed cache logic entirely)
+- [x] Expand location matching to accept surrounding areas (added 50+ SoCal cities within 30-mile radius)
+- [x] Verify all 13 scrapers running: Apify LinkedIn, Apify Career Site, RemoteOK, WeWorkRemotely, Remotive, Arbeitnow, Jooble, SerpAPI, Craigslist, The Muse, RSS Aggregator, Adzuna, USAJobs
+- [x] Add logging to show which scrapers succeeded/failed with job counts (already exists in runScrapersParallel)
+- [ ] Test with fresh scrape and verify NEW jobs appear every time
+- [ ] Improve job quality - make sure jobs are worth applying to (direct company links, clear requirements, real opportunities)

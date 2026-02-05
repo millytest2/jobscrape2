@@ -308,62 +308,9 @@ export const appRouter = router({
         console.log(`[Scraper] Started at: ${startedAt}`);
         
         try {
-          // Check cache only if forceFresh is false
-          const cacheKey = `${role}:${location}`;
-          
-          // FILE LOGGING - CACHE CHECK
-          logToFile(`🗄️ cacheKey="${cacheKey}"`);
-          logToFile(`🗄️ cache.has(${cacheKey})=${scrapeCache.has(cacheKey)}`);
-          logToFile(`🗄️ cache.size=${scrapeCache.size}`);
-          
-          console.log(`🗄️ CACHE KEY: "${cacheKey}"`);
-          console.log(`🗄️ CACHE HAS KEY: ${scrapeCache.has(cacheKey)}`);
-          console.log(`🗄️ WILL USE CACHE: ${!forceFresh && scrapeCache.has(cacheKey)}`);
-          
-          if (!forceFresh && scrapeCache.has(cacheKey)) {
-            const cached = scrapeCache.get(cacheKey)!;
-            const cachedAgeSeconds = Math.round((Date.now() - new Date(cached.timestamp).getTime()) / 1000);
-            
-            // FILE LOGGING - RETURNING CACHED
-            logToFile(`⚠️ RETURNING_CACHED_RESULTS for key="${cacheKey}"`);
-            logToFile(`⚠️ cached.stats.scraped=${cached.stats.scraped}`);
-            logToFile(`⚠️ cached.stats.filtered=${cached.stats.filtered}`);
-            
-            console.log(`[Scraper] Returning CACHED results (age: ${cachedAgeSeconds}s)`);
-            
-            return {
-              status: 'success',
-              runId,
-              usedCache: true,
-              cachedRunId: cached.runId || 'unknown',
-              cachedAgeSeconds,
-              timestamp: cached.timestamp,
-              params: { location, role },
-              stats: cached.stats,
-              jobs: cached.top20,
-              allJobs: cached.jobs || [], // Return all jobs from cache
-              sourceBreakdown: [],
-              errorsBySource: {},
-              countsBySource: {},
-            };
-          }
-          
-          // Force fresh scrape
-          // FILE LOGGING - CACHE CLEARING
-          logToFile(`✅ forceFresh=true, calling cache.delete("${cacheKey}")`);
-          const hadCache = scrapeCache.has(cacheKey);
-          scrapeCache.delete(cacheKey);
-          const nowHas = scrapeCache.has(cacheKey);
-          logToFile(`🗑️ cache.delete() called, hadCache=${hadCache}, nowHas=${nowHas}`);
-          logToFile(`🗑️ cache.size after delete=${scrapeCache.size}`);
-          logToFile(`🚀 CALLING runScrapersParallel()`);
-          
-          console.log(`✅ BYPASSING CACHE - forceFresh=${forceFresh}`);
-          const hadCachedData = scrapeCache.has(cacheKey);
-          scrapeCache.delete(cacheKey);
-          console.log(`🗑️ CACHE CLEARED - had cached data: ${hadCachedData}`);
-          console.log(`🗑️ CACHE SIZE AFTER DELETE: ${scrapeCache.size}`);
-          console.log(`[Scraper] FRESH SCRAPE - starting scraper execution...`);
+          // ALWAYS FORCE FRESH SCRAPE - NO CACHE
+          console.log(`[Scraper] 🚀 FRESH SCRAPE FORCED - No cache used`);
+          logToFile(`🚀 FRESH SCRAPE FORCED - cache disabled`);
           
           // Load profile to get company preferences, red flags, and skills
           const profilePath = path.join(process.cwd(), 'server', 'data', 'profiles', 'miles-tipton.json');
@@ -461,14 +408,7 @@ export const appRouter = router({
             })),
           };
           
-          // Cache the result
-          scrapeCache.set(cacheKey, {
-            runId,
-            jobs: validJobs,
-            top20,
-            timestamp: result.timestamp,
-            stats: result.stats,
-          });
+          // Cache disabled - always fetch fresh jobs
           
           // Mark top 20 jobs as seen (if user is authenticated)
           if (ctx.user) {
@@ -506,10 +446,8 @@ export const appRouter = router({
             }
           }
           
-          // FILE LOGGING - CACHE STORAGE
-          logToFile(`💾 STORING_TO_CACHE key="${cacheKey}" totalJobs=${validJobs.length}`);
-          logToFile(`💾 cache.set() called, cache.size=${scrapeCache.size}`);
-          logToFile(`🏁 MUTATION_END runId=${runId} duration=${result.stats.duration}s\n`);
+          // FILE LOGGING - SCRAPE COMPLETE
+          logToFile(`🏁 MUTATION_END runId=${runId} duration=${result.stats.duration}s totalJobs=${validJobs.length}\n`);
           
           console.log(`[Scraper] Completed in ${result.stats.duration}s`);
           
