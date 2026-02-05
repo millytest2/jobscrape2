@@ -479,12 +479,42 @@ export const appRouter = router({
             }
           }
           
+          // Save scrape results to database for premium boost feature
+          let scrapeId: number | undefined;
+          if (ctx.user) {
+            try {
+              const { getDb } = await import('./db');
+              const { scrapeResults } = await import('../drizzle/schema');
+              
+              const db = await getDb();
+              if (db) {
+                const saveResult = await db.insert(scrapeResults).values({
+                  userId: ctx.user.id,
+                  role,
+                  location,
+                  profileName: profileName || 'miles-tipton',
+                  jobs: JSON.stringify(allRankedJobs), // Save ALL ranked jobs
+                  stats: JSON.stringify(result.stats),
+                  boostStatus: 'pending',
+                });
+                scrapeId = saveResult[0].insertId;
+                console.log(`[Scraper] Saved scrape results to database with ID ${scrapeId}`);
+              }
+            } catch (error) {
+              console.error('[Scraper] Error saving scrape results:', error);
+              // Don't fail the whole request if save fails
+            }
+          }
+          
           // FILE LOGGING - SCRAPE COMPLETE
           logToFile(`🏁 MUTATION_END runId=${runId} duration=${result.stats.duration}s totalJobs=${validJobs.length}\n`);
           
           console.log(`[Scraper] Completed in ${result.stats.duration}s`);
           
-          return result;
+          return {
+            ...result,
+            scrapeId, // Include scrapeId for premium boost feature
+          };
         } catch (error: any) {
           console.error("[Scraper] Fatal error:", error);
           throw new Error(error.message || 'Scraping failed. Please try again.');
@@ -742,6 +772,139 @@ export const appRouter = router({
           .where(eq(seenJobs.userId, ctx.user.id));
         
         return { success: true };
+      }),
+  }),
+  
+  // Premium Boost Router - allows agent to inject premium FAANG/tier-1 jobs
+  premiumBoost: router({    
+    // Save scrape results to database
+    saveResults: protectedProcedure
+      .input(z.object({
+        role: z.string(),
+        location: z.string(),
+        profileName: z.string().optional(),
+        jobs: z.array(z.any()), // Array of Job objects
+        stats: z.any(), // Stats object
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { scrapeResults } = await import('../drizzle/schema');
+        
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+        
+        // Save scrape results
+        const result = await db.insert(scrapeResults).values({
+          userId: ctx.user.id,
+          role: input.role,
+          location: input.location,
+          profileName: input.profileName || 'miles-tipton',
+          jobs: JSON.stringify(input.jobs),
+          stats: JSON.stringify(input.stats),
+          boostStatus: 'pending',
+        });
+        
+        return { success: true, scrapeId: result[0].insertId };
+      }),
+    
+    // Get scrape result by ID
+    getResult: protectedProcedure
+      .input(z.object({ scrapeId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { scrapeResults } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) return null;
+        
+        const results = await db.select()
+          .from(scrapeResults)
+          .where(and(
+            eq(scrapeResults.id, input.scrapeId),
+            eq(scrapeResults.userId, ctx.user.id)
+          ))
+          .limit(1);
+        
+        if (results.length === 0) return null;
+        
+        const result = results[0];
+        return {
+          ...result,
+          jobs: JSON.parse(result.jobs),
+          stats: result.stats ? JSON.parse(result.stats) : null,
+        };
+      }),
+    
+    // Add premium jobs to existing scrape result (called by agent)
+    addPremiumJobs: protectedProcedure
+      .input(z.object({
+        scrapeId: z.number(),
+        premiumJobs: z.array(z.any()), // Array of premium Job objects
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { scrapeResults } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+        
+        // Get existing scrape result
+        const existing = await db.select()
+          .from(scrapeResults)
+          .where(and(
+            eq(scrapeResults.id, input.scrapeId),
+            eq(scrapeResults.userId, ctx.user.id)
+          ))
+          .limit(1);
+        
+        if (existing.length === 0) {
+          throw new Error('Scrape result not found');
+        }
+        
+        // Merge premium jobs with existing jobs
+        const existingJobs = JSON.parse(existing[0].jobs);
+        const mergedJobs = [...input.premiumJobs, ...existingJobs];
+        
+        // Update scrape result
+        await db.update(scrapeResults)
+          .set({
+            jobs: JSON.stringify(mergedJobs),
+            boostStatus: 'boosted',
+          })
+          .where(and(
+            eq(scrapeResults.id, input.scrapeId),
+            eq(scrapeResults.userId, ctx.user.id)
+          ));
+        
+        return { success: true, totalJobs: mergedJobs.length };
+      }),
+    
+    // Get latest scrape result for user
+    getLatest: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getDb } = await import('./db');
+        const { scrapeResults } = await import('../drizzle/schema');
+        const { eq, desc } = await import('drizzle-orm');
+        
+        const db = await getDb();
+        if (!db) return null;
+        
+        const results = await db.select()
+          .from(scrapeResults)
+          .where(eq(scrapeResults.userId, ctx.user.id))
+          .orderBy(desc(scrapeResults.createdAt))
+          .limit(1);
+        
+        if (results.length === 0) return null;
+        
+        const result = results[0];
+        return {
+          ...result,
+          jobs: JSON.parse(result.jobs),
+          stats: result.stats ? JSON.parse(result.stats) : null,
+        };
       }),
   }),
 });

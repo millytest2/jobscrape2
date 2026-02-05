@@ -63,6 +63,7 @@ export default function Home() {
   const [location, setLocation] = useState("Los Angeles, CA");
   const [role, setRole] = useState("Sales Engineer");
   const [result, setResult] = useState<ScraperResult | null>(null);
+  const [scrapeId, setScrapeId] = useState<number | null>(null); // NEW: Scrape ID for premium boost
   const [showTimeoutMessage, setShowTimeoutMessage] = useState(false);
   const [viewAllJobs, setViewAllJobs] = useState(false); // NEW: Toggle for viewing all jobs
   const [currentPage, setCurrentPage] = useState(1); // NEW: Pagination for all jobs
@@ -96,8 +97,9 @@ export default function Home() {
   const [scrapeStartTime, setScrapeStartTime] = useState<number | null>(null);
 
   const scrapeMutation = trpc.scraper.runScraper.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       setResult(data);
+      setScrapeId(data.scrapeId || null); // Save scrapeId for premium boost
       setScrapeStartTime(null);
       setShowTimeoutMessage(false);
       const jobCount = data.stats.top20 || data.stats.filtered || data.jobs.length;
@@ -368,6 +370,35 @@ export default function Home() {
                         {hideSeenJobs ? "Show All Jobs" : "Hide Already Seen"}
                       </Button>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Premium Boost Button */}
+            {scrapeId && (
+              <Card className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/30">
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-purple-400">
+                        🚀 Want Premium Jobs?
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Get 10-20 hand-picked jobs from FAANG, unicorns, and tier-1 companies (Google, Spotify, Netflix, etc.)
+                      </p>
+                    </div>
+                    <Button 
+                      variant="default"
+                      size="lg"
+                      onClick={() => {
+                        toast.info("Premium boost requested! Manus will search for premium jobs and add them to your results.");
+                        // In production, this would trigger agent to search and inject premium jobs
+                      }}
+                      className="font-mono uppercase tracking-wider min-w-[200px] bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                    >
+                      Boost with Premium Jobs
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

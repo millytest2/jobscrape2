@@ -1268,8 +1268,8 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 ### Solution: TWO-STEP PREMIUM BOOST
 - [x] Remove Manus search scraper (won't work in deployed app)
 - [x] Add scrape_results table to database (id, userId, role, location, jobs JSON, boostStatus, createdAt)
-- [ ] Modify scraper endpoint to save results to database with boostStatus='pending'
-- [ ] Add "Boost with Premium Jobs" button to frontend after scrape completes
-- [ ] Add boost endpoint that agent can call to inject 10-20 premium jobs
-- [ ] Frontend refreshes after boost to show combined results
+- [x] Modify scraper endpoint to save results to database with boostStatus='pending' (line 482-507 in routers.ts)
+- [x] Add "Boost with Premium Jobs" button to frontend after scrape completes (line 378-405 in Home.tsx)
+- [x] Add boost endpoint that agent can call to inject 10-20 premium jobs (premiumBoost router in routers.ts)
+- [ ] Frontend refreshes after boost to show combined results (needs polling or manual refresh)
 - [ ] Test two-step flow: scrape (13 sources) → boost (agent search) → combined results
