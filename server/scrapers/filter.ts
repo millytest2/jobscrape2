@@ -712,6 +712,11 @@ function applyDiversityConstraints(
   targetRoles: string[],
   topN: number
 ): FilteredJob[] {
+  // If topN >= 100, assume "show all" mode and skip diversity constraints
+  if (topN >= 100) {
+    console.log(`[FILTER] Show all mode (topN=${topN}), skipping diversity constraints`);
+    return scored; // Return all scored jobs without diversity limits
+  }
   const targetRoleCluster = [
     'sales engineer', 'solutions engineer', 'solution engineer',
     'pre-sales', 'presales', 'demo engineer', 'technical demo',
@@ -750,10 +755,10 @@ function applyDiversityConstraints(
       continue;
     }
     
-    // Check source diversity constraint (max 6 per source)
+    // Check source diversity constraint (max 6 per source in top N mode)
     const currentSourceCount = sourceCount[source] || 0;
     if (currentSourceCount >= 6) {
-      continue; // Skip if source already has 6 jobs
+      continue; // Skip if source already has 6 jobs in top N
     }
     
     // Add job

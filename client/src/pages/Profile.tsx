@@ -4,10 +4,114 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, User, Briefcase, MapPin, DollarSign, Building2, AlertCircle, Edit, Save, X } from "lucide-react";
+import { Loader2, User, Briefcase, MapPin, DollarSign, Building2, AlertCircle, Edit, Save, X, Heart, ExternalLink, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+
+// Saved Jobs Section Component
+function SavedJobsSection() {
+  const savedJobsQuery = trpc.savedJobs.getAll.useQuery();
+  const unsaveMutation = trpc.savedJobs.unsave.useMutation({
+    onSuccess: () => {
+      toast.success("Job removed from saved list");
+      savedJobsQuery.refetch();
+    },
+    onError: (error) => {
+      toast.error("Failed to remove job: " + error.message);
+    },
+  });
+
+  if (savedJobsQuery.isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Heart className="h-5 w-5" />
+            Saved Jobs
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const savedJobs = savedJobsQuery.data || [];
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Heart className="h-5 w-5" />
+          Saved Jobs ({savedJobs.length})
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {savedJobs.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <Heart className="h-12 w-12 mx-auto mb-3 opacity-20" />
+            <p>No saved jobs yet</p>
+            <p className="text-sm mt-1">Click the heart icon on job listings to save them here</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {savedJobs.map((job: any) => (
+              <div key={job.id} className="border rounded-lg p-4 hover:border-primary/50 transition-colors">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 space-y-1">
+                    <h4 className="font-semibold text-lg">{job.title}</h4>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Building2 className="h-4 w-4" />
+                      <span>{job.company}</span>
+                      <span className="text-border mx-1">|</span>
+                      <MapPin className="h-4 w-4" />
+                      <span>{job.location}</span>
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <Badge variant="outline" className="text-xs">{job.source}</Badge>
+                      {job.finalScore && (
+                        <Badge variant="secondary" className="text-xs">
+                          {Math.round(job.finalScore)}% Match
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Button asChild size="sm" className="w-full">
+                      <a href={job.url} target="_blank" rel="noopener noreferrer">
+                        Apply <ExternalLink className="ml-1 h-3 w-3" />
+                      </a>
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="w-full text-destructive hover:text-destructive"
+                      onClick={() => unsaveMutation.mutate({ id: job.id })}
+                      disabled={unsaveMutation.isPending}
+                    >
+                      {unsaveMutation.isPending ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <>
+                          <Trash2 className="mr-1 h-3 w-3" />
+                          Remove
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -493,6 +597,9 @@ export default function Profile() {
               </CardContent>
             </Card>
           )}
+
+          {/* Saved Jobs Section */}
+          <SavedJobsSection />
 
           {/* Red Flags */}
           {profile.red_flags && profile.red_flags.length > 0 && (

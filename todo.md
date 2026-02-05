@@ -1060,3 +1060,12 @@ Removed early stop logic to allow all 13 scrapers to run
 - [x] Reduce Apify Career Site limit from 100 to 50 (save credits)
 - [x] Verify allJobs field contains ALL 438 quality matches (confirmed: line 434 ranks all validJobs)
 - [x] Frontend correctly uses allJobs field for View All feature (line 346 in Home.tsx)
+
+
+## 🚨 FIX VIEW ALL + SAVE FEATURE (Feb 4, 2026 8:45 PM)
+- [x] Debug View All showing only 35 jobs - Fixed diversity constraints to skip limits when topN >= 100
+- [x] Fix missing company names - Added filter to remove jobs without company in both Apify scrapers
+- [x] Add heart icon to job cards for saving/bookmarking
+- [ ] Implement savedJobs.save mutation on heart click (placeholder toast added)
+- [x] Add Saved Jobs section to Profile page showing bookmarked jobs
+- [x] Add unsave functionality (remove from saved list)

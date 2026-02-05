@@ -122,8 +122,10 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
       throw new Error('ERROR_EMPTY_RESPONSE: Actor returned 0 jobs');
     }
 
-    // Transform to our Job format
-    return jobs.map(job => ({
+    // Transform to our Job format and filter out jobs without company names
+    return jobs
+      .filter(job => job.company && job.company.trim() !== '') // Skip jobs without company
+      .map(job => ({
       title: job.title,
       company: job.company,
       location: job.location || "Remote",

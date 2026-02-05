@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search, MapPin, Briefcase, Building2, ExternalLink, Download, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Loader2, Search, MapPin, Briefcase, Building2, ExternalLink, Download, AlertCircle, CheckCircle2, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 
@@ -404,6 +404,17 @@ export default function Home() {
                           <a href={job.url} target="_blank" rel="noopener noreferrer">
                             Apply Now <ExternalLink className="ml-2 h-4 w-4" />
                           </a>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="w-full"
+                          onClick={() => {
+                            // Save job functionality
+                            toast.info("Save feature coming soon! Check your Profile page.");
+                          }}
+                        >
+                          <Heart className="mr-2 h-4 w-4" />
+                          Save
                         </Button>
                       </div>
                     </div>
