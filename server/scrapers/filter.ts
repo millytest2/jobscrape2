@@ -211,15 +211,16 @@ export function removeGhostJobs(jobs: Job[]): Job[] {
 }
 
 /**
- * Calculate role match score (0-100) - STRICT matching only
+ * Calculate role match score (0-100) - FLEXIBLE matching for exploration
+ * Profile target_roles are used to RANK jobs, not exclude them
+ * This allows users to search ANY role while getting personalized top 20
  */
 function calculateRoleScore(job: Job, targetRoles: string[]): number {
   const title = job.title.toLowerCase();
   const roleCluster = targetRoles.map(r => r.toLowerCase());
   
-  // Exact match or very close variant
+  // Exact match to profile target roles
   for (const role of roleCluster) {
-    // Exact match
     if (title === role) {
       return 100;
     }
@@ -232,36 +233,40 @@ function calculateRoleScore(job: Job, targetRoles: string[]): number {
     }
   }
   
-  // Allowed variants for Sales Engineer (EXPLICIT whitelist only)
+  // High-scoring variants for Sales Engineer profile
   if (roleCluster.some(r => r.includes('sales engineer') || r.includes('sales') || r.includes('solutions'))) {
-    // High match: Direct sales/solutions roles (STRENGTHENED - higher scores for closer matches)
-    if (title.includes('solutions engineer') || title.includes('solution engineer')) return 95; // Raised from 90
-    if (title.includes('pre-sales') || title.includes('presales')) return 90; // Raised from 85
-    if (title.includes('demo engineer') || title.includes('technical demo')) return 85; // Raised from 80
-    if (title.includes('technical account manager') || title.includes('tam')) return 80; // Raised from 75
-    if (title.includes('customer engineer') || title.includes('customer success engineer')) return 75; // Raised from 70
-    if (title.includes('field engineer') && title.includes('sales')) return 70; // Raised from 65
-    if (title.includes('sales development') || title.includes('technical sales')) return 90; // Raised from 85
-    
-    // Reject: Pure engineering roles (NOT sales-related) + EXPANDED LIST
-    const rejectKeywords = [
-      'software engineer', 'backend', 'frontend', 'full stack', 'fullstack',
-      'machine learning', 'ml engineer', 'data scientist', 'data engineer',
-      'devops', 'platform engineer', 'infrastructure', 'security engineer',
-      'qa engineer', 'test engineer', 'research engineer', 'sdet',
-      'account manager', 'account executive', 'customer service', 'supervisor',
-      'operations', 'project manager', 'product manager', 'marketing'
-    ];
-    
-    for (const reject of rejectKeywords) {
-      if (title.includes(reject)) {
-        return 0; // Hard reject - wrong role type
-      }
+    if (title.includes('solutions engineer') || title.includes('solution engineer')) return 95;
+    if (title.includes('pre-sales') || title.includes('presales')) return 90;
+    if (title.includes('demo engineer') || title.includes('technical demo')) return 85;
+    if (title.includes('technical account manager') || title.includes('tam')) return 80;
+    if (title.includes('customer engineer') || title.includes('customer success engineer')) return 75;
+    if (title.includes('field engineer') && title.includes('sales')) return 70;
+    if (title.includes('sales development') || title.includes('technical sales')) return 90;
+  }
+  
+  // Medium-scoring: Related sales/technical roles (NEW - allow exploration)
+  if (title.includes('account executive') || title.includes('ae')) return 50;
+  if (title.includes('business development') || title.includes('bdr') || title.includes('sdr')) return 45;
+  if (title.includes('sales manager') || title.includes('sales director')) return 40;
+  if (title.includes('account manager') && !title.includes('technical')) return 35;
+  if (title.includes('customer success') && !title.includes('engineer')) return 30;
+  
+  // Low-scoring: Pure engineering (not sales-related) but still allow through
+  const engineeringKeywords = [
+    'software engineer', 'backend', 'frontend', 'full stack', 'fullstack',
+    'machine learning', 'ml engineer', 'data scientist', 'data engineer',
+    'devops', 'platform engineer', 'infrastructure', 'security engineer',
+    'qa engineer', 'test engineer', 'research engineer', 'sdet'
+  ];
+  
+  for (const keyword of engineeringKeywords) {
+    if (title.includes(keyword)) {
+      return 10; // Low score but don't exclude
     }
   }
   
-  // NO partial matching - if not in whitelist, return 0
-  return 0;
+  // Default: Any other role gets base score (allow exploration)
+  return 20;
 }
 
 /**
@@ -758,27 +763,9 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
     return true;
   }
   
-  // HARD BLOCK: Jobs that don't match ANY target role keywords (NEW)
-  const targetRoles = options.targetRoles.map(r => normalizeText(r));
-  const roleKeywords = [
-    'sales engineer', 'solutions engineer', 'solution engineer',
-    'pre-sales', 'presales', 'demo engineer', 'technical demo',
-    'technical account manager', 'tam', 'customer engineer',
-    'field engineer', 'sales development engineer'
-  ];
-  
-  // Check if title matches ANY target role or role keyword
-  const matchesTargetRole = targetRoles.some(tr => title.includes(tr));
-  const matchesRoleKeyword = roleKeywords.some(rk => title.includes(rk));
-  
-  if (!matchesTargetRole && !matchesRoleKeyword) {
-    // Exception: If title includes 'sales' + 'engineer' separately, allow it
-    const hasSales = title.includes('sales');
-    const hasEngineer = title.includes('engineer') || title.includes('technical');
-    if (!(hasSales && hasEngineer)) {
-      return true; // Block jobs that don't match target roles
-    }
-  }
+  // REMOVED: Hard role blocking - now using profile for RANKING only, not exclusion
+  // Profile target_roles are used in calculateRoleScore() to rank jobs by fit
+  // This allows users to explore ANY role while still getting personalized top 20
   
   return false; // Don't exclude
 }

@@ -1121,3 +1121,35 @@ Removed early stop logic to allow all 13 scrapers to run
 - [x] Add logging to show which scrapers succeeded/failed with job counts (already exists in runScrapersParallel)
 - [ ] Test with fresh scrape and verify NEW jobs appear every time
 - [ ] Improve job quality - make sure jobs are worth applying to (direct company links, clear requirements, real opportunities)
+
+
+## 🎯 INTELLIGENT PERSONALIZED RANKING (Feb 4, 2026 10:00 PM)
+**User Vision:** "Type in ANY role → scrape 500+ jobs → rank by profile fit → show top 20 personalized matches"
+
+### Current Problem:
+- System BLOCKS jobs that don't match profile target_roles exactly
+- Too rigid - user can't explore "Sales" if profile says "Sales Engineer"
+- Profile is used to EXCLUDE instead of ENHANCE results
+- Missing "hidden gems" that might be great fits
+
+### New Approach:
+- **Scrape BROADLY** - User types "Sales" → find ALL sales-related jobs (Sales Engineer, Account Exec, BDR, Sales Manager, etc.)
+- **Rank INTELLIGENTLY** - Use profile to SCORE jobs, not block them
+- **Show TOP 20 PERSONALIZED** - Best matches for THIS USER based on their profile
+- **Allow exploration** - View All shows all 500+ jobs, sorted by fit
+
+### Implementation:
+- [x] Remove hard role blocking from shouldExcludeJob() - allow ANY role through filtering (line 761-763)
+- [x] Keep profile-based scoring in calculateRoleScore() to rank by fit (line 213-270)
+- [x] Expand role search to find all variants - Scrapers already use user input directly (Sales → finds all sales jobs)
+- [x] Profile determines TOP 20 ranking, not what gets scraped - Scoring system ranks by profile fit
+- [ ] Add "Profile Match" indicator (🎯) for jobs that align with profile preferences (frontend enhancement)
+- [ ] Test with broad search ("Sales") and verify top 20 are personalized to profile
+- [ ] Verify 500+ jobs scraped, all ranked, top 20 shown by default
+
+### Success Criteria:
+- User types "Sales" → System scrapes 500+ sales jobs from 13 sources
+- Profile scores each job (experience, skills, preferences, red flags)
+- Top 20 = highest scoring jobs for THIS USER
+- View All shows all 500+ ranked by score
+- Different users get different top 20 for same search
