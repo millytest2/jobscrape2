@@ -884,3 +884,24 @@
 - [x] Restart server and run test scrape
 - [ ] Capture and analyze logs to identify why Adzuna/RSS/USAJobs return 0 jobs (BLOCKED: console output not captured by logging infrastructure)
 - [ ] Fix identified issues based on log analysis (BLOCKED: need to see logs first)
+
+
+## 🚨 INVESTIGATE 255 JOBS CACHING ISSUE (Feb 4, 2026 7:35 PM)
+**CRITICAL:** Scraper returns exactly 255 jobs 15 times in a row - statistically impossible unless cached
+
+- [x] Add testAllScrapers endpoint to test each scraper individually and sequentially
+- [x] Search entire codebase for caching logic (✅ FOUND: scrapeCache Map in routers.ts line 13)
+- [x] Verify forceFresh flag is actually being used in runScraper procedure (✅ Logic looks correct)
+- [x] Check frontend Home.tsx passes forceFresh=true to mutation (✅ Line 116 passes forceFresh: true)
+- [x] Add forceFresh logging to see actual runtime values
+- [ ] Add timestamp logging to start of each scraper function (NOT DONE - console logs not captured)
+- [ ] Run testAllScrapers endpoint TWICE and compare results (BLOCKED: tRPC query format issue)
+- [ ] Analyze findings: Are scrapers called fresh? Is there caching? Which scrapers work? (IN PROGRESS)
+- [ ] Fix identified caching or scraper execution issues (BLOCKED: need test results first)
+
+**FINDINGS SO FAR:**
+1. ✅ Cache exists: `scrapeCache` Map stores results by `${role}:${location}` key
+2. ✅ Cache logic: Cleared when forceFresh=true (line 309), used when forceFresh=false (line 287)
+3. ✅ Frontend passes forceFresh=true correctly
+4. ❌ Console logs NOT captured by webdev_check_status or journalctl
+5. ❌ testAllScrapers endpoint exists but tRPC query format needs fixing

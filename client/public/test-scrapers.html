@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test All Scrapers</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background: #000;
+      color: #0f0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    pre {
+      background: #111;
+      padding: 15px;
+      border: 1px solid #0f0;
+      overflow-x: auto;
+    }
+    .loading {
+      color: #ff0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Test All Scrapers Individually</h1>
+  <button onclick="testScrapers()">RUN TEST</button>
+  <button onclick="clearResults()">CLEAR</button>
+  
+  <div id="status"></div>
+  <pre id="results"></pre>
+
+  <script>
+    async function testScrapers() {
+      const status = document.getElementById('status');
+      const results = document.getElementById('results');
+      
+      status.innerHTML = '<p class="loading">⏳ Testing all scrapers...</p>';
+      results.textContent = '';
+      
+      try {
+        const response = await fetch('/api/trpc/testAllScrapers?input=' + encodeURIComponent(JSON.stringify({
+          role: 'Sales Engineer',
+          location: 'Los Angeles, CA'
+        })));
+        
+        const data = await response.json();
+        
+        status.innerHTML = '<p>✅ Test complete!</p>';
+        // tRPC wraps response in result.data
+        const actualData = data.result?.data || data;
+        results.textContent = JSON.stringify(actualData, null, 2);
+      } catch (error) {
+        status.innerHTML = '<p style="color: red;">❌ Error: ' + error.message + '</p>';
+        results.textContent = error.stack;
+      }
+    }
+    
+    function clearResults() {
+      document.getElementById('status').innerHTML = '';
+      document.getElementById('results').textContent = '';
+    }
+  </script>
+</body>
+</html>

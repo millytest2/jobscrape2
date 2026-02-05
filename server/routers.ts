@@ -191,6 +191,76 @@ export const appRouter = router({
       }
     }),
   
+  testAllScrapers: publicProcedure
+    .input(z.object({
+      role: z.string(),
+      location: z.string()
+    }))
+    .query(async ({ input }) => {
+      console.log(`\n🧪 TESTING ALL SCRAPERS INDIVIDUALLY`);
+      console.log(`Role: ${input.role}`);
+      console.log(`Location: ${input.location}`);
+      
+      const results = [];
+      const sources = Object.keys(SCRAPERS);
+      
+      for (const sourceName of sources) {
+        const testStart = Date.now();
+        const scraper = SCRAPERS[sourceName];
+        console.log(`\n▶️  Testing ${scraper.name}...`);
+        
+        try {
+          const jobs = await scraper.scrape({ role: input.role, location: input.location });
+          const duration = Date.now() - testStart;
+          
+          const result = {
+            name: scraper.name,
+            key: sourceName,
+            success: true,
+            jobCount: jobs.length,
+            duration: `${duration}ms`,
+            sampleTitles: jobs.slice(0, 3).map(j => j.title),
+            error: null
+          };
+          
+          console.log(`✅ ${scraper.name}: ${jobs.length} jobs in ${duration}ms`);
+          results.push(result);
+          
+        } catch (error: any) {
+          const duration = Date.now() - testStart;
+          const result = {
+            name: scraper.name,
+            key: sourceName,
+            success: false,
+            jobCount: 0,
+            duration: `${duration}ms`,
+            sampleTitles: [],
+            error: error.message
+          };
+          
+          console.error(`❌ ${scraper.name}: ERROR - ${error.message}`);
+          results.push(result);
+        }
+      }
+      
+      const totalJobs = results.reduce((sum, r) => sum + r.jobCount, 0);
+      const workingScrapers = results.filter(r => r.success && r.jobCount > 0).length;
+      
+      console.log(`\n📊 SUMMARY:`);
+      console.log(`Total scrapers: ${sources.length}`);
+      console.log(`Working scrapers: ${workingScrapers}`);
+      console.log(`Total jobs: ${totalJobs}`);
+      
+      return {
+        summary: {
+          totalScrapers: sources.length,
+          workingScrapers,
+          totalJobs
+        },
+        results
+      };
+    }),
+  
   scraper: router({
     runScraper: publicProcedure
       .input(z.object({
@@ -207,12 +277,17 @@ export const appRouter = router({
         const startedAt = new Date().toISOString();
         
         console.log(`[Scraper] ========== NEW RUN: ${runId} ==========`);
-        console.log(`[Scraper] Role: "${role}", Location: "${location}", ForceFresh: ${forceFresh}`);
+        console.log(`[Scraper] Role: "${role}", Location: "${location}"`);
+        console.log(`🔑 forceFresh INPUT VALUE: ${forceFresh} (type: ${typeof forceFresh})`);
+        console.log(`🔑 forceFresh BOOLEAN CHECK: ${forceFresh === true} (strict) | ${!!forceFresh} (truthy)`);
         console.log(`[Scraper] Started at: ${startedAt}`);
         
         try {
           // Check cache only if forceFresh is false
           const cacheKey = `${role}:${location}`;
+          console.log(`🗄️ CACHE KEY: "${cacheKey}"`);
+          console.log(`🗄️ CACHE HAS KEY: ${scrapeCache.has(cacheKey)}`);
+          console.log(`🗄️ WILL USE CACHE: ${!forceFresh && scrapeCache.has(cacheKey)}`);
           
           if (!forceFresh && scrapeCache.has(cacheKey)) {
             const cached = scrapeCache.get(cacheKey)!;
@@ -236,8 +311,12 @@ export const appRouter = router({
           }
           
           // Force fresh scrape
+          console.log(`✅ BYPASSING CACHE - forceFresh=${forceFresh}`);
+          const hadCachedData = scrapeCache.has(cacheKey);
           scrapeCache.delete(cacheKey);
-          console.log(`[Scraper] FRESH SCRAPE - cache cleared`);
+          console.log(`🗑️ CACHE CLEARED - had cached data: ${hadCachedData}`);
+          console.log(`🗑️ CACHE SIZE AFTER DELETE: ${scrapeCache.size}`);
+          console.log(`[Scraper] FRESH SCRAPE - starting scraper execution...`);
           
           // Load profile to get company preferences, red flags, and skills
           const profilePath = path.join(process.cwd(), 'server', 'data', 'profiles', 'miles-tipton.json');
