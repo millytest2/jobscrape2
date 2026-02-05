@@ -1254,3 +1254,22 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 - [x] Manually curate top 10 best matches for Eric (see /home/ubuntu/eric-top-10-jobs.md)
 - [x] Add company tier filtering to scrapers (premium-companies.json with 8 tiers, 100-70pt bonus)
 - [x] Export top 10 jobs to shareable format for Eric (eric-top-10-jobs.md)
+
+
+## 🚨 FIX PREMIUM JOB SCRAPING (Feb 5, 2026 5:25 PM)
+**User Report:** "Tried scrape, got no premium filtering - what's the difference from your manual search?"
+
+### Root Cause:
+- Premium company filtering only RANKS jobs, doesn't FIND them
+- Generic job boards (RemoteOK, Jooble, SerpAPI) don't have FAANG/tier-1 jobs
+- Premium companies post on LinkedIn + their own career pages (not generic boards)
+- Apify LinkedIn scraper returning 403 errors (authentication issue)
+
+### Solution: TWO-STEP PREMIUM BOOST
+- [x] Remove Manus search scraper (won't work in deployed app)
+- [x] Add scrape_results table to database (id, userId, role, location, jobs JSON, boostStatus, createdAt)
+- [ ] Modify scraper endpoint to save results to database with boostStatus='pending'
+- [ ] Add "Boost with Premium Jobs" button to frontend after scrape completes
+- [ ] Add boost endpoint that agent can call to inject 10-20 premium jobs
+- [ ] Frontend refreshes after boost to show combined results
+- [ ] Test two-step flow: scrape (13 sources) → boost (agent search) → combined results

@@ -75,3 +75,30 @@ export const seenJobs = mysqlTable("seen_jobs", {
 
 export type SeenJob = typeof seenJobs.$inferSelect;
 export type InsertSeenJob = typeof seenJobs.$inferInsert;
+
+/**
+ * Scrape results table - stores job scrape results for premium boost feature
+ * Allows agent to add premium jobs to existing scrape results
+ */
+export const scrapeResults = mysqlTable("scrape_results", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Foreign key to users table
+  
+  // Search parameters
+  role: text("role").notNull(),
+  location: text("location").notNull(),
+  profileName: varchar("profileName", { length: 64 }), // e.g., "miles-lott", "eric-leung"
+  
+  // Results data (stored as JSON)
+  jobs: text("jobs").notNull(), // JSON array of Job objects
+  stats: text("stats"), // JSON object with scraped/filtered counts
+  
+  // Boost status
+  boostStatus: mysqlEnum("boostStatus", ["pending", "boosted", "no_boost"]).default("pending").notNull(),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ScrapeResult = typeof scrapeResults.$inferSelect;
+export type InsertScrapeResult = typeof scrapeResults.$inferInsert;

@@ -36,6 +36,13 @@
       "when": 1770256971649,
       "tag": "0005_deep_corsair",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1770331485099,
+      "tag": "0006_bent_pepper_potts",
+      "breakpoints": true
     }
   ]
 }
