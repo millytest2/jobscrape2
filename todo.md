@@ -967,3 +967,23 @@ Removed early stop logic to allow all 13 scrapers to run
 - [ ] Debug Apify scrapers (Career Site + LinkedIn) to get more jobs
 - [ ] Expand SerpAPI to use multiple queries (currently only 1 job)
 - [ ] Add role variations to working scrapers to reach 400+ jobs
+
+
+## 🚨 FIX APIFY SCRAPERS + VERIFY REAL API CALLS (Feb 4, 2026 9:00 PM)
+**CRITICAL ISSUES:**
+1. Scraper completes in 11 seconds (should be 30-60s for 13 real API calls)
+2. Apify LinkedIn returns ERROR_EMPTY_RESPONSE (missing titleSearch + locationSearch parameters)
+3. Apify Career Site returns ERROR_EMPTY_RESPONSE (missing titleSearch + locationSearch parameters)
+
+**TASKS:**
+- [x] Fix Apify LinkedIn scraper - add titleSearch: ["Sales Engineer", "Solutions Engineer"] and locationSearch: ["Los Angeles, CA"] (ALREADY CORRECT)
+- [x] Add location normalization to avoid abbreviations (CA -> California, etc.)
+- [x] Fix Apify Career Site scraper - add titleSearch: ["Sales Engineer"] and locationSearch: ["Los Angeles"] (ALREADY CORRECT)
+- [x] Add location normalization to Apify Career Site (CA -> California, etc.)
+- [ ] Add timing validation - log warning if total scrape time < 20 seconds (indicates cached/stale data)
+- [ ] Add per-scraper timing - log warning if any scraper returns in < 500ms (too fast = not real API call)
+- [ ] Test Apify scrapers individually to verify they return jobs
+- [ ] Run full scrape and verify 30-60s execution time (proves real API calls)
+- [ ] Verify Apify LinkedIn returns 10-20 jobs
+- [ ] Verify Apify Career Site returns 10-20 jobs
+- [ ] Target: 350+ jobs from all 13 sources

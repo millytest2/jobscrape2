@@ -37,6 +37,21 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
     const roleVariations = getRoleVariations(role); // Search role variations
     console.log(`[Apify LinkedIn] Searching ${roleVariations.length} role variations:`, roleVariations);
 
+    // Normalize location to avoid abbreviations (Apify docs: "Please do not use any abbreviations")
+    const normalizedLocation = location
+      .replace(/\bCA\b/g, 'California')
+      .replace(/\bNY\b/g, 'New York')
+      .replace(/\bTX\b/g, 'Texas')
+      .replace(/\bFL\b/g, 'Florida')
+      .replace(/\bIL\b/g, 'Illinois')
+      .replace(/\bPA\b/g, 'Pennsylvania')
+      .replace(/\bOH\b/g, 'Ohio')
+      .replace(/\bGA\b/g, 'Georgia')
+      .replace(/\bNC\b/g, 'North Carolina')
+      .replace(/\bMI\b/g, 'Michigan');
+    
+    console.log(`[Apify LinkedIn] Normalized location: "${location}" -> "${normalizedLocation}"`);
+
     // Start the Apify actor run with multiple role variations
     const runResponse = await axios.post(
       `https://api.apify.com/v2/acts/${APIFY_ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
@@ -45,7 +60,7 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
         limit: 100,
         includeAi: true,
         titleSearch: roleVariations, // Search ALL role variations
-        locationSearch: [location], // Must be array
+        locationSearch: [normalizedLocation, "United States"], // Broader search with full state names
         descriptionType: "text",
       },
       {
