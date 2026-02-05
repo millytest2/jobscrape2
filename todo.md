@@ -866,10 +866,21 @@
 
 **Tasks:**
 - [x] Create role variation helper function (getRoleVariations) in shared/roleVariations.ts
-- [ ] Update Adzuna scraper to search multiple role variations
-- [ ] Update RSS scraper to search multiple role variations  
-- [ ] Update USAJobs scraper to search multiple role variations
-- [ ] Update Apify Career Site scraper to search multiple role variations
-- [ ] Update Apify LinkedIn scraper to search multiple role variations
-- [ ] SerpAPI already has role variations (just added)
-- [ ] Test with "Sales Engineer" to verify we get 400+ jobs from expanded search
+- [x] Update Adzuna scraper to search multiple role variations
+- [x] Update RSS scraper to search multiple role variations  
+- [x] Update USAJobs scraper to search multiple role variations
+- [x] Update Apify Career Site scraper to search multiple role variations
+- [x] Update Apify LinkedIn scraper to search multiple role variations
+- [x] SerpAPI already has role variations (just added)
+- [ ] Test with "Sales Engineer" to verify we get 400+ jobs from expanded search (READY TO TEST)
+
+
+## 🔍 ADD COMPREHENSIVE LOGGING TO DEBUG SCRAPERS (Feb 4, 2026 7:20 PM)
+- [x] Add high-visibility logging to runScrapersParallel (RUN_START, ENABLED_LIST, CALL_START, CALL_END, CALL_ERROR, RUN_END)
+- [x] Add 20-second timeout to each scraper call to prevent hanging
+- [x] Add smoke test to registry.ts to validate all scrapers on startup (✅ All 13 scrapers validated)
+- [x] Add testScraper tRPC endpoint for individual scraper testing
+- [x] Search for allowlist/filter logic that might be blocking scrapers (none found)
+- [x] Restart server and run test scrape
+- [ ] Capture and analyze logs to identify why Adzuna/RSS/USAJobs return 0 jobs (BLOCKED: console output not captured by logging infrastructure)
+- [ ] Fix identified issues based on log analysis (BLOCKED: need to see logs first)

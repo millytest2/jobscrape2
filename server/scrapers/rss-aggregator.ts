@@ -1,5 +1,14 @@
 import Parser from 'rss-parser';
-import type { Job } from './types';
+import type { Job, Scraper, ScrapeParams } from './types';
+
+// Inline role variations to avoid import issues
+function getRoleVariations(role: string): string[] {
+  const normalized = role.toLowerCase().trim();
+  if (normalized.includes('sales engineer') || normalized.includes('sales eng')) {
+    return ['Sales Engineer', 'Pre-Sales Engineer', 'Solutions Engineer', 'Technical Account Manager', 'Demo Engineer'];
+  }
+  return [role];
+}
 
 const parser = new Parser();
 
@@ -9,11 +18,17 @@ const RSS_FEEDS = [
   { url: 'https://stackoverflow.com/jobs/feed', name: 'stackoverflow' }
 ];
 
-export async function scrapeRSSFeeds(role: string, location: string): Promise<Job[]> {
+async function scrape(params: ScrapeParams): Promise<Job[]> {
+  const { role, location } = params;
   const allJobs: Job[] = [];
-  const roleKeywords = role.toLowerCase().split(' ');
   
+  // Get role variations to search
+  const roleVariations = getRoleVariations(role);
   console.log(`[rss-aggregator] Starting scrape for "${role}" in "${location}"`);
+  console.log(`[rss-aggregator] Searching ${roleVariations.length} role variations:`, roleVariations);
+  
+  // Build keyword list from all role variations
+  const roleKeywords = roleVariations.flatMap(r => r.toLowerCase().split(' '));
   
   for (const feed of RSS_FEEDS) {
     try {
@@ -84,3 +99,8 @@ function extractLocation(item: any, searchLocation: string): string {
   
   return 'Remote'; // Default to remote for RSS feeds
 }
+
+export const rssScraper: Scraper = {
+  name: 'RSS Feeds',
+  scrape,
+};

@@ -15,6 +15,12 @@ const scrapeCache = new Map<string, { runId: string; jobs: Job[]; top20: any[]; 
 // Clear cache on server startup to force fresh scraping after code changes
 scrapeCache.clear();
 
+// Helper to clear cache manually
+export function clearScrapeCache() {
+  scrapeCache.clear();
+  console.log('[Cache] Cleared all scrape cache');
+}
+
 /**
  * Run scrapers in parallel with concurrency limit
  */
@@ -23,10 +29,15 @@ async function runScrapersParallel(
   location: string,
   concurrency: number = 8
 ): Promise<{ jobs: Job[]; errorsBySource: Record<string, string>; countsBySource: Record<string, number> }> {
+  const runId = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
   const allJobs: Job[] = [];
   const errorsBySource: Record<string, string> = {};
   const countsBySource: Record<string, number> = {};
   const sources = Object.keys(SCRAPERS);
+  
+  console.log(`🚀 RUN_START ${runId} role="${role}" location="${location}"`);
+  console.log(`📋 SCRAPERS_TOTAL ${runId} count=${sources.length}`);
+  console.log(`📝 ENABLED_LIST ${runId} names=[${sources.join(', ')}]`);
   
   // Process sources in batches with concurrency limit
   for (let i = 0; i < sources.length; i += concurrency) {
@@ -36,15 +47,30 @@ async function runScrapersParallel(
       batch.map(async (sourceName) => {
         const sourceStartTime = Date.now();
         const sourceStartedAt = new Date().toISOString();
+        console.log(`▶️  CALL_START ${runId} name=${sourceName}`);
+        
         try {
-          console.log(`[${sourceName}] Starting scrape for role="${role}" location="${location}"`);
           const scraper = SCRAPERS[sourceName];
-          const jobs = await scraper.scrape({ role, location });
+          
+          // Add 20-second timeout to prevent hanging
+          const timeoutPromise = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('TIMEOUT')), 20000)
+          );
+          
+          const jobs = await Promise.race([
+            scraper.scrape({ role, location }),
+            timeoutPromise
+          ]);
+          
           const durationMs = Date.now() - sourceStartTime;
-          console.log(`[${sourceName}] ✓ Completed in ${durationMs}ms | Jobs: ${jobs.length}`);
+          console.log(`✅ CALL_END ${runId} name=${sourceName} jobs=${jobs.length} duration=${durationMs}ms`);
           return { sourceName, jobs, durationMs, startedAt: sourceStartedAt };
         } catch (error: any) {
-          return { sourceName, jobs: [], error: error.message };
+          const durationMs = Date.now() - sourceStartTime;
+          const errorMsg = error.message || 'Unknown error';
+          const stackTop = error.stack?.split('\n')[0] || '';
+          console.error(`❌ CALL_ERROR ${runId} name=${sourceName} duration=${durationMs}ms error="${errorMsg}" stack="${stackTop}"`);
+          return { sourceName, jobs: [], error: errorMsg };
         }
       })
     );
@@ -80,6 +106,8 @@ async function runScrapersParallel(
     }
   }
   
+  console.log(`🏁 RUN_END ${runId} totalJobs=${allJobs.length} sources=${sources.length}`);
+  
   return { jobs: allJobs, errorsBySource, countsBySource };
 }
 
@@ -114,6 +142,54 @@ export const appRouter = router({
       timestamp: new Date().toISOString(),
     };
   }),
+  
+  testScraper: publicProcedure
+    .input(z.object({
+      scraperName: z.string(),
+      role: z.string(),
+      location: z.string()
+    }))
+    .query(async ({ input }) => {
+      console.log(`\n🧪 TEST_SCRAPER_START name=${input.scraperName}`);
+      
+      const scraper = SCRAPERS[input.scraperName];
+      
+      if (!scraper) {
+        console.log(`❌ TEST_SCRAPER_NOT_FOUND name=${input.scraperName}`);
+        console.log(`Available scrapers: ${Object.keys(SCRAPERS).join(', ')}`);
+        return { error: `Scraper '${input.scraperName}' not found` };
+      }
+      
+      console.log(`✅ TEST_SCRAPER_FOUND name=${input.scraperName} scraperName="${scraper.name}" fnType=${typeof scraper.scrape}`);
+      
+      try {
+        const startTime = Date.now();
+        console.log(`▶️  TEST_SCRAPER_CALLING name=${input.scraperName}`);
+        
+        const jobs = await scraper.scrape({ role: input.role, location: input.location });
+        const duration = Date.now() - startTime;
+        
+        console.log(`✅ TEST_SCRAPER_SUCCESS name=${input.scraperName} jobs=${jobs.length} duration=${duration}ms`);
+        
+        return {
+          success: true,
+          scraperName: input.scraperName,
+          scraperDisplayName: scraper.name,
+          jobCount: jobs.length,
+          duration,
+          sampleJob: jobs[0] || null
+        };
+      } catch (error: any) {
+        console.error(`❌ TEST_SCRAPER_ERROR name=${input.scraperName} error="${error.message}"`);
+        console.error(error.stack);
+        
+        return {
+          success: false,
+          error: error.message,
+          stack: error.stack
+        };
+      }
+    }),
   
   scraper: router({
     runScraper: publicProcedure

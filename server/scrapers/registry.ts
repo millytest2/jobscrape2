@@ -13,9 +13,9 @@ import { craigslistScraper } from './craigslist';
 import { theMuseScraper } from './themuse';
 import { apifyCareerSiteScraper } from './apify-career-site';
 import { apifyLinkedInScraper } from './apify-linkedin';
-import { adzunaScraper } from './adzuna-wrapper';
-import { rssScraper } from './rss-wrapper';
-import { usajobsScraper } from './usajobs-wrapper';
+import { adzunaScraper } from './adzuna';
+import { rssScraper } from './rss-aggregator';
+import { usajobsScraper } from './usajobs';
 
 import type { ScraperRegistry } from './types';
 
@@ -36,3 +36,17 @@ export const SCRAPERS: ScraperRegistry = {
 };
 
 export const SCRAPER_NAMES = Object.keys(SCRAPERS);
+
+// Smoke test on import - verify all scrapers are valid
+console.log('\n🔍 SMOKE TEST: Validating scraper registry');
+Object.entries(SCRAPERS).forEach(([key, scraper]) => {
+  const nameValid = typeof scraper.name === 'string';
+  const scrapeValid = typeof scraper.scrape === 'function';
+  const valid = nameValid && scrapeValid;
+  console.log(`  ${valid ? '✅' : '❌'} ${key}: name="${scraper.name}", scrape=${typeof scraper.scrape}`);
+  
+  if (!valid) {
+    throw new Error(`FATAL: Scraper '${key}' is invalid (name: ${typeof scraper.name}, scrape: ${typeof scraper.scrape})`);
+  }
+});
+console.log('✅ SMOKE TEST PASSED: All scrapers valid\n');

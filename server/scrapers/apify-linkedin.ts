@@ -1,5 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 import type { Job, Scraper, ScrapeParams } from "./types";
+
+// Inline role variations to avoid import issues
+function getRoleVariations(role: string): string[] {
+  const normalized = role.toLowerCase().trim();
+  if (normalized.includes('sales engineer') || normalized.includes('sales eng')) {
+    return ['Sales Engineer', 'Pre-Sales Engineer', 'Solutions Engineer', 'Technical Account Manager', 'Demo Engineer'];
+  }
+  return [role];
+}
 
 // Correct actor ID from user-provided code: vIGxjRrHqDTPuE6M4
 const APIFY_ACTOR_ID = "vIGxjRrHqDTPuE6M4";
@@ -23,15 +32,19 @@ async function scrapeApifyLinkedIn(params: ScrapeParams): Promise<Job[]> {
   const { role, location } = params;
   try {
     console.log(`[Apify LinkedIn] Scraping for "${role}" in "${location}"...`);
+    
+    // Get role variations to search
+    const roleVariations = getRoleVariations(role); // Search role variations
+    console.log(`[Apify LinkedIn] Searching ${roleVariations.length} role variations:`, roleVariations);
 
-    // Start the Apify actor run with correct parameters from user code
+    // Start the Apify actor run with multiple role variations
     const runResponse = await axios.post(
       `https://api.apify.com/v2/acts/${APIFY_ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
       {
         timeRange: "7d",
         limit: 100,
         includeAi: true,
-        titleSearch: [role], // Must be array
+        titleSearch: roleVariations, // Search ALL role variations
         locationSearch: [location], // Must be array
         descriptionType: "text",
       },

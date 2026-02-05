@@ -72,6 +72,7 @@ export function getRoleVariations(primaryRole: string): RoleVariations {
  * @returns Array of role variations, prioritizing direct matches
  */
 export function getLimitedRoleVariations(primaryRole: string, maxVariations: number = 3): string[] {
+  console.log(`[roleVariations] getLimitedRoleVariations called with: "${primaryRole}", max=${maxVariations}`);
   const variations = getRoleVariations(primaryRole);
   
   // Prioritize direct roles, then add indirect if space allows
@@ -82,5 +83,7 @@ export function getLimitedRoleVariations(primaryRole: string, maxVariations: num
     limited.push(...variations.indirect.slice(0, remaining));
   }
   
-  return limited.slice(0, maxVariations);
+  const result = limited.slice(0, maxVariations);
+  console.log(`[roleVariations] Returning ${result.length} variations:`, result);
+  return result;
 }
