@@ -1293,3 +1293,13 @@ Result: 500+ jobs across ALL relevant variants → Top 20 BEST matches
 - [x] Check if different scrapers are returning same jobs with slightly different URLs
 - [x] **ROOT CAUSE:** Different job boards return same job with different URLs (RemoteOK vs LinkedIn vs company site)
 - [x] **FIX:** Added title+company deduplication as backup (line 177-182 in filter.ts)
+
+## Resume Ingestion & Profile Enrichment (Requested Mar 27, 2026)
+
+- [x] Add a versioned resume-record data model with user ownership, source-file metadata, extracted profile data, and an active-resume flag
+- [x] Add secure DOCX and PDF resume upload with S3-backed original-file storage
+- [x] Extract text and structured evidence from uploaded resumes, including roles, skills, locations, experience, and achievements
+- [x] Build a user-controlled resume-review and activation workflow so only an approved version enriches job matching
+- [x] Use the active resume evidence to expand search queries, preserve explicitly targeted technical roles, and improve job-ranking signals
+- [x] Add a Resume Library interface that supports upload, version history, active-version selection, deletion, and extracted-evidence review
+- [x] Add automated tests for resume parsing, document validation, explicit-role eligibility, and profile-enriched search inputs

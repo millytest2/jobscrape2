@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -59,6 +59,30 @@ export const savedJobs = mysqlTable("saved_jobs", {
 
 export type SavedJob = typeof savedJobs.$inferSelect;
 export type InsertSavedJob = typeof savedJobs.$inferInsert;
+
+/**
+ * Resume documents are versioned by user and profile. The original file lives
+ * in object storage; the database stores metadata and approved matching evidence.
+ */
+export const resumeDocuments = mysqlTable("resume_documents", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  profileName: varchar("profileName", { length: 64 }).notNull(),
+  fileName: varchar("fileName", { length: 255 }).notNull(),
+  mimeType: varchar("mimeType", { length: 128 }).notNull(),
+  fileSize: int("fileSize").notNull(),
+  storageKey: text("storageKey").notNull(),
+  storageUrl: text("storageUrl").notNull(),
+  extractedData: text("extractedData"),
+  parseStatus: mysqlEnum("parseStatus", ["ready", "failed"]).default("ready").notNull(),
+  parseError: text("parseError"),
+  isActive: boolean("isActive").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ResumeDocument = typeof resumeDocuments.$inferSelect;
+export type InsertResumeDocument = typeof resumeDocuments.$inferInsert;
 
 /**
  * Seen jobs table - tracks which jobs user has already viewed across scrape runs

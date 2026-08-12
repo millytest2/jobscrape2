@@ -43,6 +43,13 @@
       "when": 1770331485099,
       "tag": "0006_bent_pepper_potts",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1786564041124,
+      "tag": "0007_zippy_red_ghost",
+      "breakpoints": true
     }
   ]
 }

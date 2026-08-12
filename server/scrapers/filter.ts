@@ -755,9 +755,19 @@ function shouldExcludeJob(job: Job, options: FilterOptions): boolean {
     'data scientist', 'research engineer', 'security engineer'
   ];
   if (pureEngineeringKeywords.some(kw => title.includes(kw))) {
-    // Exception: If title also includes sales-related keywords, allow it
+    // Exception: If the user's selected profile or active resume explicitly
+    // targets this role, it is intentional rather than an irrelevant detour.
+    const isExplicitTargetRole = options.targetRoles.some(targetRole => {
+      const normalizedTarget = normalizeText(targetRole);
+      return normalizedTarget.length > 2 && (
+        title.includes(normalizedTarget) ||
+        normalizedTarget.split(' ').every(word => title.includes(word))
+      );
+    });
+
+    // Secondary exception: sales-focused technical roles are valid for sales profiles.
     const salesKeywords = ['sales', 'pre-sales', 'presales', 'demo', 'solutions', 'customer'];
-    if (!salesKeywords.some(sk => title.includes(sk))) {
+    if (!isExplicitTargetRole && !salesKeywords.some(sk => title.includes(sk))) {
       return true; // Block pure engineering
     }
   }

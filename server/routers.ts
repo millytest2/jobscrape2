@@ -9,6 +9,15 @@ import { SCRAPERS, SCRAPER_NAMES } from "./scrapers/registry";
 import { removeGhostJobs, rankJobs, type FilterOptions } from "./scrapers/filter";
 import type { Job } from "./scrapers/types";
 import { logToFile } from "./utils/logger";
+import { randomUUID } from "node:crypto";
+import {
+  extractResumeEvidence,
+  extractResumeText,
+  getActiveResumeEvidence,
+  parseStoredResumeEvidence,
+  validateResumeFile,
+} from "./resume";
+import { storagePut } from "./storage";
 
 // In-memory cache for last successful scrape results
 const scrapeCache = new Map<string, { runId: string; jobs: Job[]; top20: any[]; timestamp: string; stats: any }>();
@@ -334,6 +343,14 @@ export const appRouter = router({
             console.warn(`[Scraper] Could not load profile "${profileName}", using defaults`);
             logToFile(`⚠️ PROFILE_ERROR name="${profileName}" error="${error}"`);
           }
+
+          // An approved resume supplements the editable profile without replacing it.
+          // This lets the newest resume improve search coverage and skill matching.
+          const resumeEvidence = await getActiveResumeEvidence(ctx.user.id, profileName);
+          if (resumeEvidence) {
+            console.log(`[Scraper] 📄 Active resume evidence loaded: ${resumeEvidence.targetRoles.length} roles, ${resumeEvidence.skills.length} skills`);
+            logToFile(`📄 ACTIVE_RESUME profile="${profileName}" roles=${resumeEvidence.targetRoles.length} skills=${resumeEvidence.skills.length}`);
+          }
           
           // INTELLIGENT SEARCH EXPANSION: Combine user input + profile roles
           const expandedRoles = new Set<string>();
@@ -348,6 +365,9 @@ export const appRouter = router({
           if (profile.target_roles?.indirect) {
             profile.target_roles.indirect.forEach((r: string) => expandedRoles.add(r));
           }
+
+          // Resume-derived roles require explicit user activation in the Resume Library.
+          resumeEvidence?.targetRoles.forEach(roleFromResume => expandedRoles.add(roleFromResume));
           
           const roleList = Array.from(expandedRoles);
           console.log(`[Scraper] 🧠 INTELLIGENT SEARCH EXPANSION:`);
@@ -370,13 +390,17 @@ export const appRouter = router({
               role,
               ...(profile.target_roles?.direct || []),
               ...(profile.target_roles?.indirect || []),
+              ...(resumeEvidence?.targetRoles || []),
             ],
             targetLocation: location,
             missionDrivenKeywords: profile.company_preferences?.mission_driven_keywords || [
               'ai', 'ml', 'machine learning', 'artificial intelligence',
               'saas', 'innovative', 'startup', 'tech', 'developer tools',
             ],
-            maxExperienceYears: profile.experience_summary?.total_years || 5,
+            maxExperienceYears: Math.max(
+              profile.experience_summary?.total_years || 5,
+              resumeEvidence?.yearsOfExperience || 0,
+            ),
             companyPreferences: {
               size: profile.company_preferences?.size || [],
               stage: profile.company_preferences?.stage || [],
@@ -385,7 +409,10 @@ export const appRouter = router({
             redFlags: Array.isArray(profile.red_flags) ? profile.red_flags : (profile.red_flags?.avoid || []),
             skills: {
               technical: profile.skills?.technical || [],
-              sales: profile.skills?.sales || [],
+              sales: [
+                ...(profile.skills?.sales || []),
+                ...(resumeEvidence?.skills || []),
+              ],
               soft: profile.skills?.soft_skills || [], // Note: profile has 'soft_skills' not 'soft'
             },
           };
@@ -591,6 +618,150 @@ export const appRouter = router({
           console.error("Profile update error:", error);
           throw new Error("Failed to update profile");
         }
+      }),
+  }),
+
+  // Resume Router - versioned, user-owned resumes that can enrich job matching.
+  resume: router({
+    upload: protectedProcedure
+      .input(z.object({
+        profileName: z.string().min(1).max(64),
+        fileName: z.string().min(1).max(255),
+        mimeType: z.string().min(1).max(128),
+        dataBase64: z.string().min(4).max(6 * 1024 * 1024),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const buffer = Buffer.from(input.dataBase64, 'base64');
+        const kind = validateResumeFile({
+          fileName: input.fileName,
+          mimeType: input.mimeType,
+          buffer,
+        });
+
+        let extractedData: string | null = null;
+        let parseStatus: 'ready' | 'failed' = 'ready';
+        let parseError: string | null = null;
+        try {
+          const text = await extractResumeText(kind, buffer);
+          const evidence = extractResumeEvidence(text);
+          if (!evidence.summary) {
+            throw new Error('No readable resume text was found. Please use a text-based PDF or DOCX file.');
+          }
+          extractedData = JSON.stringify(evidence);
+        } catch (error: any) {
+          parseStatus = 'failed';
+          parseError = error?.message || 'The resume could not be parsed.';
+        }
+
+        const safeProfileName = input.profileName.replace(/[^a-zA-Z0-9_-]/g, '-');
+        const safeFileName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, '-');
+        const storageKey = `${ctx.user.id}/resumes/${safeProfileName}/${Date.now()}-${randomUUID()}-${safeFileName}`;
+        const stored = await storagePut(storageKey, buffer, input.mimeType);
+
+        const { getDb } = await import('./db');
+        const { resumeDocuments } = await import('../drizzle/schema');
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+
+        const created = await db.insert(resumeDocuments).values({
+          userId: ctx.user.id,
+          profileName: input.profileName,
+          fileName: input.fileName,
+          mimeType: input.mimeType,
+          fileSize: buffer.length,
+          storageKey: stored.key,
+          storageUrl: stored.url,
+          extractedData,
+          parseStatus,
+          parseError,
+          isActive: false,
+        });
+
+        return {
+          id: created[0].insertId,
+          parseStatus,
+          parseError,
+          evidence: parseStoredResumeEvidence(extractedData),
+        };
+      }),
+
+    list: protectedProcedure
+      .input(z.object({ profileName: z.string().min(1).max(64) }))
+      .query(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { resumeDocuments } = await import('../drizzle/schema');
+        const { and, desc, eq } = await import('drizzle-orm');
+        const db = await getDb();
+        if (!db) return [];
+
+        const documents = await db.select()
+          .from(resumeDocuments)
+          .where(and(
+            eq(resumeDocuments.userId, ctx.user.id),
+            eq(resumeDocuments.profileName, input.profileName),
+          ))
+          .orderBy(desc(resumeDocuments.createdAt));
+
+        return documents.map(document => ({
+          ...document,
+          evidence: parseStoredResumeEvidence(document.extractedData),
+        }));
+      }),
+
+    setActive: protectedProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { resumeDocuments } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+
+        const record = await db.select()
+          .from(resumeDocuments)
+          .where(and(
+            eq(resumeDocuments.id, input.id),
+            eq(resumeDocuments.userId, ctx.user.id),
+          ))
+          .limit(1);
+        if (!record[0]) throw new Error('Resume not found.');
+        if (record[0].parseStatus !== 'ready' || !record[0].extractedData) {
+          throw new Error('Only successfully parsed resumes can be used for job matching.');
+        }
+
+        await db.transaction(async tx => {
+          await tx.update(resumeDocuments)
+            .set({ isActive: false })
+            .where(and(
+              eq(resumeDocuments.userId, ctx.user.id),
+              eq(resumeDocuments.profileName, record[0].profileName),
+            ));
+          await tx.update(resumeDocuments)
+            .set({ isActive: true })
+            .where(and(
+              eq(resumeDocuments.id, input.id),
+              eq(resumeDocuments.userId, ctx.user.id),
+            ));
+        });
+
+        return { success: true, profileName: record[0].profileName };
+      }),
+
+    remove: protectedProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import('./db');
+        const { resumeDocuments } = await import('../drizzle/schema');
+        const { and, eq } = await import('drizzle-orm');
+        const db = await getDb();
+        if (!db) throw new Error('Database not available');
+
+        await db.delete(resumeDocuments)
+          .where(and(
+            eq(resumeDocuments.id, input.id),
+            eq(resumeDocuments.userId, ctx.user.id),
+          ));
+        return { success: true };
       }),
   }),
   

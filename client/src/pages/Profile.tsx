@@ -1,13 +1,195 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, User, Briefcase, MapPin, DollarSign, Building2, AlertCircle, Edit, Save, X, Heart, ExternalLink, Trash2 } from "lucide-react";
+import { Loader2, User, Briefcase, MapPin, DollarSign, Building2, AlertCircle, Edit, Save, X, Heart, ExternalLink, Trash2, FileText, Upload, Sparkles, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
+
+function ResumeLibrary() {
+  const [profileName, setProfileName] = useState("miles-tipton");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const resumeQuery = trpc.resume.list.useQuery({ profileName });
+  const profilesQuery = trpc.scraper.listProfiles.useQuery();
+  const utils = trpc.useUtils();
+
+  const uploadMutation = trpc.resume.upload.useMutation({
+    onSuccess: (data) => {
+      if (data.parseStatus === "ready") {
+        toast.success("Resume added. Review the extracted evidence, then make it active for matching.");
+      } else {
+        toast.error(data.parseError || "Resume was saved, but its text could not be extracted.");
+      }
+      utils.resume.list.invalidate({ profileName });
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    },
+    onError: (error) => toast.error(error.message),
+  });
+
+  const setActiveMutation = trpc.resume.setActive.useMutation({
+    onSuccess: () => {
+      toast.success("Active resume updated. Your next search will use this evidence.");
+      utils.resume.list.invalidate({ profileName });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+
+  const removeMutation = trpc.resume.remove.useMutation({
+    onSuccess: () => {
+      toast.success("Resume version removed.");
+      utils.resume.list.invalidate({ profileName });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validExtension = /\.(pdf|docx)$/i.test(file.name);
+    if (!validExtension) {
+      toast.error("Upload a PDF or DOCX resume.");
+      event.target.value = "";
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error("Resume files must be 4 MB or smaller.");
+      event.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = String(reader.result || "");
+      const dataBase64 = dataUrl.split(",")[1];
+      if (!dataBase64) {
+        toast.error("The resume could not be read in this browser.");
+        return;
+      }
+      const mimeType = file.type || (file.name.toLowerCase().endsWith(".pdf")
+        ? "application/pdf"
+        : "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+      uploadMutation.mutate({ profileName, fileName: file.name, mimeType, dataBase64 });
+    };
+    reader.onerror = () => toast.error("The resume could not be read in this browser.");
+    reader.readAsDataURL(file);
+  };
+
+  const resumes = resumeQuery.data || [];
+
+  return (
+    <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-background to-background">
+      <CardHeader>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-primary" />
+              Resume Library
+            </CardTitle>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Upload every tailored version. Choose one approved version to strengthen role search and skills matching on your next scrape.
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 sm:items-end">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Resume profile</label>
+            <select
+              value={profileName}
+              onChange={(event) => setProfileName(event.target.value)}
+              className="h-9 rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              aria-label="Choose a profile for uploaded resume versions"
+            >
+              {(profilesQuery.data || []).map(profile => (
+                <option key={profile.id} value={profile.id}>{profile.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div className="flex flex-col gap-3 rounded-xl border border-dashed border-primary/40 bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+            <div>
+              <p className="font-medium">Add a tailored resume version</p>
+              <p className="text-sm text-muted-foreground">PDF or DOCX, up to 4 MB. Originals remain private and are stored separately from profile data.</p>
+            </div>
+          </div>
+          <Button onClick={() => fileInputRef.current?.click()} disabled={uploadMutation.isPending}>
+            {uploadMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+            {uploadMutation.isPending ? "Reading Resume" : "Upload Resume"}
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+
+        {resumeQuery.isLoading ? (
+          <div className="flex items-center justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+        ) : resumes.length === 0 ? (
+          <div className="rounded-xl border bg-background/70 px-5 py-8 text-center">
+            <FileText className="mx-auto mb-3 h-10 w-10 text-muted-foreground/40" />
+            <p className="font-medium">No resume versions for this profile yet</p>
+            <p className="mt-1 text-sm text-muted-foreground">Upload your latest tailored resume to add evidence for your next job search.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {resumes.map(resume => (
+              <div key={resume.id} className={`rounded-xl border p-4 ${resume.isActive ? "border-primary bg-primary/5" : "bg-background"}`}>
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0 space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="truncate font-semibold">{resume.fileName}</p>
+                      {resume.isActive && <Badge className="gap-1"><CheckCircle2 className="h-3 w-3" />Active for matching</Badge>}
+                      {resume.parseStatus === "failed" && <Badge variant="destructive">Needs a text-based file</Badge>}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Uploaded {new Date(resume.createdAt).toLocaleString()} · {(resume.fileSize / 1024).toFixed(0)} KB
+                    </p>
+                    {resume.parseStatus === "failed" ? (
+                      <p className="text-sm text-destructive">{resume.parseError || "Resume text was not extracted."}</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {(resume.evidence?.targetRoles ?? []).length > 0 && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {(resume.evidence?.targetRoles ?? []).slice(0, 6).map((role: string) => <Badge key={role} variant="secondary">{role}</Badge>)}
+                          </div>
+                        )}
+                        {(resume.evidence?.skills ?? []).length > 0 && (
+                          <p className="text-sm text-muted-foreground">
+                            <span className="font-medium text-foreground">Evidence found:</span> {(resume.evidence?.skills ?? []).slice(0, 8).join(", ")}
+                            {(resume.evidence?.skills ?? []).length > 8 ? "…" : ""}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 flex-wrap gap-2">
+                    {!resume.isActive && resume.parseStatus === "ready" && (
+                      <Button size="sm" onClick={() => setActiveMutation.mutate({ id: resume.id })} disabled={setActiveMutation.isPending}>
+                        {setActiveMutation.isPending ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : <Sparkles className="mr-1 h-3.5 w-3.5" />}
+                        Use for Matching
+                      </Button>
+                    )}
+                    <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => removeMutation.mutate({ id: resume.id })} disabled={removeMutation.isPending}>
+                      <Trash2 className="mr-1 h-3.5 w-3.5" />Remove
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 // Saved Jobs Section Component
 function SavedJobsSection() {
@@ -600,6 +782,9 @@ export default function Profile() {
 
           {/* Saved Jobs Section */}
           <SavedJobsSection />
+
+          {/* Resume versions and evidence used to enrich job matching */}
+          <ResumeLibrary />
 
           {/* Red Flags */}
           {profile.red_flags && profile.red_flags.length > 0 && (
