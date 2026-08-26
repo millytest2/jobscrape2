@@ -1,0 +1,404 @@
+<title>Miles Tipton Career Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#F2F4F2; --surface:#FFFFFF; --surface-2:#EAEEEB;
+  --ink:#16201C; --ink-2:#33453D; --muted:#5A6B63;
+  --rule:#D8DEDA; --rule-strong:#BCC7C1;
+  --accent:#0E6B54; --accent-soft:#E3EFEA;
+  --critical:#A83828; --critical-soft:#F6E7E3; --critical-rule:#E0BEB6;
+  --shadow:0 1px 2px rgba(22,32,28,.05),0 8px 24px -16px rgba(22,32,28,.28);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#101613; --surface:#171F1B; --surface-2:#1E2823;
+    --ink:#E6EDE9; --ink-2:#C2D0C9; --muted:#93A49B;
+    --rule:#2A342E; --rule-strong:#3B473F;
+    --accent:#4FBF9F; --accent-soft:#16302A;
+    --critical:#E8735C; --critical-soft:#2E1A16; --critical-rule:#54291F;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101613; --surface:#171F1B; --surface-2:#1E2823;
+  --ink:#E6EDE9; --ink-2:#C2D0C9; --muted:#93A49B;
+  --rule:#2A342E; --rule-strong:#3B473F;
+  --accent:#4FBF9F; --accent-soft:#16302A;
+  --critical:#E8735C; --critical-soft:#2E1A16; --critical-rule:#54291F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:0 clamp(20px,5vw,56px) 96px}
+
+/* ---- masthead ---- */
+.mast{padding:clamp(48px,8vw,88px) 0 0}
+.kicker{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+}
+.mast h1{
+  font-family:Newsreader,Georgia,serif; font-weight:600;
+  font-size:clamp(38px,6.2vw,60px); line-height:1.04; letter-spacing:-.015em;
+  margin:14px 0 0; text-wrap:balance;
+}
+.dek{
+  font-family:Newsreader,Georgia,serif; font-size:clamp(18px,2.3vw,21px);
+  line-height:1.5; color:var(--ink-2); max-width:60ch; margin:16px 0 0;
+}
+.meta{
+  display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:26px;
+  padding-top:20px; border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--muted);
+}
+
+/* ---- section scaffolding: left rail carries the label ---- */
+section{
+  display:grid; grid-template-columns:132px minmax(0,1fr); gap:0 36px;
+  padding:44px 0; border-top:1px solid var(--rule);
+}
+section:first-of-type{border-top:none}
+.rail{
+  font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted); padding-top:9px;
+}
+.body{min-width:0; max-width:68ch}
+h2{
+  font-family:Newsreader,Georgia,serif; font-weight:600;
+  font-size:clamp(25px,3.4vw,32px); line-height:1.18; letter-spacing:-.01em;
+  margin:0 0 14px; text-wrap:balance;
+}
+h3{
+  font-size:15px; font-weight:600; margin:30px 0 8px; letter-spacing:.005em;
+}
+p{margin:0 0 15px}
+.body>p:last-child,.body>ul:last-child,.body>ol:last-child{margin-bottom:0}
+ul,ol{margin:0 0 15px; padding-left:20px}
+li{margin-bottom:7px}
+li::marker{color:var(--accent)}
+strong{font-weight:600; color:var(--ink)}
+em{font-style:italic; color:var(--ink-2)}
+a{color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2.5px}
+a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+code,.mono{font-family:"IBM Plex Mono",monospace; font-size:.885em}
+code{background:var(--surface-2); padding:.12em .38em; border-radius:3px}
+
+/* ---- the one critical callout ---- */
+.alarm{
+  background:var(--critical-soft); border:1px solid var(--critical-rule);
+  border-left:3px solid var(--critical); border-radius:4px;
+  padding:20px 22px; margin:0 0 22px;
+}
+.alarm .tag{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--critical); font-weight:500;
+}
+.alarm p{margin:9px 0 0; color:var(--ink)}
+.alarm p:first-of-type{font-size:17.5px; font-weight:500}
+
+/* ---- data table ---- */
+.scroll{overflow-x:auto; margin:0 0 18px; border:1px solid var(--rule); border-radius:4px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:560px}
+th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--rule); vertical-align:top}
+thead th{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); font-weight:500;
+  background:var(--surface-2); border-bottom:1px solid var(--rule-strong);
+}
+tbody tr:last-child td{border-bottom:none}
+td.name{font-weight:600; white-space:nowrap}
+.clash{color:var(--critical); font-weight:600}
+.mono-cell{font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums}
+
+/* ---- resume cards ---- */
+.cards{display:grid; gap:12px; margin:0 0 6px}
+.card{
+  background:var(--surface); border:1px solid var(--rule); border-radius:4px;
+  padding:16px 18px; box-shadow:var(--shadow);
+}
+.card .fname{
+  font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:500;
+  color:var(--accent); word-break:break-word;
+}
+.card p{margin:7px 0 0; font-size:14.5px; color:var(--ink-2)}
+
+/* ---- tiers ---- */
+.tier{border-left:2px solid var(--rule-strong); padding:2px 0 2px 18px; margin:0 0 22px}
+.tier .th{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px}
+.tier h3{margin:0; font-size:16px}
+.pill{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; padding:2.5px 8px; border-radius:99px;
+  background:var(--accent-soft); color:var(--accent); border:1px solid var(--rule);
+}
+.tier p{margin:7px 0 0; font-size:15px}
+.co{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--ink-2); margin-top:8px}
+
+/* ---- numbered plan: order genuinely matters here ---- */
+ol.steps{list-style:none; padding:0; counter-reset:s; margin:0}
+ol.steps li{
+  counter-increment:s; position:relative; padding-left:36px; margin-bottom:13px;
+}
+ol.steps li::before{
+  content:counter(s,decimal-leading-zero); position:absolute; left:0; top:2px;
+  font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--accent);
+  font-variant-numeric:tabular-nums;
+}
+.stat{
+  display:flex; flex-wrap:wrap; gap:26px; padding:16px 0; margin:0 0 18px;
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+}
+.stat div{min-width:104px}
+.stat .n{
+  font-family:Newsreader,Georgia,serif; font-size:30px; font-weight:600;
+  line-height:1; color:var(--accent); font-variant-numeric:tabular-nums;
+}
+.stat .l{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); margin-top:7px;
+}
+.note{font-size:14px; color:var(--muted); font-style:italic}
+footer{
+  border-top:1px solid var(--rule); margin-top:44px; padding-top:22px;
+  font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted);
+}
+@media (max-width:720px){
+  section{grid-template-columns:1fr; gap:0}
+  .rail{padding:0 0 12px}
+}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kicker">Resume review &amp; search plan · August 2026</div>
+  <h1>Miles Tipton Career Kit</h1>
+  <p class="dek">Five resumes reconciled into one record, rebuilt as four ATS-optimized versions, plus the target list and weekly plan to run them against.</p>
+  <div class="meta">
+    <span>Target: Sales Engineer / Solutions Consultant</span>
+    <span>Los Angeles + Remote</span>
+    <span>4 resume variants</span>
+  </div>
+</header>
+
+<section>
+  <div class="rail">Fix first</div>
+  <div class="body">
+    <h2>Your five resumes describe five different employment histories</h2>
+
+    <div class="alarm">
+      <div class="tag">Highest priority</div>
+      <p>This is not a formatting problem. Titles, dates, company spellings, and metrics contradict each other across the files you sent.</p>
+      <p>Recruiters open your LinkedIn beside your resume within seconds. Employment-verification vendors check title and dates, not bullets. A discrepancy found after an offer is the kind that gets it rescinded.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Employer</th><th>Titles claimed</th><th>Dates claimed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">The Social Hogg</td>
+            <td>Sales Closer / Business Development Representative / Contract Sales Closer</td>
+            <td class="mono-cell">04/2026 – Present<br><span class="clash">also written “2026 – Present”</span></td>
+          </tr>
+          <tr>
+            <td class="name">— name itself</td>
+            <td class="clash">The Social Hogg / Social Hog / The Social Hog</td>
+            <td class="mono-cell">—</td>
+          </tr>
+          <tr>
+            <td class="name">UPath.ai</td>
+            <td>Head of Technology / Co-Founder / Head of Sales Enablement and Technology</td>
+            <td class="mono-cell clash">06/2024 vs 02/2025 start</td>
+          </tr>
+          <tr>
+            <td class="name">Merly.ai</td>
+            <td>Technical Sales Specialist</td>
+            <td class="mono-cell clash">ends 08/2025 vs 09/2025</td>
+          </tr>
+          <tr>
+            <td class="name">Inbenta</td>
+            <td>Sales Engineer / Associate Sales Engineer</td>
+            <td class="mono-cell">07/2023 – 06/2024 ✓</td>
+          </tr>
+          <tr>
+            <td class="name">Homegrown Solutions</td>
+            <td>Sales Engineer</td>
+            <td class="mono-cell">02/2023 – 06/2023 · <span class="clash">on 1 of 5 resumes</span></td>
+          </tr>
+          <tr>
+            <td class="name">Reyvisum Solutions</td>
+            <td>Technology Consultant</td>
+            <td class="mono-cell clash">01/2022 – 09/2024 · overlaps two full-time roles</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Metrics drift too: inbound leads appear as <code>50+</code>, <code>100+</code>, or <code>50</code>. Social Hogg is <code>20 SMB sales</code>, <code>over 20 deals</code>, <code>60 warm leads</code>, or <code>50 leads</code> depending on which file you open.</p>
+
+    <h3>The fix, this week</h3>
+    <p>Open your offer letters and contracts. Write down the literal title and literal month-year for each role. Make LinkedIn and every resume match exactly. The kit stores those facts once in <code>resume_data.json</code> and generates every resume from them, so this can't come back.</p>
+    <p class="note">I made four assumptions to build the resumes — UPath's start date, Merly's end date, Inbenta's title, and leaving Reyvisum off. Each is flagged in the teardown. Verify them before you send anything.</p>
+  </div>
+</section>
+
+<section>
+  <div class="rail">Positioning</div>
+  <div class="body">
+    <h2>Stop applying as an SDR</h2>
+    <p>Your five-variant set was five SDR/BDR resumes differing only in the summary line and the skills row — the work experience underneath, which is what carries the keyword score, was byte-identical. That's the wrong tier and cosmetic differentiation at the same time.</p>
+    <p>SDR is the most commoditized role in tech sales. You'd be competing against 22-year-olds at entry pay while holding a real Sales Engineer title and a $60K close. You'd be bidding against your own resume.</p>
+    <p><strong>Your actual position:</strong> you sell technical products and you build with the technology you sell. Forward-deployed and solutions-consultant postings at AI companies rose roughly 4× through 2026, and every one of those job descriptions wants someone who can run discovery Tuesday and wire up an API integration Wednesday. Very few candidates do both. You have receipts for both.</p>
+    <h3>The line you were throwing away</h3>
+    <p>“Closed $60,000 in managed and professional IT services contracts in three months.” Real revenue, short window, technical sale. It appeared on <strong>one</strong> of five resumes — and not the sales one. It's now on all four.</p>
+  </div>
+</section>
+
+<section>
+  <div class="rail">Resumes</div>
+  <div class="body">
+    <h2>Four versions, one set of facts</h2>
+    <p>Each is one page, single-column, and table-free. A matching <code>.txt</code> sits beside each — that's verbatim what a parser extracts, so you can read your resume the way the machine does.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="fname">Miles_Tipton_Sales_Engineer.docx</div>
+        <p>Sales Engineer, Solutions Engineer, Pre-Sales Engineer, associate Solutions Architect.</p>
+      </div>
+      <div class="card">
+        <div class="fname">Miles_Tipton_AI_Solutions_Consultant.docx</div>
+        <p>AI Solutions Consultant, Forward-Deployed Engineer, Implementation Consultant, Technical Specialist.</p>
+      </div>
+      <div class="card">
+        <div class="fname">Miles_Tipton_Technical_Account_Manager.docx</div>
+        <p>Technical Account Manager, Customer Success Engineer, Onboarding &amp; Implementation Specialist.</p>
+      </div>
+      <div class="card">
+        <div class="fname">Miles_Tipton_Account_Executive.docx</div>
+        <p>Account Executive, Technical Sales Rep, Business Development Manager.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="rail">What changed</div>
+  <div class="body">
+    <h2>How these get through the screen</h2>
+    <div class="stat">
+      <div><div class="n">45<span style="font-size:19px">%</span></div><div class="l">Keyword match before</div></div>
+      <div><div class="n">71<span style="font-size:19px">%</span></div><div class="l">After, same JD</div></div>
+      <div><div class="n">1</div><div class="l">Page, each variant</div></div>
+      <div><div class="n">0</div><div class="l">Tables to break parsing</div></div>
+    </div>
+    <p>Three gates, in order. Most candidates optimize for the first and lose at the second.</p>
+    <ul>
+      <li><strong>The parser.</strong> All dates are now <code>MM/YYYY</code> — parsers reliably mis-read <code>2026 - Present</code>. Standard section headers, no tables, no text boxes, no headers or footers.</li>
+      <li><strong>Keyword and title matching.</strong> Title match dominates the score, so each variant carries a target-title line under your name. Skills blocks give both forms — <code>Large Language Models (LLM)</code>, <code>proof of concept (POC)</code> — because different systems index different ones.</li>
+      <li><strong>The human, at about seven seconds.</strong> Current title, employer, one number, coherent story. Your best number is now above the fold.</li>
+    </ul>
+    <h3>Don't use the white-text trick</h3>
+    <p>Hidden keyword stuffing is the most-circulated “ATS hack” right now and it no longer works. Every ATS shows recruiters a plain-text view where hidden text appears in full, and several flag it automatically. Everything in these resumes is visible text you can defend out loud.</p>
+  </div>
+</section>
+
+<section>
+  <div class="rail">Targets</div>
+  <div class="body">
+    <h2>Where to aim</h2>
+    <p class="note">This environment blocks LinkedIn, Indeed and the ATS boards, so I couldn't confirm which specific reqs are open today. The companies are high-confidence; the live links in <code>TARGET_LIST.md</code> confirm openings in one click.</p>
+
+    <div class="tier">
+      <div class="th"><h3>Conversational &amp; customer-service AI</h3><span class="pill">Strongest angle</span></div>
+      <p>You sold this exact category at Inbenta. For several you can honestly open with <em>“I sold against you.”</em> That's a rare opener and recruiters notice it.</p>
+      <div class="co">Decagon · Sierra AI · PolyAI · Parloa · Kore.ai · Boost.ai · Replicant · Ada · Gorgias · Intercom · Zendesk</div>
+    </div>
+
+    <div class="tier">
+      <div class="th"><h3>Los Angeles SaaS</h3><span class="pill">Best odds</span></div>
+      <p>ServiceTitan is your strongest LA fit on paper: SMB-owner buyer — exactly who you handle daily at Social Hogg — plus a technical product and a real associate ramp.</p>
+      <div class="co">ServiceTitan · Snap · Whatnot · Riot Games · Wpromote · Headspace</div>
+    </div>
+
+    <div class="tier">
+      <div class="th"><h3>AI infrastructure &amp; dev tools</h3><span class="pill">Stretch</span></div>
+      <p>Merly.ai means you've sold to engineering buyers, which these companies screen for. Be realistic on tiering — apply, but spend the bulk of your effort where you're near the top of the stack rather than the bottom.</p>
+      <div class="co">Anthropic · OpenAI · Vercel · Retool · Postman · Datadog · Snowflake · LangChain · Baseten</div>
+    </div>
+
+    <div class="tier">
+      <div class="th"><h3>Sales-tech &amp; automation</h3><span class="pill">You're the user</span></div>
+      <p>You run your own pipeline on these products and have production builds on several. Bring a specific workflow you built — n8n, Make and Clay are hiring hard and are small enough to notice.</p>
+      <div class="co">HubSpot · Apollo.io · Zapier · Make · n8n · Airtable · Clay · Gong · Outreach</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="rail">The plan</div>
+  <div class="body">
+    <h2>Ten a week, never cold</h2>
+    <p>Board applications convert at roughly 2–3%. This is built to beat that and kept small enough that you'll actually do it: <strong>10 applications, 15 recruiter or hiring-manager messages, 5 referral asks per week.</strong></p>
+    <p>The rule that decides the outcome: <strong>never apply cold.</strong> For every application, find the hiring manager or a recruiter and message them the same day. Application plus message converts several times better than application alone.</p>
+    <ol class="steps">
+      <li>Pick the matching variant and open the job description.</li>
+      <li>Run <code>keyword_check.py</code> against it. Add missing keywords <em>only</em> if they're genuinely true of you.</li>
+      <li>Rename the file <code>Miles_Tipton_&lt;Company&gt;_&lt;Role&gt;.docx</code> — recruiters see filenames.</li>
+      <li>Submit <code>.docx</code> unless the posting demands PDF. Workday and iCIMS parse Word more reliably.</li>
+      <li>Message the hiring manager and one recruiter the same day.</li>
+      <li>Log it, then follow up on day 4 and day 10. Almost nobody follows up; it's free advantage.</li>
+    </ol>
+    <h3>Sequence it</h3>
+    <p>Don't fire at your top five dream companies in week one. Run 5–10 LA SaaS and sales-tech applications first, do those screens, and get your $60K story sharp under real pressure. Then go at the AI vendors. One shot per company per role — spend the early reps where a miss costs least.</p>
+  </div>
+</section>
+
+<section>
+  <div class="rail">Interviews</div>
+  <div class="body">
+    <h2>Three stories, rehearsed cold</h2>
+    <p>You'll hit asynchronous AI video screens at a meaningful share of these companies. They score structure over charisma: answer in STAR, echo the job description's actual words, keep it 60–90 seconds, look at the lens rather than the preview window, and pause instead of saying “um.”</p>
+    <ul>
+      <li><strong>The $60K close.</strong> Discovery, what you found, how you scoped it, how you closed. Your best story — lead with it.</li>
+      <li><strong>A demo that went sideways.</strong> A technical question you couldn't answer at Inbenta, what you did in the room, how you followed up. A clean recovery beats a flawless run.</li>
+      <li><strong>Something you built.</strong> The AgentKit/n8n CRM end to end — problem, architecture, the 40%. This is what separates you from everyone else in the stack. Have the GitHub link ready.</li>
+    </ul>
+    <h3>And the question you'll get every single time</h3>
+    <p>“Why so many roles in three years?” Don't get defensive: <em>“I took contract and startup work deliberately to get range across the technical sales stack — pre-sales at Inbenta, closing at Homegrown, building the product at UPath. I'm looking for one place to go deep now.”</em> One breath, then move on.</p>
+  </div>
+</section>
+
+<section>
+  <div class="rail">Do now</div>
+  <div class="body">
+    <h2>Three things before you send anything</h2>
+    <ol class="steps">
+      <li>Verify every title and date against your offer letters, then make LinkedIn match exactly.</li>
+      <li>Replace the LinkedIn placeholder in <code>resume_data.json</code> with your real profile URL, or delete the line. Not one of your five resumes had one — recruiters check before they reply.</li>
+      <li>Open each <code>.docx</code> and confirm it's one page in your copy of Word.</li>
+    </ol>
+    <h3>Then, in priority order</h3>
+    <ul>
+      <li>Get the outcome numbers you're missing: quota attainment, average deal size, cycle length, win rate. One real attainment number outweighs every activity metric on the page.</li>
+      <li>Learn MEDDIC/MEDDPICC this week — it's in a large share of SE and AE job descriptions and it's a common first-screen question. Add it to your skills line only once you can walk through it.</li>
+      <li>Decide the Reyvisum question: real engagement with contract dates, or off the resume. No third option.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Files live in <span class="mono">career/</span> on branch <span class="mono">claude/resume-ats-optimization-vgde9j</span> —
+  RECRUITER_TEARDOWN.md · TARGET_LIST.md · resumes/ · outreach/TEMPLATES.md · application_tracker.csv
+</footer>
+
+</div>
