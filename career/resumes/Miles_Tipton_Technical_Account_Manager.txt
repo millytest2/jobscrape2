@@ -1,0 +1,41 @@
+MILES TIPTON
+TECHNICAL ACCOUNT MANAGER | IMPLEMENTATION & ONBOARDING
+Los Angeles, CA | (310) 606-9788 | milestipton10@gmail.com
+linkedin.com/in/milestipton | github.com/milestipton
+PROFESSIONAL SUMMARY
+Customer-facing technical professional with 3+ years across AI software, IT services, and startup operations. Onboards and implements technical products end to end: requirements, configuration, integration, documentation, and training.
+CORE SKILLS
+Customer Success & Implementation: Customer onboarding, implementation coordination, requirements gathering, solution configuration, project coordination, open-item tracking, escalation management, customer training, adoption, retention, QBRs
+Technical: REST API integration, webhooks, troubleshooting, SQL, Python, JavaScript, React, Django REST Framework, Power BI (Power Query, DAX), Microsoft Azure, Airtable, Git/GitHub
+AI & Systems: Generative AI, Large Language Models (LLM), Conversational AI, NLP chatbots, workflow automation, OpenAI AgentKit, n8n, Zapier, Make, GPT-4, Claude, Gemini, HubSpot CRM, technical documentation, SaaS
+Pre-Sales & Delivery: Technical discovery, product demos, proof of concept (POC), solution design, executive presentations, stakeholder management, sales cycle management, cross-functional collaboration
+PROFESSIONAL EXPERIENCE
+Inbenta  |  New York, NY	07/2023 - 06/2024
+Sales Engineer
+- Presented Generative AI and Conversational AI demos to 20+ executives, translating capability into business terms.
+- Collaborated cross-functionally with sales and technical teams on solutions for complex customer requirements.
+- Built technical documentation and training materials that made capabilities easier for customer teams to convey.
+- Served as technical point of contact through evaluation and handoff, tracking open items to implementation.
+UPath.ai  |  Los Angeles, CA	06/2024 - Present
+Co-Founder & Head of Technology
+- Design multi-step AI and data workflows on OpenAI AgentKit, Manus, and n8n that reduce manual delivery work.
+- Built a customer-facing platform in Manus and Framer connecting front-end UX to back-end automations via APIs.
+- Built automated qualification and CRM workflows organizing follow-up, next steps, and account handoffs.
+Merly.ai  |  Remote	06/2025 - 09/2025
+Technical Sales Specialist (Contract)
+- Used HubSpot CRM, ChatGPT, and Apollo.io to research accounts, enrich data, and maintain lifecycle follow-up.
+- Achieved a 60% outbound open rate by researching pain points and tailoring communication to each audience.
+Momentum OS  |  Remote	04/2025 - 07/2025
+AI Enablement Specialist (Contract)
+- Built GPT-4, Zapier, and Make workflows cutting manual tasks 30%, with real-time Airtable dashboards.
+The Social Hogg  |  Los Angeles, CA	04/2026 - Present
+Business Development Representative (Contract)
+- Manage 60+ customer conversations per day, tracking needs, objections, next steps, and handoffs.
+- Research each account and tailor conversations to the owner's operations and technical familiarity.
+Homegrown Solutions  |  New York, NY	02/2023 - 06/2023
+Sales Engineer
+- Closed and coordinated delivery of $60,000 in managed and professional IT services contracts in three months.
+- Built Power BI dashboards (Power Query, Microsoft Azure, DAX) turning customer data into account insights.
+EDUCATION & CERTIFICATIONS
+The George Washington University  |  Bachelor of Arts (B.A.), Organizational Sciences — Washington, DC	05/2020
+Harvard CS50  |  Web Programming & Computer Science — C, Python, SQL, JavaScript	10/2022

@@ -1,0 +1,68 @@
+{
+  "_note": "SINGLE SOURCE OF TRUTH. Every resume variant is generated from this file. Fix a fact here once and all variants stay consistent. Items marked CONFIRM must be verified by Miles against offer letters / contracts / LinkedIn before sending.",
+  "contact": {
+    "name": "MILES TIPTON",
+    "line1": "Los Angeles, CA | (310) 606-9788 | milestipton10@gmail.com",
+    "line2": "linkedin.com/in/milestipton | github.com/milestipton"
+  },
+  "roles": {
+    "socialhogg": {
+      "company": "The Social Hogg",
+      "location": "Los Angeles, CA",
+      "title": "Business Development Representative (Contract)",
+      "dates": "04/2026 - Present",
+      "confirm": "Company spelled 3 ways across your resumes (Social Hogg / Social Hog / The Social Hog) and titled 2 ways (Sales Closer / BDR). Match your contract exactly, then lock it here."
+    },
+    "upath": {
+      "company": "UPath.ai",
+      "location": "Los Angeles, CA",
+      "title": "Co-Founder & Head of Technology",
+      "dates": "06/2024 - Present",
+      "confirm": "Start date appears as both 06/2024 and 02/2025. 06/2024 is used here because it makes your history continuous from Inbenta. If the true founding date is 02/2025, change it and we fill 06/2024-02/2025 with contract work."
+    },
+    "merly": {
+      "company": "Merly.ai",
+      "location": "Remote",
+      "title": "Technical Sales Specialist (Contract)",
+      "dates": "06/2025 - 09/2025",
+      "confirm": "End date appears as both 08/2025 and 09/2025. 09/2025 used (majority of your versions)."
+    },
+    "momentum": {
+      "company": "Momentum OS",
+      "location": "Remote",
+      "title": "AI Enablement Specialist (Contract)",
+      "dates": "04/2025 - 07/2025",
+      "confirm": ""
+    },
+    "inbenta": {
+      "company": "Inbenta",
+      "location": "New York, NY",
+      "title": "Sales Engineer",
+      "dates": "07/2023 - 06/2024",
+      "confirm": "Titled both 'Sales Engineer' and 'Associate Sales Engineer'. Use whatever your offer letter and LinkedIn say - they must match."
+    },
+    "homegrown": {
+      "company": "Homegrown Solutions",
+      "location": "New York, NY",
+      "title": "Sales Engineer",
+      "dates": "02/2023 - 06/2023",
+      "confirm": "Your $60K closed number lives here and it is the strongest revenue proof you have. It was missing from 4 of your 5 resumes."
+    }
+  },
+  "education": [
+    {
+      "school": "The George Washington University",
+      "location": "Washington, DC",
+      "detail": "Bachelor of Arts (B.A.), Organizational Sciences",
+      "dates": "05/2020",
+      "sub": "Washington, DC"
+    },
+    {
+      "school": "Harvard CS50",
+      "location": "Online",
+      "detail": "Web Programming & Computer Science",
+      "dates": "10/2022",
+      "sub": "C, Python, SQL, JavaScript"
+    }
+  ]
+}

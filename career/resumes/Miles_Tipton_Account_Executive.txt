@@ -1,0 +1,40 @@
+MILES TIPTON
+ACCOUNT EXECUTIVE | TECHNICAL SALES REPRESENTATIVE
+Los Angeles, CA | (310) 606-9788 | milestipton10@gmail.com
+linkedin.com/in/milestipton | github.com/milestipton
+PROFESSIONAL SUMMARY
+Quota-carrying sales professional with 3+ years selling technical products: Generative AI software, managed IT services, and digital marketing. $60K closed in three months, 20+ accounts closed on a 60-call daily cadence, 20+ executive demos.
+CORE SKILLS
+Sales: Full-cycle sales, new business development, outbound prospecting, cold calling, discovery, needs analysis, solution selling, objection handling, negotiation, closing, quota attainment, pipeline generation, forecasting
+Technical Sales: Product demonstrations, technical discovery, proof of concept (POC), solution scoping, SaaS, B2B, API integration, competitive positioning, business case and ROI development, executive presentations
+AI & Systems: Generative AI, Large Language Models (LLM), Conversational AI, GPT-4, Claude, Gemini, OpenAI AgentKit, n8n, Zapier, Make, HubSpot CRM, Apollo.io, LinkedIn Sales Navigator, Power BI
+Customer & Process: Requirements gathering, stakeholder management, sales cycle management, cross-functional collaboration, technical documentation, sales enablement, customer onboarding, implementation handoff
+PROFESSIONAL EXPERIENCE
+The Social Hogg  |  Los Angeles, CA	04/2026 - Present
+Business Development Representative (Contract)
+- Closed 20+ new SMB accounts and generated 50+ qualified leads on a 60+ daily cold-call cadence across North America.
+- Qualify prospects by diagnosing online-visibility gaps, then position SEO and paid social to their revenue goals.
+- Use ChatGPT, Claude, and Gemini to research accounts and personalize outreach at scale.
+UPath.ai  |  Los Angeles, CA	06/2024 - Present
+Co-Founder & Head of Technology
+- Generated 50+ qualified inbound leads via SEO, LinkedIn, and referrals, owning every deal from first call to close.
+- Built a custom CRM and qualification workflow on OpenAI AgentKit and n8n, increasing research speed 40%.
+Merly.ai  |  Remote	06/2025 - 09/2025
+Technical Sales Specialist (Contract)
+- Built outbound infrastructure through segmentation and A/B-tested messaging to technical buyers, hitting a 60% open rate.
+- Managed prospect research, data enrichment, and pipeline hygiene in HubSpot CRM and Apollo.io.
+Momentum OS  |  Remote	04/2025 - 07/2025
+AI Enablement Specialist (Contract)
+- Built an AI outbound workflow with GPT-4, Zapier, and Make that reduced manual sales-operations tasks 30%.
+Inbenta  |  New York, NY	07/2023 - 06/2024
+Sales Engineer
+- Delivered 20+ Generative AI and Conversational AI demos to executives, converting capability into business terms.
+- Partnered with Account Executives on competitive deals, running discovery and producing solution recommendations.
+- Built technical documentation, demo assets, and training materials supporting the sales process company-wide.
+Homegrown Solutions  |  New York, NY	02/2023 - 06/2023
+Sales Engineer
+- Closed $60,000 in managed IT and professional services contracts in three months, running discovery to signature.
+- Built Power BI dashboards (Power Query, DAX, Microsoft Azure) to develop data-backed business cases in deals.
+EDUCATION & CERTIFICATIONS
+The George Washington University  |  Bachelor of Arts (B.A.), Organizational Sciences — Washington, DC	05/2020
+Harvard CS50  |  Web Programming & Computer Science — C, Python, SQL, JavaScript	10/2022
